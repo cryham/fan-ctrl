@@ -33,7 +33,7 @@ void Gui::DrawKeys()
 	d->setClr(21,26,26);
 
 
-	int ii = 3;
+	int ii = 2;
 	switch (yy)
 	{
 	case K_Matrix:

@@ -2,6 +2,7 @@
 #include "kc_data.h"
 #include "Ada4_ST7735.h"
 
+
 const char* sPgDisplay[Di_All] = {
 	"Bright", "Gui keys", "Intervals", "Graph""\x01""C", "Debug" };
 
@@ -108,7 +109,7 @@ void Gui::DrawDisplay()
 			sprintf(a,"Temp offset: ");  break;
 		}
 		d->print(a);  y += h+8;
-		if (i==2)
+		if (i==1)
 		{
 			dtostrf(0.03f * par.tempOfs, 4,2, a);
 			d->print(a);  d->print(" ""\x01""C");

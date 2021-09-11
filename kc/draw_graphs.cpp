@@ -59,7 +59,7 @@ void Gui::DrawGraphs()
 			d->drawPixel(i,y0, c);
 	}	}
 
-	//if (pgClock == Cl_Graphs)
+	//if (pgGraph == Cl_Graphs)
 	{
 		DrawGraph();
 		return;
@@ -82,11 +82,11 @@ void Gui::DrawGraphs()
 	if (!adjust && fTemp > -90.f)
 	{
 		dtostrf(fTemp, 4,2, f);
-		if (pgClock == 0)
+		if (pgGraph == 0)
 		{	d->setClr(18,22,26);
 			d->setCursor(6, 71);
 		}else
-		{	if (pgClock == 2)
+		{	if (pgGraph == 2)
 				d->setClr(16,20,24);
 			else
 				d->setClr(14,18,22);
@@ -108,12 +108,12 @@ void Gui::DrawGraphs()
 	//if (!stats)
 	{
 		d->setCursor(W - 1 - 3 * 6, 4);
-		sprintf(a, "%d/%d", pgClock + 1, G_All);  d->print(a);
+		sprintf(a, "%d/%d", pgGraph + 1, G_All);  d->print(a);
 	}
 
 
 	//  labels, par values  ====--------
-	//int pg = ClockVars(pgClock);
+	//int pg = ClockVars(pgGraph);
     #ifdef TEMP1
     bool temp = temp1 > 2;
     #endif

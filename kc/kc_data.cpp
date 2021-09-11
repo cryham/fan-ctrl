@@ -1,29 +1,27 @@
 #include "kc_data.h"
-//#include "usb_keyboard.h"
-#include "usb_mouse.h"
 #include "matrix.h"
 #include "gui.h"
 #include "WProgram.h"
 
 KC_Params par;
-//extern Gui gui;
 
 
-//  update layers  (always)
+//  KCupdate
 //------------------------------------------------------------------------
 void KC_Main::Update(uint32_t ms)
 {
-	//  brightness dac led  ~~~
+
+	//  brightness set lcd led pwm  ~~~
 	if (setBright)
 	{	setBright = 0;
 
 		int bri = par.brightness;
-		const int minBri = 500;  //?
+		const int minBri = 400;  //?
 		int val = bri == 0 ? 0 : bri * (4095 - minBri) / 100 + minBri;
 		analogWrite(LCD_LED, val);
 	}
 
-	//  1 minute time, stats
+	//  add graph stats  ---
 	if (par.timeRpm)
 	if (ms - msMin1 > 1000 * t1min(par) || ms < msMin1)
 	{

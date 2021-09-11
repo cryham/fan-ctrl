@@ -14,13 +14,13 @@ uint scan_cnt = 0, scan_freq = 0;
 uint32_t us_scan = 0, ms_scan = 0;
 uint8_t scan_n = 0;
 
+Fans fans;
 Gui gui;
 KC_Main kc;
 extern void ParInit();
-Fans fans;
 
 
-//  kbd  timer event,  scan, send
+//  timer event,  scan
 //------------------------------------------------
 void main_periodic()
 {
@@ -39,18 +39,16 @@ void main_periodic()
 	++scan_n;
 
 
-	//  kbd scan
-	bool bsc = false;
-	if (  // slower for demos
-		gui.ym != M_Demos || scan_n % 4==0)
-	{	Matrix_scan(0);  bsc = true;  }  // K
+	fans.Check();  // pins for rpm
 
-	//  gui
-	if (bsc)
+	//  keys scan  slower for demos
+	if (gui.ym != M_Demos || scan_n % 4==0)
+	{
+		Matrix_scan(0);
 		gui.KeyPress();
+	}
 
-	//  keyboard
-	kc.Update(ms);
+	kc.Update(ms);  // add to graphs
 
 	us_scan = micros() - us;
 }
@@ -87,13 +85,10 @@ int main()
 	//  load set from ee
 	kc.Load();
 	//gui.SetScreen(ST_Demos2 + D_Plasma);
-	//gui.SetScreen(ST_Clock + Cl_Stats);
-	gui.SetScreen(ST_Main0);
-	//gui.SetScreen(ST_Displ);
-	//kc.Save();
+	gui.SetScreen(ST_Fans);
 
 
-	//  kbd
+	//  keys
 	Matrix_setup();
 
 	//  48 MHz/50 000 = 960 Hz   display: 76 fps

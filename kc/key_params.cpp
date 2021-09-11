@@ -7,16 +7,16 @@
 const uint8_t Gui::DispPages[Di_All] = {1,1,0,3,1};
 
 
-//  Info
+//  Config
 //....................................................................................
 
 void Gui::KeysConfig()
 {
 	switch (yy)
 	{
-	case C_Save:  Save();  break;
-	case C_Load:  Load(0);  break;
-	case C_Use:
+	case C_Save:  if (kEnt)  Save();  break;
+	case C_Load:  if (kEnt)  Load(0);  break;
+	case C_Use:  if (kRight)
 		par.verCounter = RangeAdd(par.verCounter, kRight, 0, 255, 1);  break;
 	}
 }

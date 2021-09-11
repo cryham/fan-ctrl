@@ -13,8 +13,11 @@ void Gui::KeysFans()
 	else
 	if (kRight)
 	{
+		int sp = fansFine ? 20 : 40 * 4;
 		auto& i = fans.fan[ym2Fan].pwm;
-		i = RangeAdd(i, kRight * 40, 0, 4095);
+		i = RangeAdd(i, kRight * sp, 0, 4095, 1);
 		fans.SetPWM(ym2Fan, i);
 	}
+	else if (kEnt)  // toggle fine adjust
+		fansFine = !fansFine;
 }

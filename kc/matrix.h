@@ -82,7 +82,7 @@ typedef struct GPIO_Pin {
 //  ----***  Matrix  ***----
 //  1 x 4  CK1
 const static GPIO_Pin
-Matrix_cols[] = { T3_21 },
+Matrix_cols[] = { T3_33 },
 Matrix_rows[] = { T3_14, T3_15, T3_16, T3_17, T3_18, T3_19 };
 
 #define NumCols  sizeof( Matrix_cols ) / sizeof( GPIO_Pin )

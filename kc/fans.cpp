@@ -3,8 +3,8 @@
 
 
 //  pins
-const uint8_t FAN_PWM[NumFans] = { 3,4,5,6, 22,21,20 };  // PWM outut pin
-const uint8_t FAN_RPM[NumFans] = { 0,1,2,7, NoRPM,NoRPM,NoRPM };  // RPM input pin
+const uint8_t FAN_PWM[NumFans] = { 20,22,6,4, 21,5,3 };  // PWM outut pin
+const uint8_t FAN_RPM[NumFans] = {  1, 2,7,0, NoRPM,NoRPM,NoRPM };  // RPM input pin
 
 
 //  Init  -----------
@@ -16,20 +16,6 @@ Fans::Fans()
 {
 	prevMS = millis();
 }
-
-//  ISRs meh
-extern Fans fans;
-
-void Pulse0() {  ++fans.fan[0].pulses;  }
-void Pulse1() {  ++fans.fan[1].pulses;  }
-void Pulse2() {  ++fans.fan[2].pulses;  }
-void Pulse3() {  ++fans.fan[3].pulses;  }
-void Pulse4() {  ++fans.fan[4].pulses;  }
-void Pulse5() {  ++fans.fan[5].pulses;  }
-void Pulse6() {  ++fans.fan[6].pulses;  }
-
-void (*PulseArr[NumFans])() = {	Pulse0,Pulse1,Pulse2,Pulse3,Pulse4,Pulse5,Pulse6 };
-
 
 
 //  Setup pins  -----------
@@ -45,7 +31,6 @@ void Fan::Setup(uint8_t fanId)
 		return;
 
 	pinMode(rpm, INPUT_PULLUP);
-	attachInterrupt(digitalPinToInterrupt(rpm), PulseArr[fanId], FALLING);
 }
 
 void Fans::Init()
@@ -56,19 +41,32 @@ void Fans::Init()
 
 
 //  Update  -----------
+void Fans::Check()
+{
+	for (int i=0; i < NumFans; ++i)
+	{
+		const uint8_t rpm = FAN_RPM[i];
+		auto& f = fan[i];
+		uint8_t pin = digitalRead(rpm);
+		
+		if (!pin && f.oldPin)  // falling edge
+			++f.pulses;
+		f.oldPin = pin;
+	}
+}
+
 void Fan::CalcRPM()
 {
-	noInterrupts();
+	auto ms = millis();
 	if (pulses == 0)
 		rpm = 0;
 	else
-	{	float dtMS = (millis() - lastRpmMS) / 1000.f;
+	{	float dtMS = (ms - lastRpmMS) / 1000.f;
 		float revPerMS = float(pulses) / 2.f / dtMS;
-		rpm = revPerMS * 60.f;  //?
+		rpm = revPerMS * 60.f;
 	}
-	lastRpmMS = millis();
+	lastRpmMS = ms;
 	pulses = 0;
-	interrupts();
 
 	//  add
 	avgArr[avgCnt] = rpm;
@@ -84,6 +82,7 @@ void Fan::CalcRPM()
 	rpmAvg = sum / avgNum;
 }
 
+
 void Fans::Update()
 {
 	if (millis() - prevMS > updateMS)
@@ -96,9 +95,9 @@ void Fans::Update()
 	}
 }
 
-//  change
+//  Change
 void Fans::SetPWM(uint8_t i, uint16_t val)
 {
 	//fan[i].pwm = val;
-	analogWrite(FAN_PWM[i], val); //bri * 40 + 40);
+	analogWrite(FAN_PWM[i], val);
 }

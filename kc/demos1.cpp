@@ -25,7 +25,7 @@ void Demos::Version()
 
 	d->setCursor(0,H-23);
 	d->setClr(16,25,31);
-	d->print("ver 2.03");
+	d->print("ver 2.05");
 	//  version text  ^
 
 	d->setClr(21,26,31);

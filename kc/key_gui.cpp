@@ -16,19 +16,24 @@ void Gui::KeyPress()
 	//  update keys press  _k_
 	kUp = kr(3,dt) - kr(2,dt);
 	kBack = kr(1,dt);
+	kEnt = Key(0);
 	
 	//  rot enc  (*)  scroll
+	auto& kk = mlevel == 0 ? kUp : kRight;
+
 	static int8_t old = KeyH(5);
 	int8_t scr = KeyH(5);
 	if (scr && !old)
-		kRight = KeyH(4) > 0 ? -1 : 1;
+		kk = KeyH(4) > 0 ? -1 : 1;
 	else
-		kRight = Key(0);
+		kk = 0; //Key(0);
 	old = scr;
 
-	//kEnt = Key(gEnt);  kSave = Key(gSave);
+	//kSave = Key(gSave);
+	int d = kUp + kRight;
 
 
+	//  ---
 	if (ym == M_Fans && mlevel == 1)
 	{
 		KeysFans();
@@ -37,7 +42,7 @@ void Gui::KeyPress()
 	{
 		KeysScan();
 	}
-	else if (ym == M_Config && mlevel == 2)
+	else if (ym == M_Config && mlevel > 0)
 	{
 		KeysConfig();
 	}
@@ -51,41 +56,51 @@ void Gui::KeyPress()
 	}
 
 
-	if (mlevel == 0)  //  main menu
+	//  main menu
+	if (mlevel == 0)
 	{
-		if (kUp){  ym += kUp;  if (ym >= M_All)  ym = 0;  if (ym < 0)  ym = M_All-1;  }
-		if (kRight > 0)  mlevel = 1;  // enter>
+		if (d)
+		{	ym += d;
+			if (ym >= M_All)  ym = 0;
+			if (ym < 0)  ym = M_All-1;
+		}
+		if (kEnt > 0)
+			mlevel = 1;  // enter>
 		return;
 	}
 
 
-	//  <back global
+	//  <back  global
 	if (kBack && mlevel > 0)
 		--mlevel;
 
 
-	//  Help
+	//  Help  ---
 	if (ym == M_Help && mlevel == 1)
 	{
-		if (kUp || kPgUp)
-			hpage = RangeAdd(hpage, kUp+kPgUp, 0,HAll-1, 1);
+		if (d)
+			hpage = RangeAdd(hpage, d, 0,HAll-1, 1);
 		return;
 	}
 
 
-	if (mlevel == 1)  //  sub menu
+	//  sub menu
+	if (mlevel == 1)
 	{
-		//  enter>
-		if (kRight > 0)
-			if (ym != M_Display && ym != M_Fans)  // no 2nd level
-				mlevel = 2;
+		auto No2nd = [&](){  return  // no 2nd level
+			ym == M_Display || ym == M_Fans ||
+			(ym == M_Config && yy < 2);  };
 
-		if (kUp){  ym1[ym] += kUp;  Chk_y1();  }
+		if (kEnt > 0 && !No2nd())  // enter>
+			mlevel = 2;
+
+		if (d)
+		{	ym1[ym] += d;  Chk_y1();  }
 		return;
 	}
 
 
-	//  Demos
+	//  Demos  ----
 	#ifdef DEMOS
 	if (ym == M_Demos && mlevel == 2)
 	{

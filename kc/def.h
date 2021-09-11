@@ -67,13 +67,12 @@ extern const char *strDemo[D_All];
 #endif
 
 
-//  menus  --
-enum EKeys  //  keys level1
+//  menus  level 1  --
+enum EKeys
 {
 	K_Matrix, K_Scan, K_All
 };
-
-enum EConfig  //  Info use,ver
+enum EConfig
 {
 	C_Save, C_Load, C_Use, C_Version, C_All
 };
@@ -88,6 +87,7 @@ enum EGraphs
 	G_Stats, G_Graphs, G_All
 };
 
+
 //  string names for all above ^
 extern const char
 	*strMain[M_All], *strKeys[K_All], *strConfig[C_All];
@@ -95,7 +95,8 @@ extern const char
 //  sub page counts, inside each main menu entry
 extern const uint8_t YM1[M_All];
 
+
 //  time intervals  *0.1s
 extern const uint16_t gIntervals[];
-const static uint8_t gIntvMask = 0x1F;
+const static uint8_t  gIntvMask = 0x1F;
 

@@ -30,7 +30,8 @@ struct Gui
 
 
 	//  keys
-	void KeysFans(), KeysScan(), KeysDisplay();
+	void KeysFans();  bool fansFine = false;
+	void KeysScan(), KeysDisplay();
 	void KeysConfig(), KeysGraph();
 
 	//  start
@@ -40,11 +41,10 @@ struct Gui
 
 	//  fade color menu  ---
 	enum EFadeClr
-	{	C_Main=0, C_Demos, C_Test, 
+	{	C_Main, C_Demos, C_Test, 
 		C_Setup, C_Disp, C_Clock, C_Setup2,
 		C_Info, C_ALL  };
-	const static uint8_t
-		Mclr[C_ALL][2][3];
+	const static uint8_t Mclr[C_ALL][2][3];
 
 	void FadeClr(EFadeClr ec, const uint8_t minRGB, const uint8_t mul, const uint8_t div);
 	void DrawMenu(int cnt, const char** str, EFadeClr ec, uint16_t curClr,
@@ -74,18 +74,16 @@ struct Gui
 	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,  kEnt=0, kBack=0;
 
 
-	//  level 2 y cursors  - - -
-	int8_t ym2Fan = 0, ym2Scan = 0;  // Setup
-	int8_t ym2Disp = 0, pgDisp = 0;  // Display
-	int8_t ym2Clock = 0, pgClock = G_Stats;  // Graph
+	//  level 2  menu cursors  ---
+	int8_t ym2Fan = 0, ym2Scan = 0;
+	int8_t ym2Disp = 0, pgDisp = 0;
+	int8_t pgGraph = G_Stats;
 
-	const static uint8_t
-		DispPages[Di_All]; //, ScanPages[S_All];
+	const static uint8_t DispPages[Di_All];
 
 	//  util
 	int16_t RangeAdd(int16_t val, int16_t add, int16_t vmin, int16_t vmax, int8_t cycle=0);
 	void Save(), Load(int8_t reset);
-
 
 	int16_t tInfo=0;  int8_t infType=0;  // info text vars
 
