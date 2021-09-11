@@ -18,19 +18,8 @@ void Gui::DrawMatrix()
 
 	//-----------------------------------------------------
 	const static int16_t x1 = 10, y1 = 64;
-	uint c,r, hc=99,hr=99;  //held col,row
-	//const uint X = (W-x1) / (NumCols);
-	const uint X = NumCols < 12 ? 9 : NumCols < 20 ? 8 : 7;
-
-	//  grid #
-	const uint16_t cl[3] = {RGB(9,10,10), RGB(13,14,14), RGB(16,20,20)};
-	int w = NumCols*X;  if (w > W-1-x1) w = W-1-x1;
-	for (r=0; r < NumRows; ++r)
-		if (r % 2 == 1)
-			d->drawFastHLine(x1, y1 + r*8 +4, w, cl[r % 4 == 3 ? 1 : 0]);
-	for (c=0; c < NumCols; ++c)
-		if (c % 2 == 1)
-			d->drawFastVLine(x1 + c*X +3, y1, H-1-y1, cl[c%8==7 ? 2 : c%4==3 ? 1 : 0]);
+	uint c,r, hc=99,hr=99;  // held col,row
+	const uint X = 9;
 
 	//  matrix  :::  *
 	for (c=0; c < NumCols; ++c)

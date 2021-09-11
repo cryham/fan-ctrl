@@ -51,7 +51,7 @@ struct Gui
 		uint16_t bckClr, int16_t yadd=10, int16_t nextCol=-1, int16_t numGap=-1);
 
 
-	//  vars  ---
+	//  menu vars  ---
 	int8_t mlevel = 0;  // 0 main, 1 level1, 2 level2
 
 	int8_t ym = 0;      // 0 main y cursor
@@ -61,7 +61,6 @@ struct Gui
 	//  time, key repeat
 	uint32_t oldti=0, oldti_kr=0;
 	int8_t kr(uint8_t sc, uint16_t dt);
-	int8_t iRam = 0;  // ram info
 
 	//  help
 	int8_t hpage = 0;
@@ -71,14 +70,14 @@ struct Gui
 	#endif
 
 
-	//  keys pressed, some +-1  _k_
+	//  gui keys pressed, some +-1
 	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,  kEnt=0, kBack=0;
 
 
 	//  level 2 y cursors  - - -
 	int8_t ym2Fan = 0, ym2Scan = 0;  // Setup
 	int8_t ym2Disp = 0, pgDisp = 0;  // Display
-	int8_t ym2Clock = 0, pgClock = G_Stats;  // Clock
+	int8_t ym2Clock = 0, pgClock = G_Stats;  // Graph
 
 	const static uint8_t
 		DispPages[Di_All]; //, ScanPages[S_All];
@@ -88,19 +87,7 @@ struct Gui
 	void Save(), Load(int8_t reset);
 
 
-	//  Sequences  - - - -
-	int8_t edit = 0;   // seq 0 view / 1 edit
-	int8_t edins = 1;  // 1 ins 0 overwrite
-	int8_t copyId = -1;  // copy/swap from
-
-	int8_t slot=0, page=0;  int16_t edpos=0;  // edit vars
-	void slotMax(),slotMin(),pageInc(),pageDec();
-	int seqId()
-	{	return slot + page*iPage;  }
-
-	int8_t tBlnk = 0;
 	int16_t tInfo=0;  int8_t infType=0;  // info text vars
-	const int8_t iPage = 10, cBlnk = 25;  // par-
 
 
 	//  Temp 'C  ---

@@ -4,7 +4,7 @@
 #include "kc_data.h"
 #include "periodic.h"
 
-const uint8_t Gui::DispPages[Di_All] = {1,1,0,3,2};
+const uint8_t Gui::DispPages[Di_All] = {1,1,0,3,1};
 
 
 //  Info
@@ -103,11 +103,9 @@ void Gui::KeysDisplay()
 	case Di_Debug:
 		switch (ym2Disp)
 		{
-		case 0:  // ram info
-			iRam = RangeAdd(iRam, kRight, 0, 2);  break;
-		case 1:  // fps
+		case 0:  // fps
 			demos.iFps = RangeAdd(demos.iFps, kRight, 0, 2);  break;
-		case 2:
+		case 1:
 			par.tempOfs = RangeAdd(par.tempOfs, kRight * 1, -128, 127, 1);  break;
 		}	break;
 	}

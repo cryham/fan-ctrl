@@ -1,5 +1,4 @@
 #include "gui.h"
-#include "RamMonitor.h"
 #include "matrix.h"
 #include "kc_data.h"
 
@@ -7,59 +6,14 @@
 #include "FreeSans9pt7b.h"
 #include "TomThumb3x5.h"
 
-extern RamMonitor ram;
-
 
 //  Draw End
 //....................................................................................
 void Gui::DrawEnd()
 {
-	//DrawOperInfo();
+	DrawOperInfo();
 
 	char a[64];
-	//  ram info  ---------
-	if (iRam)
-	{
-		int16_t	x = W-1 - (iRam == 2 ? 18*4 : 8*6),
-				y = H-1 - (iRam == 2 ? 5*6 : 4*9);
-		d->fillRect(x-1,y-1, W-x+1,H-y+1, RGB(3,2,2));
-		d->setCursor(x,y);
-		std::vector<uint8_t> vv;
-
-		if (iRam == 2)
-		{	//  long
-			d->setClr(31,28,28);
-			d->setFont(&TomThumb);  // 3x5
-			sprintf(a,"%s %d %d", ram.warning_crash() ? "crsh" : ram.warning_lowmem() ? "low" : "ok",
-					kc.GetSize(), sizeof(vv));
-			d->println(a);  y+=6;
-			d->setCursor(x, y);  y+=6;
-			sprintf(a,"un  %lu %lu",   // space between heap and stack
-					ram.adj_unallocd(), ram.unallocated());  d->println(a);
-			d->setCursor(x, y);  y+=6;
-			sprintf(a,"fr  %ld %ld", //100 * ram.adj_free() / ram.total(),
-					ram.adj_free(), ram.free());  d->println(a);
-			d->setCursor(x, y);  y+=6;
-			sprintf(a,"hp  %lu%%  %lu %lu", 100 * ram.heap_free() / ram.heap_total(),
-					ram.heap_free(), ram.heap_total());  d->println(a);
-			d->setCursor(x, y);  y+=6;
-			sprintf(a,"st  %lu%%  %lu %lu", 100 * ram.stack_free() / ram.stack_total(),
-					ram.stack_free(), ram.stack_total());  d->println(a);
-			d->setFont(0);
-		}else
-		{	//  short
-			d->setClr(31,23,23);
-			sprintf(a,"%s %d", ram.warning_crash() ? "c" : ram.warning_lowmem() ? "l" : "o",
-					kc.GetSize());
-			d->println(a);  y+=9;
-			d->setCursor(x, y);  y+=9;
-			sprintf(a,"un %ld", ram.adj_unallocd());  d->println(a);
-			d->setCursor(x, y);  y+=9;
-			sprintf(a,"hp %lu", ram.heap_free());  d->println(a);
-			d->setCursor(x, y);  y+=9;
-			sprintf(a,"st %lu", ram.stack_free());  d->println(a);
-		}
-	}
 
 	//  fps  ---------
 	bool sc = ym == M_Keys && yy == K_Scan;
@@ -78,7 +32,7 @@ void Gui::DrawEnd()
 	}
 
 	//if (!offDisp)
-		d->display();  // 58 Fps, 15ms @144MHz
+		d->display();
 }
 
 
@@ -213,4 +167,51 @@ void Gui::Save()
 void Gui::Load(int8_t reset)
 {
 	kc.Load();  infType = 1;  tInfo = -1;
+}
+
+
+//  Info Operation
+//....................................................................................
+void Gui::DrawOperInfo()
+{
+	char a[32];
+	if (tInfo < 0)  // trigger
+		tInfo = 70;  // par
+
+	if (tInfo > 0)
+	{	--tInfo;
+		bool h = infType == 1 || infType == 2;
+		int x = W-1 - 6*9, x1 = x+6, xe = 6*3,
+			y = 12, yy = h ? 42 : 10;
+
+		d->setFont(0);
+		d->setCursor(x, 0);  //  bck
+		d->fillRect(x-3, 0, W-1-(x-3), yy, RGB(4,6,8));
+		d->drawFastVLine(W-1, 0, yy * tInfo / 70, RGB(10,13,16));  // time|
+		d->setClr(27,29,31);
+
+		const static char* strInf[6] = {
+			"Reset", "Loaded", "Saved:", "Copied", "Pasted", "Swapped" };
+		d->print(strInf[infType]);
+
+		if (h)
+		{	d->setClr(28,25,31);  // mem`
+			d->setCursor(x1, y);
+			sprintf(a,"%d B", kc.memSize);  d->print(a);
+
+			d->setClr(24,21,28);  // cnt
+			d->setCursor(x1, y+10);
+			sprintf(a,"cnt %d", par.verCounter);  d->print(a);
+
+			d->setClr(20,16,24);  // ver-
+			d->setCursor(x1, y+20);
+			//sprintf(a,"ver %d", kc.set.ver);  d->print(a);
+
+			if (kc.err != E_ok)  // error string
+			{
+				d->fillRect(xe-3, y-2, x-3-(xe-3), 12, RGB(6,4,4));
+				d->setClr(31,22,21);
+				d->setCursor(xe, y);
+				d->print(KCerrStr[kc.err]);
+	}	}	}
 }

@@ -1,5 +1,4 @@
 #include "WProgram.h"
-#include "RamMonitor.h"
 
 #include "matrix.h"
 #include "periodic.h"
@@ -15,7 +14,6 @@ uint scan_cnt = 0, scan_freq = 0;
 uint32_t us_scan = 0, ms_scan = 0;
 uint8_t scan_n = 0;
 
-RamMonitor ram;
 Gui gui;
 KC_Main kc;
 extern void ParInit();
@@ -62,7 +60,6 @@ void main_periodic()
 //-------------------------------------------------------------------------
 int main()
 {
-	ram.initialize();
 	ParInit();  // par defaults
 
 
@@ -75,8 +72,8 @@ int main()
 	//  fans
 	fans.Init();
 
-	// analogWriteRes(12);
-	// analogWriteDAC0(0);
+	//analogWriteRes(12);
+	//analogWriteDAC0(0);
 
 
 	Ada4_ST7735 tft;
@@ -99,7 +96,7 @@ int main()
 	//  kbd
 	Matrix_setup();
 
-	//  48 MHz/50 000 = 960 Hz   d: 52 fps
+	//  48 MHz/50 000 = 960 Hz   display: 76 fps
 	Periodic_init( par.scanFreq * 1000 );
 	Periodic_function( &main_periodic );
 
@@ -108,10 +105,9 @@ int main()
 	digitalWrite(LED, gui.led ? LOW : HIGH);
 	#endif
 
+
 	while(1)
 	{
-		ram.run();
-
 		fans.Update();
 
 		gui.Draw();
