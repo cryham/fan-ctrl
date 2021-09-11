@@ -61,7 +61,7 @@ void Gui::DrawGraph()
 	// press/1min  ------------------------
 
 	//  grid
-	if (par.time1min)
+	if (par.timeRpm)
 	{
 		GridLineP(d,par, 10, RGB(12, 12, 12),"10");  // m
 		GridLineP(d,par, 30, RGB(12, 12, 12),"30");
@@ -77,7 +77,7 @@ void Gui::DrawGraph()
 		getPv(i);
 		if (v > 0)
 		{
-			ClrPress(v);  c = d->getClr();
+			ClrTemp(v);  c = d->getClr();
 
 			h = 2 * v / 4;  // max
 			if (h > H/2)  h = H/2;
@@ -102,7 +102,7 @@ void Gui::DrawGraph()
 	if (cursor)
 	{
 		getPv(xc);
-		ClrPress(v);
+		ClrTemp(v);
 		sprintf(a,"%d", v);  d->println(a);
 
 		d->moveCursor(0,1);

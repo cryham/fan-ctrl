@@ -1,9 +1,8 @@
 #include "gui.h"
 #include "Ada4_ST7735.h"
-#include "usb_keyboard.h"
 #include "matrix.h"
 #include "kc_data.h"
-//#include "usb_mouse.h"
+
 
 //  extern
 extern uint scan_freq;  // scan counter, freq
@@ -12,7 +11,7 @@ extern uint32_t us_scan;
 
 //  Setup
 //....................................................................................
-void Gui::DrawSetup()
+void Gui::DrawKeys()
 {
 	//  menu
 	if (mlevel == 1)
@@ -20,8 +19,7 @@ void Gui::DrawSetup()
 		d->setClr(21,23,23);
 		d->print(strMain[ym]);  d->setFont(0);
 
-		DrawMenu(S_All,strSetup, C_Setup,RGB(18,24,22),RGB(4,6,6), 10);
-		pressGui = 0;
+		DrawMenu(K_All,strKeys, C_Setup,RGB(18,24,22),RGB(4,6,6), 10);
 		return;
 	}
 	char a[64];
@@ -30,17 +28,19 @@ void Gui::DrawSetup()
 
 	//  title
 	d->setClr(17,22,22);
-	d->print(strSetup[yy]);
+	d->print(strKeys[yy]);
 	d->setFont(0);
 	d->setClr(21,26,26);
 
 
-	int ii = ScanPages[yy];
+	int ii = 3;
 	switch (yy)
 	{
+	case K_Matrix:
+		DrawMatrix();  break;
 
 	//-----------------------------------------------------
-	case S_Scan:
+	case K_Scan:
 	{
 		for (int i=0; i <= ii; ++i)
 		{

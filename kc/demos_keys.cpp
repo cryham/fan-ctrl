@@ -49,12 +49,8 @@ void Demos::Init(Ada4_ST7735* tft)
 //....................................................................................
 void Demos::KeyPress(EDemo demo, Gui* gui)
 {
-	//  global  //  fps, info txt
-	if (gui->kMul){  iInfo = 1 - iInfo;  return;  }
-	if (gui->kSub){  iFps = (iFps + 1) % 3;   return;  }
-
 	int8_t k = gui->kRight, u = -gui->kUp,
-		pgup = gui->kPgUp, end = gui->kEnd, ct = gui->kCtrl;
+		pgup = gui->kPgUp, end = gui->kEnd;
 
 	if (k || u || pgup || end)
 	{	//iInfo = -1;
@@ -110,14 +106,13 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 			break;
 
 		case D_Rain:
-			if (!ct){  if (!rCur)
+			if (!rCur)
 			{	if (k){  r1Int += k;  if (r1Int < -6)  r1Int = -6;  }
 				if (u)   r1Size += u;  r1Size = max(0, min(4, r1Size));
 			}else{
 				if (k){  r2Int += k;  if (r2Int < -2)  r2Int = -2;  }
 				if (u)   r2Size += u;  r2Size = max(0, min(4, r2Size));
-			}	}
-			if (ct && k)  rCur = 1-rCur;
+			}
 			break;
 
 		case D_Fonts:

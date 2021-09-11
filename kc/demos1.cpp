@@ -16,16 +16,16 @@ void Demos::Version()
 
 	d->setCursor(36,40);
 	d->setClr(22,16,31);
-	d->print("Keyboard");
+	d->print("Fan Controller");
 	d->setFont(0);
 
 	d->setCursor(0,70);
 	d->setClr(12,21,31);
-	d->print("K.C. \"Kacey\" Controller");
+	d->print("fan-c \"Fancy\"");
 
 	d->setCursor(0,H-23);
 	d->setClr(16,25,31);
-	d->print("ver 1.12");
+	d->print("ver 2.03");
 	//  version text  ^
 
 	d->setClr(21,26,31);

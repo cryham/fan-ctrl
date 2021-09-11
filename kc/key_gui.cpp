@@ -14,9 +14,8 @@ void Gui::KeyPress()
 	oldti_kr = ti;
 
 	//  update keys press  _k_
-	//kRight= kr(0,dt) - kr(1,dt);
-	kUp   = kr(3,dt) - kr(2,dt);
-	/*kRight = Key(0);*/  kBckSp = kr(1,dt);
+	kUp = kr(3,dt) - kr(2,dt);
+	kBack = kr(1,dt);
 	
 	//  scroll
 	static int8_t old = KeyH(5);
@@ -27,40 +26,31 @@ void Gui::KeyPress()
 		kRight = Key(0);
 	old = scr;
 
-	//kPgUp = kr(gPgDn,dt) - kr(gPgUp,dt);
-	//kEnd  = kr(gEnd,dt) - kr(gHome,dt);
-
-	/*kEnt = Key(gEnt);  kBckSp = kr(gBckSp,dt);
+	/*kEnt = Key(gEnt);
 	kCtrl = KeyH(gCtrl); kSh  = KeyH(gSh);
 	kMul  = Key(gMul);  kSub = Key(gSub);  kDiv = Key(gDiv);
 	kLoad = Key(gLoad);  kSave = Key(gSave);*/
 
 
-	int sp = 2; //(kCtrl ? 10 : kSh ? 1 : 2);  // mul
-
-
-	//  Setup
-	if (ym == M_Setup && mlevel == 2)
+	if (ym == M_Fans && mlevel == 1)
 	{
-		KeysParSetup(sp);
+		KeysFans();
 	}
-
-	//  Info
-	if (ym == M_Info && mlevel == 2)
+	else if (ym == M_Keys && mlevel == 2)
 	{
-		KeysParInfo(sp);
+		KeysScan();
 	}
-
-	//  Display
-	if (ym == M_Display && mlevel == 1)
+	else if (ym == M_Config && mlevel == 2)
 	{
-		KeysParDisplay(sp);  return;
+		KeysConfig();
 	}
-
-	//  Clock
-	if (ym == M_Clock && mlevel == 1)
+	else if (ym == M_Display && mlevel == 1)
 	{
-		KeysClock();  return;
+		KeysDisplay();
+	}
+	else if (ym == M_Graphs && mlevel == 1)
+	{
+		KeysGraph();  return;
 	}
 
 
@@ -73,7 +63,8 @@ void Gui::KeyPress()
 
 
 	//  <back global
-	if (kBckSp && mlevel > 0)  --mlevel;
+	if (kBack && mlevel > 0)
+		--mlevel;
 
 
 	//  Help
@@ -81,8 +72,6 @@ void Gui::KeyPress()
 	{
 		if (kUp || kPgUp)
 			hpage = RangeAdd(hpage, kUp+kPgUp, 0,HAll-1, 1);
-		if (kRight < 0 || kBckSp)
-			mlevel = 0;  // <back
 		return;
 	}
 
@@ -90,7 +79,6 @@ void Gui::KeyPress()
 	if (mlevel == 1)  //  sub menu
 	{
 		//  navigate
-		if (kRight < 0)  mlevel = 0;  // <back
 		if (kRight > 0)
 			if (ym != M_Display)  mlevel = 2;  // enter>
 

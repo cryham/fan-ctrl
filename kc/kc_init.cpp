@@ -10,7 +10,7 @@
 KC_Main::KC_Main()
 {
 	err = E_ok;  memSize = 0;
-	setDac = 1;
+	setBright = 1;
 
 	//  rtc set
 	unsigned long t = rtc_get();
@@ -37,13 +37,12 @@ void KC_Main::ResetStats(bool rtc)
 	if (rtc)
 		tm_on = t;
 
-	tm_key = tm_keyOld = tm_keyAct = t;
+	tm_key = tm_keyOld = t;
 	//  ms
 	uint32_t ms = millis();
-	msMin1 = msKeyLay = ms;
+	msMin1 = ms;
 
 	//  cnt
-	tInactSum = tInact1 = tInact2 = 0;
 	min1_Keys = 0;
 
 	cnt_press = 0;  // matrix.h

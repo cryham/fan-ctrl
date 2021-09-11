@@ -17,22 +17,21 @@ struct Gui
 
 
 	//  draw menus
-	void DrawTesting(), DrawSetup(), DrawDisplay();  // set params
-	void DrawClock(), DrawGraph(), DrawHelp(), DrawInfo();  // info
+	void DrawFans(), DrawKeys(), DrawMatrix(), DrawDisplay();  // set params
+	void DrawGraphs(), DrawGraph(), DrawHelp(), DrawConfig();  // info
 
 	//  draw util
 	void Chk_y1(), DrawOperInfo();
-	void DrawDispCur(int i, int16_t y), DrawClockCur(int i, int16_t y);
+	void DrawDispCur(int i, int16_t y);
 	//  util
-	void ClrPress(int pressPerMin), ClrTemp(int temp);
+	void ClrTemp(int temp);
 	void PrintInterval(uint32_t t);
 	int TempFtoB(float t);  float TempBtoF(uint8_t b);
 
 
 	//  keys
-	int PressKey(int8_t& var);
-	void KeysParSetup(int sp), KeysParDisplay(int sp);
-	void KeysParInfo(int sp), KeysClock();
+	void KeysFans(), KeysScan(), KeysDisplay();
+	void KeysConfig(), KeysGraph();
 
 	//  start
 	void SetScreen(int8_t start);
@@ -53,7 +52,6 @@ struct Gui
 
 
 	//  vars  ---
-	int8_t kbdSend = 0; // 1 send to usb  0 in menu
 	int8_t mlevel = 0;  // 0 main, 1 level1, 2 level2
 
 	int8_t ym = 0;      // 0 main y cursor
@@ -74,21 +72,16 @@ struct Gui
 
 
 	//  keys pressed, some +-1  _k_
-	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,
-	/*Add*/ kEnt=0,  kCtrl=0, kSh=0,  kMul=0, kSub=0, kDiv=0,
-	/*seq*/	kBckSp=0, /*F4,5*/kLoad=0, kSave=0;
+	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,  kEnt=0, kBack=0;
 
 
 	//  level 2 y cursors  - - -
-	int8_t ym2Lay = 0, ym2Scan = 0, ym2Keyb = 0, ym2Mouse = 0, pressGui = 0;  // Setup
+	int8_t ym2Fan = 0, ym2Scan = 0;  // Setup
 	int8_t ym2Disp = 0, pgDisp = 0;  // Display
-	int8_t ym2Clock = 0, pgClock = Cl_Stats;  // Clock
+	int8_t ym2Clock = 0, pgClock = G_Stats;  // Clock
 
 	const static uint8_t
-		DispPages[Di_All], ScanPages[S_All];
-
-	inline static uint8_t ClockVars(int pg)
-	{	return pg == Cl_Adjust ? 6 : 0;  }
+		DispPages[Di_All]; //, ScanPages[S_All];
 
 	//  util
 	int16_t RangeAdd(int16_t val, int16_t add, int16_t vmin, int16_t vmax, int8_t cycle=0);

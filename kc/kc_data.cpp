@@ -6,24 +6,25 @@
 #include "WProgram.h"
 
 KC_Params par;
-extern Gui gui;
+//extern Gui gui;
 
 
 //  update layers  (always)
 //------------------------------------------------------------------------
-void KC_Main::UpdLay(uint32_t ms)
+void KC_Main::Update(uint32_t ms)
 {
 	//  brightness dac led  ~~~
-	if (setDac)
-	{	setDac = 0;
+	if (setBright)
+	{	setBright = 0;
+
 		int bri = par.brightness;
-		const int minBri = 3580;
+		const int minBri = 500;  //?
 		int val = bri == 0 ? 0 : bri * (4095 - minBri) / 100 + minBri;
-		analogWriteDAC0(val);
+		analogWrite(LCD_LED, val);
 	}
 
 	//  1 minute time, stats
-	if (par.time1min)
+	if (par.timeRpm)
 	if (ms - msMin1 > 1000 * t1min(par) || ms < msMin1)
 	{
 		msMin1 = ms;
@@ -37,23 +38,4 @@ void KC_Main::UpdLay(uint32_t ms)
 		grPMin[grPpos] = min1_Keys > 255 ? 255 : min1_Keys;
 	}
 
-
-	//  all matrix scan codes  ----
-	uint c,r;  int id;
-	for (c=0; c < NumCols; ++c)
-	for (r=0; r < NumRows; ++r)
-	{
-		id = NumCols * r + c;  // scan id
-		/*if (id >= set.nkeys())  continue;
-
-		//  state
-		const KeyState& k = Matrix_scanArray[id];
-		bool on = k.state == KeyState_Press;
-		bool off = k.state == KeyState_Release;
-
-		bool hold = k.state == KeyState_Hold;
-		uint8_t codeL = set.key[nLayer][id];
-		//bool fun = codeL >= K_Fun0 && codeL <= K_FunLast;
-		*/
-	}
 }

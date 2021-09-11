@@ -2,9 +2,12 @@
 #include "kc_data.h"
 #include "Ada4_ST7735.h"
 
-
 const char* sPgDisplay[Di_All] = {
 	"Bright", "Gui keys", "Intervals", "Graph""\x01""C", "Debug" };
+
+// extern int rpm, rpmAvg;
+// extern volatile int pulses;
+
 
 //  Display
 //....................................................................................
@@ -40,7 +43,8 @@ void Gui::DrawDisplay()
 		case 0:
 			sprintf(a,"Brightness: %d %%", par.brightness);  h = 2;  break;
 		case 1:
-			sprintf(a,"Off bright: %d %%", par.brightOff);  break;
+			// sprintf(a,"Rpm: %d  %d  %d", rpm, rpmAvg, rpmAvg/60);  break;
+			//sprintf(a,"Off bright: %d %%", par.brightOff);  break;
 		case 2:
 			sprintf(a,"Start with: %s", StrScreen(par.startScreen));  break;
 		}
@@ -71,8 +75,6 @@ void Gui::DrawDisplay()
 		{
 		case 0:
 			sprintf(a,"Time for 1min:  %dm%02ds", t1min(par)/60, t1min(par)%60);  break;
-		case 1:
-			sprintf(a,"Inactive after: %d min", par.minInactive);  break;
 		}
 		d->print(a);  y += h+8;
 	}	break;

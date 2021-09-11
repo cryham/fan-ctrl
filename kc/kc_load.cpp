@@ -14,21 +14,20 @@
 //  default params  ----
 void ParInit()
 {
-	par.debounce = 1;  // ms?
+	par.debounce = 4;  // ms?
 	par.strobe_delay = 4;
-	par.scanFreq = 50;  // mul by 1 kHz
+	par.scanFreq = 50;  // 1 kHz
 
-	par.brightness = 80;  par.brightOff = 60;
+	par.brightness = 80;
 	par.startScreen = 0;
 
 	par.verCounter = 0;
 	par.krDelay = 250/5;  par.krRepeat = 80/5;  // ms
 
 	par.rtcCompensate = 0;
-	par.minInactive = 5;
 	par.tempOfs = int8_t(-0.6/*'C*/ / 0.03);  //-20
 
-	par.time1min = 10;  //*6s 1m
+	par.timeRpm = 10;  //*6s 1m
 	par.timeTemp = 10;   // 8s
 	par.timeTgraph = 15; // 1m  gIntervals
 	par.minTemp = 17;  par.maxTemp = 35;
@@ -72,7 +71,7 @@ void KC_Main::Load()
 
 	if (par.startScreen >= ST_ALL)
 		par.startScreen = ST_ALL-1;
-	setDac = 1;  // upd
+	setBright = 1;  // upd
 	
 	memSize = a;
 }

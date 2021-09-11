@@ -10,16 +10,21 @@
 
 //   Keyboard  ----
 //  define just one type, for matrix.h
-#define CK1  // 8x6
+#define CK1  // 1x6
 
 //-----------------
-//  extra keyboard features, pins
-#ifdef CK6
-    //  led light
-	//#define LED  12
-	//  temperature 'C sensor DS18B20
-	#define TEMP1  31	//  44   9%  24k
-#endif
+//  features, pins
+#define LCD_LED  23  // pwm lcd
+
+#define NumFans  7
+#define NoRPM  99
+extern const uint8_t FAN_PWM[NumFans];  // PWM outut pins  in fans.cpp
+extern const uint8_t FAN_RPM[NumFans];  // RPM input pins
+
+//  led light
+//#define LED  12
+//  temperature 'C sensor DS18B20
+//#define TEMP1  31	//  44   9%  24k
 
 
 #define W 160  //  display dim
@@ -36,8 +41,8 @@ class Ada4_ST7735;
 
 enum EMainMenu  //  main menu entries, level0
 {
-	M_Testing, M_Setup, M_Info,
-	M_Display, M_Clock, M_Help,
+	M_Fans, M_Keys, M_Config,
+	M_Display, M_Graphs, M_Help,
 	#ifdef DEMOS
 		M_Demos,
 	#endif
@@ -61,20 +66,16 @@ enum EDemo  //  Demos, level1
 extern const char *strDemo[D_All];
 #endif
 
+
 //  menus  --
-enum ETesting  //  Testing kbd, level1
+enum EKeys  //  keys level1
 {
-	T_Matrix, T_All
+	K_Matrix, K_Scan, K_All
 };
 
-enum ESetup  //  Setup kbd, level1
+enum EConfig  //  Info use,ver
 {
-	S_Scan, S_All
-};
-
-enum EInfo  //  Info use,ver
-{
-	I_Use, I_Version, I_All
+	C_Save, C_Load, C_Use, C_Version, C_All
 };
 
 //  pages  --
@@ -82,18 +83,14 @@ enum EDisplay
 {
 	Di_Bright, Di_Key, Di_Stats, Di_Graph, Di_Debug, Di_All
 };
-enum EClock
+enum EGraphs
 {
-	Cl_Stats,
-	Cl_Graphs,
-	Cl_Adjust,
-	Cl_All
+	G_Stats, G_Graphs, G_All
 };
 
 //  string names for all above ^
 extern const char
-	*strMain[M_All], *strTest[T_All], *strSetup[S_All],
-	*strInfo[I_All], *strClock[Cl_All];
+	*strMain[M_All], *strKeys[K_All], *strConfig[C_All];
 
 //  sub page counts, inside each main menu entry
 extern const uint8_t YM1[M_All];

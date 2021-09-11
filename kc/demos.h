@@ -60,7 +60,6 @@ struct Demos
 	const static int8_t num_fire = 2;
 	int8_t fire, fireSpd[num_fire];
 	void Fire(), Fire1(),Fire2();
-	//Spiral, Water..
 
 
 	//  CK logo, 2D lines

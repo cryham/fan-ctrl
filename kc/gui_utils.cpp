@@ -62,7 +62,7 @@ void Gui::DrawEnd()
 	}
 
 	//  fps  ---------
-	bool sc = ym == M_Setup && yy == S_Scan;
+	bool sc = ym == M_Keys && yy == K_Scan;
 	if (demos.iFps == 2 ||
 		(mlevel == 2 && (sc || (demos.iFps && ym == M_Demos))))
 	{
@@ -162,28 +162,6 @@ void Gui::Chk_y1()
 {
 	if (ym1[ym] >= YM1[ym])  ym1[ym] = 0;
 	if (ym1[ym] < 0)  ym1[ym] = YM1[ym]-1;
-}
-
-//  returns pressed scan id or -1
-int Gui::PressKey(int8_t& pressKey)
-{
-	if (!pressKey)  return -1;
-
-	int c = 0, ii = -1;
-	for (uint i=0; i < ScanKeys; ++i)
-	{	if (Matrix_scanArray[i].state != KeyState_Off)  ++c;
-		if (Matrix_scanArray[i].state == KeyState_Press)  ii = i;
-	}
-	if (pressKey == 1)
-	{	//  wait until all keys are off
-		if (c == 0)
-			pressKey = 2;
-		return -1;
-	}
-	else if (pressKey == 2 && ii != -1)
-		return ii;
-
-	return -1;
 }
 
 //  key auto repeat,  row, col, ms

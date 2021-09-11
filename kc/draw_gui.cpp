@@ -73,13 +73,13 @@ void Gui::Draw()
 	#endif
 
 	//  Testing,Setup  kbd
-	case M_Testing:   DrawTesting();  return;
-	case M_Setup:     DrawSetup();  return;
-	case M_Info:      DrawInfo();  return;
+	case M_Fans:    DrawFans();  return;
+	case M_Keys:    DrawKeys();  return;
+	case M_Config:  DrawConfig();  return;
 
 	//  Display, Help
 	case M_Display: DrawDisplay();  return;
-	case M_Clock:   DrawClock();  return;
+	case M_Graphs:  DrawGraph();  return;
 	case M_Help:    DrawHelp();  return;
 	}
 }
