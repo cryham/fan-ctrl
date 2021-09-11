@@ -34,7 +34,7 @@ void Gui::DrawGraphs()
 
 	//  x,y pos~
 	int16_t x, y;
-	const int16_t x0 = W / 2,
+	const int16_t //x0 = W / 2,
 		yt = 32, yu = H - 20, // time, uptime, date
 		yp = yt + 22;
 

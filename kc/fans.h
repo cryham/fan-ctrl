@@ -6,7 +6,7 @@ const static int avgNum = 4;  // par avg len
 
 struct Fan
 {
-	int lastRpmMS = 0;
+	uint32_t lastRpmMS = 0;
 
 	volatile int pulses = 0;
 	int16_t rpm = 0, rpmAvg = 0;
@@ -26,8 +26,8 @@ struct Fan
 
 struct Fans
 {
-	int updateMS = 500;  // ms, 2Hz refresh
-	int prevMS = 0;
+	uint32_t updateMS = 500;  // ms, 2Hz refresh
+	uint32_t prevMS = 0;
 
 	Fan fan[NumFans];
 

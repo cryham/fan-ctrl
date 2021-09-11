@@ -27,8 +27,9 @@ void Pulse3() {  ++fans.fan[3].pulses;  }
 void Pulse4() {  ++fans.fan[4].pulses;  }
 void Pulse5() {  ++fans.fan[5].pulses;  }
 void Pulse6() {  ++fans.fan[6].pulses;  }
-void (*PulseArr[NumFans])() = {
-	Pulse0,Pulse1,Pulse2,Pulse3,Pulse4,Pulse5,Pulse6};
+
+void (*PulseArr[NumFans])() = {	Pulse0,Pulse1,Pulse2,Pulse3,Pulse4,Pulse5,Pulse6 };
+
 
 
 //  Setup pins  -----------
@@ -98,5 +99,6 @@ void Fans::Update()
 //  change
 void Fans::SetPWM(uint8_t i, uint16_t val)
 {
+	//fan[i].pwm = val;
 	analogWrite(FAN_PWM[i], val); //bri * 40 + 40);
 }

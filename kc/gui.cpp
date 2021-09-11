@@ -22,7 +22,7 @@ void Gui::Init(Ada4_ST7735* tft)
 
 
 	oldti=0;  oldti_kr=0;
-	iRam = 0;  hpage = 0;
+	hpage = 0;
 
 #ifdef DEMOS
 	demos.Init(d);
@@ -31,9 +31,7 @@ void Gui::Init(Ada4_ST7735* tft)
 	ym2Fan=0; ym2Scan=0;
 	ym2Disp=0; pgDisp=0;
 
-	edit = 0;  edins = 1;  copyId = -1;
-	slot=0; page=0; edpos=0;
-	tBlnk=0; tInfo=0;  infType=0;
+	tInfo=0;  infType=0;
 }
 
 

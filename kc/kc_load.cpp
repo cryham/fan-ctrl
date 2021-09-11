@@ -2,6 +2,7 @@
 #include "kc_data.h"
 //extern KC_Params par;
 
+
 //  load, save in eeprom
 //.............................................
 #define EOfs 0      //  offset and

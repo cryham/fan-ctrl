@@ -4,7 +4,7 @@
 #include "kc_data.h"
 #include "periodic.h"
 
-const uint8_t Gui::DispPages[Di_All] = {2,2,1,3,2};
+const uint8_t Gui::DispPages[Di_All] = {1,1,0,3,2};
 
 
 //  Info

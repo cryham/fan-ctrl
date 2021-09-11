@@ -5,9 +5,6 @@
 const char* sPgDisplay[Di_All] = {
 	"Bright", "Gui keys", "Intervals", "Graph""\x01""C", "Debug" };
 
-// extern int rpm, rpmAvg;
-// extern volatile int pulses;
-
 
 //  Display
 //....................................................................................
@@ -28,9 +25,12 @@ void Gui::DrawDisplay()
 	sprintf(a,"%d/%d", pgDisp+1, Di_All);
 	d->print(a);
 
+
 	//  par values  ---
 	int pg = DispPages[pgDisp];
 	int16_t y = 32;
+
+
 	switch (pgDisp)
 	{
 	case Di_Bright:
@@ -41,11 +41,8 @@ void Gui::DrawDisplay()
 		switch(i)
 		{
 		case 0:
-			sprintf(a,"Brightness: %d %%", par.brightness);  h = 2;  break;
+			sprintf(a,"Brightness: %d %%", par.brightness);  break;
 		case 1:
-			// sprintf(a,"Rpm: %d  %d  %d", rpm, rpmAvg, rpmAvg/60);  break;
-			//sprintf(a,"Off bright: %d %%", par.brightOff);  break;
-		case 2:
 			sprintf(a,"Start with: %s", StrScreen(par.startScreen));  break;
 		}
 		d->print(a);  y += h+8;
@@ -106,10 +103,8 @@ void Gui::DrawDisplay()
 		switch(i)
 		{
 		case 0:
-			sprintf(a,"Ram info: %d", iRam);  h = 2;  break;
-		case 1:
 			sprintf(a,"Frames per sec: %d", demos.iFps);  break;
-		case 2:
+		case 1:
 			sprintf(a,"Temp offset: ");  break;
 		}
 		d->print(a);  y += h+8;

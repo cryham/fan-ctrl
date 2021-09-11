@@ -17,7 +17,7 @@ void Gui::KeyPress()
 	kUp = kr(3,dt) - kr(2,dt);
 	kBack = kr(1,dt);
 	
-	//  scroll
+	//  rot enc  (*)  scroll
 	static int8_t old = KeyH(5);
 	int8_t scr = KeyH(5);
 	if (scr && !old)
@@ -26,10 +26,7 @@ void Gui::KeyPress()
 		kRight = Key(0);
 	old = scr;
 
-	/*kEnt = Key(gEnt);
-	kCtrl = KeyH(gCtrl); kSh  = KeyH(gSh);
-	kMul  = Key(gMul);  kSub = Key(gSub);  kDiv = Key(gDiv);
-	kLoad = Key(gLoad);  kSave = Key(gSave);*/
+	//kEnt = Key(gEnt);  kSave = Key(gSave);
 
 
 	if (ym == M_Fans && mlevel == 1)
@@ -50,7 +47,7 @@ void Gui::KeyPress()
 	}
 	else if (ym == M_Graphs && mlevel == 1)
 	{
-		KeysGraph();  return;
+		KeysGraph();
 	}
 
 
@@ -78,9 +75,10 @@ void Gui::KeyPress()
 
 	if (mlevel == 1)  //  sub menu
 	{
-		//  navigate
+		//  enter>
 		if (kRight > 0)
-			if (ym != M_Display)  mlevel = 2;  // enter>
+			if (ym != M_Display && ym != M_Fans)  // no 2nd level
+				mlevel = 2;
 
 		if (kUp){  ym1[ym] += kUp;  Chk_y1();  }
 		return;
