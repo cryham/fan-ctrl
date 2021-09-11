@@ -7,6 +7,7 @@
 
 #include "Ada4_ST7735.h"
 #include "gui.h"
+#include "fans.h"
 
 
 //  scan counter, freq
@@ -18,6 +19,7 @@ RamMonitor ram;
 Gui gui;
 KC_Main kc;
 extern void ParInit();
+Fans fans;
 
 
 //  kbd  timer event,  scan, send
@@ -45,24 +47,13 @@ void main_periodic()
 		gui.ym != M_Demos || scan_n % 4==0)
 	{	Matrix_scan(0);  bsc = true;  }  // K
 
-
-	//  gui keys
-	//------------------------
+	//  gui
 	if (bsc)
 		gui.KeyPress();
 
+	//  keyboard
+	kc.Update(ms);
 
-	//  keyboard send
-	//------------------------
-	kc.UpdLay(ms);
-
-	//if (gui.kbdSend)
-	// 	kc.Send(ms);
-
-
-	//  scan time vs strobe delay
-	// 570 us: 10,  353 us: 4  18x8
-	// 147 us: 4,  90: 0  8x6
 	us_scan = micros() - us;
 }
 
@@ -77,10 +68,12 @@ int main()
 
 	//  Init extra pins  --------
 	//  PWM brightness to display LED
-	#define LCD_LED  23
 	pinMode(LCD_LED, OUTPUT);
 	analogWriteResolution(12);
 	analogWrite(LCD_LED, 1000);  // 0-4095
+
+	//  fans
+	fans.Init();
 
 	// analogWriteRes(12);
 	// analogWriteDAC0(0);
@@ -96,11 +89,10 @@ int main()
 
 	//  load set from ee
 	kc.Load();
-	// gui.SetScreen(ST_Clock + Cl_Stats);
-	// gui.SetScreen(ST_Test2 + T_Matrix);
+	//gui.SetScreen(ST_Demos2 + D_Plasma);
+	//gui.SetScreen(ST_Clock + Cl_Stats);
 	gui.SetScreen(ST_Main0);
-	// gui.SetScreen(ST_Demos2 + D_Plasma);
-	par.brightness = 50;
+	//gui.SetScreen(ST_Displ);
 	//kc.Save();
 
 
@@ -119,6 +111,8 @@ int main()
 	while(1)
 	{
 		ram.run();
+
+		fans.Update();
 
 		gui.Draw();
 
