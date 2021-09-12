@@ -14,7 +14,7 @@ void Gui::KeysGraph()
 	//  graphs  cursor move  ---
 	if (pgGraph == G_Graphs)
 	{
-		if (kEnd)
+		if (kPgUp)
 			par.xCur = W-1;  // to end
 		/*if (kMul)
 		{	if (par.xCur == W)  par.xCur = W-1;  // show

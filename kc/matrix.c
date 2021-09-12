@@ -57,7 +57,7 @@ uint8_t Matrix_pin( GPIO_Pin gpio, Type type )
 	// Operation depends on Type
 	switch ( type )
 	{
-	/*case Type_StrobeOn:  /// nothing 1 col
+	case Type_StrobeOn:  /// nothing 1 col
 		#ifdef GHOSTING_MATRIX
 		*GPIO_PCOR |= (1 << gpio.pin);
 		*GPIO_PDDR |= (1 << gpio.pin);  // output, low
@@ -97,7 +97,7 @@ uint8_t Matrix_pin( GPIO_Pin gpio, Type type )
 		default:
 			break;
 		}
-		break;*/
+		break;
 
 	case Type_Sense:
 		// #ifdef GHOSTING_MATRIX  // inverted

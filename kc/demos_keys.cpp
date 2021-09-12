@@ -49,10 +49,9 @@ void Demos::Init(Ada4_ST7735* tft)
 //....................................................................................
 void Demos::KeyPress(EDemo demo, Gui* gui)
 {
-	int8_t k = gui->kRight, u = -gui->kUp,
-		pgup = gui->kPgUp, end = gui->kEnd;
+	int8_t k = gui->kRight, u = -gui->kUp, pgup = gui->kPgUp;
 
-	if (k || u || pgup || end)
+	if (k || u || pgup)
 	{	//iInfo = -1;
 		switch (demo)
 		{
@@ -68,8 +67,8 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 		case D_Hedrons:  // 3d
 			if (pgup)
 				hdDiag = (hdDiag + pgup + hdDiagMax) % hdDiagMax;
-			if (end)
-				hdSpd += end;
+			//if (end)
+			// 	hdSpd += end;
 			if (k)
 			{	hdtOn = 0;  // manual
 				hdCur = (hdCur + k + hdA) % hdA;  }

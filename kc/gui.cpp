@@ -56,10 +56,9 @@ void Gui::SetScreen(int8_t s)
 #else
 	}
 #endif  // level2
-	// if (s >= ST_Setup2 && s < ST_Setup2Max){  mlevel = 2;  ym = M_Setup;    ym1[ym] = s - ST_Setup2;  }  else
-	// if (s >= ST_Test2 && s < ST_Test2Max){    mlevel = 2;  ym = M_Testing;  ym1[ym] = s - ST_Test2;  }  else
-	// if (s >= ST_Info2 && s < ST_Info2Max){    mlevel = 2;  ym = M_Info;     ym1[ym] = s - ST_Info2;  }  else
-	// if (s >= ST_Clock && s < ST_ClockMax){    ym = M_Clock;  pgGraph = s - ST_Clock;  }
+	if (s >= ST_Keys2 && s < ST_Keys2Max){  mlevel = 2;  ym = M_Keys;    ym1[ym] = s - ST_Keys2;  }  else
+	if (s >= ST_Graph && s < ST_GraphMax){  mlevel = 2;  ym = M_Graphs;  ym1[ym] = s - ST_Graph;  }  else
+	if (s >= ST_Config2 && s < ST_Config2Max){  mlevel = 2;  ym = M_Config;  ym1[ym] = s - ST_Config2;  }
 }
 
 const char* Gui::StrScreen(int8_t s)
@@ -80,10 +79,8 @@ const char* Gui::StrScreen(int8_t s)
 #else
 	}
 #endif  // level2
-	// if (s >= ST_Setup2 && s < ST_Setup2Max)	return strSetup[s - ST_Setup2];  else
-	// if (s >= ST_Test2 && s < ST_Test2Max)	return strTest[s - ST_Test2];  else
-	// if (s >= ST_Info2 && s < ST_Info2Max)	return strInfo[s - ST_Info2];  else
-	// if (s >= ST_Clock && s < ST_ClockMax)	return strClock[s - ST_Clock];
+	if (s >= ST_Keys2 && s < ST_Keys2Max)	return strKeys[s - ST_Keys2];  else
+	if (s >= ST_Graph && s < ST_GraphMax)	return strMain[M_Graphs]/*strGraph[s - ST_Graph]*/;  else
+	if (s >= ST_Config2 && s < ST_Config2Max)	return strConfig[s - ST_Config2];
 	return "";
 }
-

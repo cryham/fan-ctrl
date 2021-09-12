@@ -31,10 +31,10 @@ void Gui::DrawMatrix()
 		a[1]=0;
 		if (k.state == KeyState_Off)
 		{	//sprintf(a,".");
-			a[0]=2;
+			a[0] = 2;
 		}else{
-			hc=c; hr=r;  // held
-			a[0]='*';
+			hc = c; hr = r;  // held
+			a[0] = '*';
 			//sprintf(a,"%d", k.state);
 			d->setClr(24,28,31);
 		}
@@ -49,7 +49,7 @@ void Gui::DrawMatrix()
 	if  (hc<99 && hr<99)
 	{
 		d->setCursor(W/2, 6);
-		sprintf(a,"R%d C%d", hr+1, hc+1);
+		sprintf(a,"R%d C%d  %d", hr+1, hc+1, NumCols * hr + hc);
 		d->print(a);
 	}
 }

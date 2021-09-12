@@ -71,7 +71,7 @@ struct Gui
 
 
 	//  gui keys pressed, some +-1
-	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,  kEnt=0, kBack=0;
+	int8_t kRight=0, kUp=0,  kPgUp=0,  kEnt=0, kBack=0;
 
 
 	//  level 2  menu cursors  ---

@@ -14,12 +14,14 @@ void Gui::KeyPress()
 	oldti_kr = ti;
 
 	//  update keys press  _k_
-	kUp = kr(3,dt) - kr(2,dt);
-	kBack = kr(1,dt);
-	kEnt = Key(0);
+	kRight = kr(5,dt) - kr(3,dt);
+	kUp = kr(7,dt) - kr(1,dt);
+	kBack = kr(0,dt);
+	kEnt = Key(2);
+	kPgUp = Key(6);
 	
 	//  rot enc  (*)  scroll
-	auto& kk = mlevel == 0 ? kUp : kRight;
+	/*auto& kk = mlevel == 0 ? kUp : kRight;
 
 	static int8_t old = KeyH(5);
 	int8_t scr = KeyH(5);
@@ -27,9 +29,9 @@ void Gui::KeyPress()
 		kk = KeyH(4) > 0 ? -1 : 1;
 	else
 		kk = 0; //Key(0);
-	old = scr;
+	old = scr;*/
 
-	//kSave = Key(gSave);
+	//kSave = Key(6);  //  kMain = ..?
 	int d = kUp + kRight;
 
 

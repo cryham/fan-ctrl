@@ -80,10 +80,10 @@ typedef struct GPIO_Pin {
 
 
 //  ----***  Matrix  ***----
-//  1 x 4  CK1
+//  3 x 3  CK2
 const static GPIO_Pin
-Matrix_cols[] = { T3_33 },
-Matrix_rows[] = { T3_14, T3_15, T3_16, T3_17, T3_18, T3_19 };
+Matrix_cols[] = { T3_31, T3_28, T3_29 },
+Matrix_rows[] = { T3_32, T3_30, T3_33 };  // enc:  26 27  cd ..
 
 #define NumCols  sizeof( Matrix_cols ) / sizeof( GPIO_Pin )
 #define NumRows  sizeof( Matrix_rows ) / sizeof( GPIO_Pin )

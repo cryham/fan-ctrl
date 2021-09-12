@@ -4,7 +4,7 @@
 
 //  pins
 const uint8_t FAN_PWM[NumFans] = { 20,22,6,4, 21,5,3 };  // PWM outut pin
-const uint8_t FAN_RPM[NumFans] = {  1, 2,7,0, NoRPM,NoRPM,NoRPM };  // RPM input pin
+const uint8_t FAN_RPM[NumFans] = {  1, 2,7,0, 24,25,19 };  // RPM input pin
 
 
 //  Init  -----------
