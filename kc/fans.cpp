@@ -3,7 +3,7 @@
 
 
 //  pins
-const uint8_t FAN_PWM[NumFans] = { 20,22,6,4, 21,5,3 };  // PWM outut pin
+const uint8_t FAN_PWM[NumFans] = { 20,22,6,4, 21, 5, 3 };  // PWM outut pin
 const uint8_t FAN_RPM[NumFans] = {  1, 2,7,0, 24,25,19 };  // RPM input pin
 
 
@@ -40,13 +40,13 @@ void Fans::Init()
 }
 
 
-//  Update  -----------
+//  check rpm pin  -----------
 void Fans::Check()
 {
 	for (int i=0; i < NumFans; ++i)
 	{
 		const uint8_t rpm = FAN_RPM[i];
-		auto& f = fan[i];
+		Fan& f = fan[i];
 		uint8_t pin = digitalRead(rpm);
 		
 		if (!pin && f.oldPin)  // falling edge
@@ -85,19 +85,43 @@ void Fan::CalcRPM()
 
 void Fans::Update()
 {
-	if (millis() - prevMS > updateMS)
+	uint32_t dt = millis() - prevMS;
+	if (dt > updateMS)
 	{
 		for (int i=0; i < NumFans; ++i)
-			if (!fan[i].noRpm)
-				fan[i].CalcRPM();
+			Update(i, dt);
 
 		prevMS = millis();  
 	}
 }
 
-//  Change
-void Fans::SetPWM(uint8_t i, uint16_t val)
+
+//  Update  -----------
+void Fans::Update(uint8_t i, uint32_t dt)
 {
-	//fan[i].pwm = val;
-	analogWrite(FAN_PWM[i], val);
+	Fan& f = fan[i];
+	
+	if (!f.noRpm)
+		f.CalcRPM();
+	
+	bool on = !f.fd.off;
+	uint16_t pwm = on ? f.fd.pwm : 0;
+
+	//  turned on
+	if (on && !f.oldOn)
+		f.tmMax = msMax;
+	f.oldOn = on;
+
+	//  rpm stop prevention
+	if (on && f.rpmAvg == 0)
+		f.tmMax = msMax;
+
+	//  short max pwm to start
+	if (f.tmMax > 0)
+	{
+		f.tmMax -= dt;
+		pwm = 4095;  // par
+	}
+
+	analogWrite(FAN_PWM[i], pwm);
 }
