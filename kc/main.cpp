@@ -14,7 +14,6 @@ uint scan_cnt = 0, scan_freq = 0;
 uint32_t us_scan = 0, ms_scan = 0;
 uint8_t scan_n = 0;
 
-Fans fans;
 Gui gui;
 KC_Main kc;
 extern void ParInit();
@@ -39,7 +38,7 @@ void main_periodic()
 	++scan_n;
 
 
-	fans.Check();  // pins for rpm
+	kc.fans.Check();  // pins for rpm
 
 	//  keys scan  slower for demos
 	if (gui.ym != M_Demos || scan_n % 4==0)
@@ -68,7 +67,7 @@ int main()
 	analogWrite(LCD_LED, 1000);  // 0-4095
 
 	//  fans
-	fans.Init();
+	kc.fans.Init();
 
 	//analogWriteRes(12);
 	//analogWriteDAC0(0);
@@ -103,7 +102,7 @@ int main()
 
 	while(1)
 	{
-		fans.Update();
+		kc.fans.Update();
 
 		gui.Draw();
 

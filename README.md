@@ -1,14 +1,26 @@
 Fan Controler
 =============
 
-WIP: This my Fan Controler code for Teensy 3.2 with TFT ST7735 color display.
+WIP: Fan Controler code for Teensy 3.2 with TFT ST7735 color display.
 
-Basing on K.C. "Kacey" Keyboard Controller (More description of project on [My Website](http://cryham.tuxfamily.org/portfolio/2018-k-c-controller).
+Based on my K.C. "Kacey" Keyboard Controller (More description of project on [My Website](http://cryham.tuxfamily.org/portfolio/2018-k-c-controller).
 
 
 ## Features
 
-* **TODO**
+* PWM output to (PC) 3 pin 12V fans.
+  (10 kHz, 7 Fan channels **)
+* RPM (revolutions per minute or second) detection and display
+* Stop prevention (useful for lowest RPM)
+
+* GUI with menu on display, parameters
+* Rotary encoder Todo: add to matrix
+* Keyboard buttons (matrix 3x3 **)
+
+* Optional DS18B20 temperature sensor
+* TODO: Thermocouple op-amp, mux, reading?
+
+** Can be changed in code.
 
 ---
 
@@ -23,7 +35,7 @@ It uses code from repositories, quite reduced and/or modified:
 Since I am using a buffer (40kB for 160x128), all drawing code fills it. On each frame, buffer gets sent to display, thus no flickering.
 All unnecessary code for drawing from libraries was removed.
 
-Displaying GUI and scanning keyboard (at 1kHz) gives about 30-50 drawn frames per second. Demos are slower 10-30.
+Displaying GUI and scanning keyboard (at 1kHz) gives about 70 drawn frames per second. Demos are slower 10-30.
 
 #### Licensing
 
@@ -71,8 +83,8 @@ On successful build the last lines are e.g.
 ```
   CC kc/matrix.c
  Linking 
-   SRAM: 68%  44596 / 65536 B
-  Flash: 60%  158296 / 262144 B
+   SRAM: 68%  44852 / 65536 B
+  Flash: 51%  133888 / 262144 B
 ```
 showing used percentages of memories.
 

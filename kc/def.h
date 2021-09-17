@@ -8,23 +8,23 @@
 #define DEMOS_3D		//  44        15%
 
 
-//   Keyboard  ----
-//  define just one type, for matrix.h
-#define CK1  // 1x6
-
 //-----------------
 //  features, pins
-#define LCD_LED  23  // pwm lcd
+#define LCD_LED  23  // pwm lcd brightness
 
-#define NumFans  7
-#define NoRPM  99
+#define NumFans  7  // count
+//  fan pins
 extern const uint8_t FAN_PWM[NumFans];  // PWM outut pins  in fans.cpp
-extern const uint8_t FAN_RPM[NumFans];  // RPM input pins
+extern const uint8_t FAN_RPM[NumFans];  // RPM input pins  use NoRPM if not present
+#define NoRPM  99
 
 //  led light
 //#define LED  12
 //  temperature 'C sensor DS18B20
 //#define TEMP1  31	//  44   9%  24k
+
+//  Keyboard pins in matrix.h
+//-----------------
 
 
 #define W 160  //  display dim
@@ -39,15 +39,35 @@ class Ada4_ST7735;
 #endif
 
 
-enum EMainMenu  //  main menu entries, level0
+//  main menu entries, level 0  ---
+enum EMainMenu  
 {
-	M_Fans, M_Keys, M_Config,
-	M_Display, M_Graphs, M_Help,
+	M_Fans, M_Config, M_Graphs,
+	M_Display, M_Keys, M_Help,
 	#ifdef DEMOS
 		M_Demos,
 	#endif
 	M_All,  M_Next = M_Display  // 2nd column, -1 off
 };
+
+//  menus  level 1  --
+enum EConfig
+{
+	C_Save, C_Load, C_Use, C_Version, C_All
+};
+enum EGraphs
+{
+	G_Stats, G_Graphs, G_All
+};
+enum EDisplay  // pages
+{
+	Di_Bright, Di_Key, Di_Stats, Di_Graph, Di_Debug, Di_All
+};
+enum EKeys
+{
+	K_Matrix, K_Scan, K_All
+};
+
 
 #ifdef DEMOS
 enum EDemo  //  Demos, level1
@@ -67,27 +87,6 @@ extern const char *strDemo[D_All];
 #endif
 
 
-//  menus  level 1  --
-enum EKeys
-{
-	K_Matrix, K_Scan, K_All
-};
-enum EConfig
-{
-	C_Save, C_Load, C_Use, C_Version, C_All
-};
-
-//  pages  --
-enum EDisplay
-{
-	Di_Bright, Di_Key, Di_Stats, Di_Graph, Di_Debug, Di_All
-};
-enum EGraphs
-{
-	G_Stats, G_Graphs, G_All
-};
-
-
 //  string names for all above ^
 extern const char
 	*strMain[M_All], *strKeys[K_All], *strConfig[C_All];
@@ -99,4 +98,3 @@ extern const uint8_t YM1[M_All];
 //  time intervals  *0.1s
 extern const uint16_t gIntervals[];
 const static uint8_t  gIntvMask = 0x1F;
-
