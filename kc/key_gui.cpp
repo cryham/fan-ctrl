@@ -13,12 +13,15 @@ void Gui::KeyPress()
 	uint16_t dt = ti - oldti_kr;
 	oldti_kr = ti;
 
-	//  update keys press  _k_
+	//  update keys press vars
 	kRight = kr(5,dt) - kr(3,dt);
 	kUp = kr(7,dt) - kr(1,dt);
 	kBack = kr(0,dt);
 	kEnt = Key(2);
-	kPgUp = Key(6);
+	
+	kPgUp = Key(6);  // save/menu?
+	kEnd = Key(8);
+	kMid = Key(4);
 	
 	//  rot enc  (*)  scroll
 	/*auto& kk = mlevel == 0 ? kUp : kRight;
@@ -31,7 +34,6 @@ void Gui::KeyPress()
 		kk = 0; //Key(0);
 	old = scr;*/
 
-	//kSave = Key(6);  //  kMain = ..?
 	int d = kUp + kRight;
 
 
