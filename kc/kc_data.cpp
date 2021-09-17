@@ -16,7 +16,7 @@ void KC_Main::Update(uint32_t ms)
 	{	setBright = 0;
 
 		int bri = par.brightness;
-		const int minBri = 400;  //?
+		const int minBri = 100;  //par ?
 		int val = bri == 0 ? 0 : bri * (4095 - minBri) / 100 + minBri;
 		analogWrite(LCD_LED, val);
 	}

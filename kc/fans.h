@@ -1,14 +1,26 @@
+#pragma once
 #include "def.h"
 
+// params  rpm avgeraging length
+const static int avgNum = 4;
+// ms time for max PWM to turn on at start and after stop
+const static int msMax = 300;  // ?
 
-const static int avgNum = 4;  // par  avgeraging length
 
+struct FanData
+{
+	//  data saved in eeprom
+	uint8_t off = 0;
+	int16_t pwm = 0;     // 0 off - 4095 full speed 12V
+};
 
 struct Fan
 {
-	bool noRpm = false;  // if no rpm pin to measure
-	int16_t pwm = 0;     // 0 off - 4095 full speed 12V
+	FanData fd;
 
+	bool noRpm = false;  // if no rpm pin to measure
+
+	//  var, measure
 	uint32_t lastRpmMS = 0;
 
 	volatile uint8_t oldPin = 0;
@@ -18,6 +30,10 @@ struct Fan
 
 	int8_t avgCnt = 0;
 	uint16_t avgArr[avgNum] = {0,};
+
+
+	bool oldOn = 0;
+	int32_t tmMax = 0;  // time max pwm to start
 
 
 	Fan();
@@ -44,5 +60,5 @@ struct Fans
 
 	void Update();
 
-	void SetPWM(uint8_t fan, uint16_t val);
+	void Update(uint8_t i, uint32_t dt);
 };

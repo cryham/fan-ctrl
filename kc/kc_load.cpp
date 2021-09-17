@@ -1,6 +1,6 @@
 #include "WProgram.h"
 #include "kc_data.h"
-//extern KC_Params par;
+#include "fans.h"
 
 
 //  load, save in eeprom
@@ -57,7 +57,7 @@ void KC_Main::Load()
 
 	err = E_ok;
 
-	int a = EOfs, n;//  uint8_t b;
+	int a = EOfs, n;  uint8_t s;
 	//  header
 	char h1 = 'f', h2 = 'c', ver = 3;  // cur
 	h1 = Erd(a);  if (h1 != 'f') {  err=E_H1;  return;  }
@@ -66,13 +66,29 @@ void KC_Main::Load()
 
 
 	//  params  ----
-	n = Erd(a);  // size
-	eeprom_read_block((void*)&par, (void*)a, n);  a+=n;
+	s = Erd(a);  // size
+	eeprom_read_block((void*)&par, (void*)a, s);  a+=s;
 	if (a >= ESize) {  err=E_size;  return;  }
 
 	if (par.startScreen >= ST_ALL)
 		par.startScreen = ST_ALL-1;
 	setBright = 1;  // upd
+
+
+	//  fans  ----
+	n = Erd(a);  // count
+	if (n >= NumFans)
+		n = NumFans;
+
+	s = Erd(a);  // fan data size
+	if (s > sizeof(FanData))
+		s = sizeof(FanData);
+
+	for (int i=0; i < n; ++i)
+	{
+		eeprom_read_block((void*)&kc.fans.fan[i].fd, (void*)a, s);  a += s;
+		if (a >= ESize) {  err=E_size;  return;  }
+	}
 	
 	memSize = a;
 }
@@ -84,12 +100,7 @@ void KC_Main::Save()
 {
 	err = E_ok;
 
-	#ifndef CK1
-	if (set.nkeys() != int(set.scanKeys))
-	{	err=E_nkeys;  return;  }
-	#endif
-
-	int a = EOfs, n;
+	int a = EOfs;  uint8_t s;
 
 	//  header
 	char h1 = 'f', h2 = 'c', ver = 1;  // cur
@@ -99,10 +110,23 @@ void KC_Main::Save()
 	//  params  ----
 	++par.verCounter;  // inc ver
 
-	n = sizeof(par);
-	Ewr(a, n);  // size
-	eeprom_write_block((void*)&par, (void*)a, n);  a+=n;
+	s = sizeof(par);
+	Ewr(a, s);  // size
+	eeprom_write_block((void*)&par, (void*)a, s);  a += s;
 	if (a >= ESize) {  err=E_size;  return;  }
+
+
+	//  fans  ----
+	Ewr(a, NumFans);  // count
+
+	s = sizeof(FanData);
+	Ewr(a, s);
+
+	for (int i=0; i < NumFans; ++i)
+	{
+		eeprom_write_block((void*)&kc.fans.fan[i].fd, (void*)a, s);  a += s;
+		if (a >= ESize) {  err=E_size;  return;  }
+	}
 
 	memSize = a;
 }

@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <vector>
 #include "kc_params.h"
+#include "fans.h"
 #include "def.h"
 
 
@@ -33,8 +34,11 @@ struct KC_Main
 
 	//  main  ----
 	KC_Main();
+	
+	Fans fans;  // ***
+	
+	void Update(uint32_t ms);
 
-	void Update(uint32_t ms);  // update
 
 	//  eeprom  ----
 	void Load(), Save();

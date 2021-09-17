@@ -28,7 +28,7 @@ struct KC_Params
 	int8_t tempOfs;       // adj Temp val  *0.03'C  +-3.8'C
 
 	//  time intervals
-	uint8_t timeRpm;     // *6s  press/1min
+	uint8_t timeRpm;     // *6s  graph add
 	uint8_t timeTemp;     // Temp'C read
 	uint8_t timeTgraph;   // Temp'C add to graph, no average
 	//  Temp graph scale
