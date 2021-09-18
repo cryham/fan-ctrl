@@ -25,7 +25,6 @@ uint16_t matrixPrevScans = 0;
 
 int ghost_cols = 0, ghost_rows = 0;
 int cnt_press = 0, cnt_rel = 0, cnt_hold = 0;
-int16_t cnt_press1min = 0;
 
 // System Timer used for delaying debounce decisions
 extern volatile uint32_t systick_millis_count;
@@ -189,7 +188,6 @@ void Matrix_setup()
 	ghost_cols = 0;
 	ghost_rows = 0;
 	cnt_press = cnt_hold = cnt_rel = 0;  // test
-	cnt_press1min = 0;
 }
 
 
@@ -444,7 +442,7 @@ void Matrix_scan( uint16_t scanNum )
 			//Macro_keyState( key, k );
 
 			if (k == KeyState_Press)
-			{	cnt_press++;  cnt_press1min++;  }
+				cnt_press++;
 			if (k == KeyState_Hold)
 				cnt_hold++;
 			if (k == KeyState_Release)

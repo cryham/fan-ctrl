@@ -35,7 +35,8 @@ struct KC_Params
 	uint8_t minTemp, maxTemp;
 	uint8_t xCur;         // cursor
 
-	#define t1min(par)    (6 * par.timeRpm)  // s
+	//#define t1min(par)    (6 * par.timeRpm)  // s
+	#define tRpm(par)     (100 * gIntervals[par.timeRpm    & gIntvMask])  // ms
 	#define tTemp(par)    (100 * gIntervals[par.timeTemp   & gIntvMask])  // ms
 	#define tTgraph(par)  (100 * gIntervals[par.timeTgraph & gIntvMask])
 };

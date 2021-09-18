@@ -52,14 +52,12 @@ struct KC_Main
 	uint32_t
 		tm_on = 0,  // uptime   tm_= rtc, ms_= milis
 		tm_key = 0, tm_keyOld = 0,  // last key press time, previous
-		msMin1 = 0;    // 1 minute time
-	uint16_t  // counts
-		min1_Keys = 0;  // 1 minute keys press, show
+		msRpm = 0;    // rpm dt time
 	void ResetStats(bool rtc=false);
 
 
-	uint8_t grPMin[W];  // press/1min graph array
-	uint8_t grPpos = 0;  // write pos
+	uint8_t grRpm[NumFans][W];  // press/1min graph array
+	uint8_t grRpos = 0;  // write pos
 };
 
 extern KC_Main kc;

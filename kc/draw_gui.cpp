@@ -72,8 +72,12 @@ void Gui::Draw()
 		return;
 	#endif
 
-	//  Testing,Setup  kbd
-	case M_Fans:    DrawFans();  return;
+	//  Fans
+	case M_Fans:    
+				if (mlevel == 2)
+					DrawFanDetails();
+				else
+					DrawFans();  return;
 	case M_Keys:    DrawKeys();  return;
 	case M_Config:  DrawConfig();  return;
 

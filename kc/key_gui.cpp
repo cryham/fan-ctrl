@@ -19,7 +19,8 @@ void Gui::KeyPress()
 	kBack = kr(0,dt);
 	kEnt = Key(2);
 	
-	kPgUp = Key(6);  // save/menu?
+	//kPgUp = Key(6);  // save/menu?
+	kPgUp = kr(8,dt) - kr(2,dt);
 	kEnd = Key(8);
 	kMid = Key(4);
 	
@@ -38,7 +39,7 @@ void Gui::KeyPress()
 
 
 	//  ---
-	if (ym == M_Fans && mlevel == 1)
+	if (ym == M_Fans && mlevel >= 1)
 	{
 		KeysFans();
 	}
@@ -92,7 +93,7 @@ void Gui::KeyPress()
 	if (mlevel == 1)
 	{
 		auto No2nd = [&](){  return  // no 2nd level
-			ym == M_Display || ym == M_Fans ||
+			ym == M_Display ||
 			(ym == M_Config && yy < 2);  };
 
 		if (kEnt > 0 && !No2nd())  // enter>

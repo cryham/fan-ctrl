@@ -49,16 +49,13 @@ void Gui::KeysScan()
 void Gui::KeysDisplay()
 {
 	if (kBack)  --mlevel;
-
 	if (kUp)  // y
-	{	pgDisp = RangeAdd(pgDisp, kUp < 0 ? 1 : 0, 0, Di_All-1, 1);  //
-		ym2Disp = RangeAdd(ym2Disp, kUp > 0 ? 1 : 0, 0, DispPages[pgDisp], 1);
-	}else
-	/*if (kPgUp)  // pg
+		ym2Disp = RangeAdd(ym2Disp, kUp ? 1 : 0, 0, DispPages[pgDisp], 1);
+	else if (kPgUp)  // pg
 	{	pgDisp = RangeAdd(pgDisp, kPgUp, 0, Di_All-1, 1);
 		ym2Disp = RangeAdd(ym2Disp, 0, 0, DispPages[pgDisp], 1);
-	}else*/
-	if (kRight)  // adjust values
+	}
+	else if (kRight)  // adjust values
 	switch (pgDisp)
 	{
 	case Di_Bright:

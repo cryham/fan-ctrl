@@ -16,24 +16,27 @@ void KC_Main::Update(uint32_t ms)
 	{	setBright = 0;
 
 		int bri = par.brightness;
-		const int minBri = 100;  //par ?
+		const int minBri = 50;  // par
 		int val = bri == 0 ? 0 : bri * (4095 - minBri) / 100 + minBri;
 		analogWrite(LCD_LED, val);
 	}
 
 	//  add graph stats  ---
 	if (par.timeRpm)
-	if (ms - msMin1 > 1000 * t1min(par) || ms < msMin1)
+	if (ms - msRpm > tRpm(par) || ms < msRpm)
 	{
-		msMin1 = ms;
-		min1_Keys = cnt_press1min * 60 / t1min(par);
-		cnt_press1min = 0;
+		msRpm = ms;
+		for (int i=0; i < NumFans; ++i)
+		{
+			Fan& f = fans.fan[i];
+			uint8_t val = f.rpmAvg / 10;  // par
 
+			//  add to graph
+			grRpm[i][grRpos] = val;
+		}
 		//  graph inc pos
-		++grPpos;
-		if (grPpos >= W)  grPpos = 0;
-		//  add to graph
-		grPMin[grPpos] = min1_Keys > 255 ? 255 : min1_Keys;
+		++grRpos;
+		if (grRpos >= W)  grRpos = 0;
 	}
 
 }

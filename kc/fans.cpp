@@ -2,9 +2,16 @@
 #include "WProgram.h"
 
 
-//  pins
+//  pins setup
 const uint8_t FAN_PWM[NumFans] = { 20,22,6,4, 21, 5, 3 };  // PWM outut pin
 const uint8_t FAN_RPM[NumFans] = {  1, 2,7,0, 24,25,19 };  // RPM input pin
+
+//  const
+const char *fanNames[FN_All] = {
+	"",	"CPU", "GPU", "PSU", "RAM",	"MB",  "Case", "Cool", "Rad", "Ext", "New", };
+
+const char *fanModes[FM_All] = {
+	"Hide", "Off", "On", /*"Auto",*/ };
 
 
 //  Init  -----------
@@ -19,11 +26,11 @@ Fans::Fans()
 
 
 //  Setup pins  -----------
-void Fan::Setup(uint8_t fanId)
+void Fan::Init(uint8_t fanId)
 {
 	const uint8_t pwm = FAN_PWM[fanId], rpm = FAN_RPM[fanId];
 	pinMode(pwm, OUTPUT);
-	analogWriteFrequency(pwm, 10000);  // 10k
+	analogWriteFrequency(pwm, 10000);  // par 10k
 	analogWrite(pwm, 0);  // off
 
 	noRpm = rpm >= NoRPM;
@@ -36,7 +43,7 @@ void Fan::Setup(uint8_t fanId)
 void Fans::Init()
 {
 	for (int i=0; i < NumFans; ++i)
-		fan[i].Setup(i);
+		fan[i].Init(i);
 }
 
 
@@ -68,13 +75,14 @@ void Fan::CalcRPM()
 	lastRpmMS = ms;
 	pulses = 0;
 
-	//  add
+
+	//  avg add
 	avgArr[avgCnt] = rpm;
 	++avgCnt;
 	if (avgCnt >= avgNum)
 		avgCnt = 0;
 
-	//  get avg
+	//  avg get
 	int sum = 0;
 	for (int i = 0; i < avgNum; ++i)
 		sum += avgArr[i];
@@ -100,12 +108,14 @@ void Fans::Update()
 void Fans::Update(uint8_t i, uint32_t dt)
 {
 	Fan& f = fan[i];
+	bool rpm = !f.noRpm;
 	
-	if (!f.noRpm)
+	if (rpm)
 		f.CalcRPM();
 	
-	bool on = !f.fd.off;
+	bool on = f.fd.mode >= FM_On;
 	uint16_t pwm = on ? f.fd.pwm : 0;
+	// todo: auto pwm from Temp'C..
 
 	//  turned on
 	if (on && !f.oldOn)
@@ -113,7 +123,7 @@ void Fans::Update(uint8_t i, uint32_t dt)
 	f.oldOn = on;
 
 	//  rpm stop prevention
-	if (on && f.rpmAvg == 0)
+	if (on && rpm && f.rpmAvg == 0)
 		f.tmMax = msMax;
 
 	//  short max pwm to start

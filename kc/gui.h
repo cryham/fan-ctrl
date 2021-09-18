@@ -17,8 +17,8 @@ struct Gui
 
 
 	//  draw menus
-	void DrawFans(), DrawKeys(), DrawMatrix(), DrawDisplay();  // set params
-	void DrawGraphs(), DrawGraph(), DrawHelp(), DrawConfig();  // info
+	void DrawKeys(), DrawMatrix(), DrawDisplay();  // set params
+	void DrawHelp(), DrawConfig();  // info
 
 	//  draw util
 	void Chk_y1(), DrawOperInfo();
@@ -29,8 +29,14 @@ struct Gui
 	int TempFtoB(float t);  float TempBtoF(uint8_t b);
 
 
+	//  fans  ***
+	const static int NumFanDet = 3;
+	void DrawFans(), DrawFanDetails();
+	void DrawGraphs(), DrawGraph();
+	void KeysFans();
+
+
 	//  keys
-	void KeysFans();  bool fansFine = false;
 	void KeysScan(), KeysDisplay();
 	void KeysConfig(), KeysGraph();
 
@@ -41,9 +47,8 @@ struct Gui
 
 	//  fade color menu  ---
 	enum EFadeClr
-	{	C_Main, C_Demos, C_Test, 
-		C_Setup, C_Disp, C_Clock, C_Setup2,
-		C_Info, C_ALL  };
+	{	C_Main, C_Demos,  C_Fans, C_FanDet,
+		C_Keys, C_Scan,  C_Disp, C_Config, C_ALL  };
 	const static uint8_t Mclr[C_ALL][2][3];
 
 	void FadeClr(EFadeClr ec, const uint8_t minRGB, const uint8_t mul, const uint8_t div);
@@ -73,10 +78,11 @@ struct Gui
 	//  gui keys pressed, some +-1
 	int8_t kRight=0, kUp=0,  kEnt=0, kBack=0;
 	int8_t kPgUp=0,  kMid=0, kEnd=0;
+	int16_t kFanAdd = 20;
 
 
 	//  level 2  menu cursors  ---
-	int8_t ym2Fan = 0, ym2Scan = 0;
+	int8_t ym2Fan = 0, yFanDet = 0, ym2Scan = 0;
 	int8_t ym2Disp = 0, pgDisp = 0;
 	int8_t pgGraph = G_Stats;
 

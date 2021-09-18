@@ -45,24 +45,30 @@ My sources are licensed GPLv3. For other sources used, see their repositories.
 
 ### Hardware
 
-The keyboard is made of:
-* Teensy 3.2 (or 3.1), overclocked, stable at 144 MHz (or 120 MHz, with longer wires).
-* TFT LCD display ST7735, 160 x 128, 16bit color RGB565. Red PCB with SD card slot. Terribly low horizontal viewing angle.
-* NPN transistor BC550. Connection from DAC A14 output through 4.7k resistor to base, collector to 3.3V, emitter through 47 (or less) ohm resistor to Display LED.
-* Optionally a DS18B20 1-wire temperature sensor with data pin through 4.7k resistor to 3.3V.
+For detailed info check subdir kicad with schematics, or included schematics.png image (todo).
 
-Display uses pins: 9 DC, 10 CS, 8 RST (set in `Ada4_ST7735.cpp`) 11 DOUT, 13 CLK and ?40 DAC for backlight LED.
+The keyboard is made of:
+* Teensy 3.2 (or 3.1). Can be overclocked, to 144 MHz (or 120 MHz, with longer wires).
+* TFT LCD display ST7735, 160 x 128, 16bit color RGB565. Red PCB with SD card slot. Terribly low horizontal viewing angle.
+* NPN transistor BC550. Connection from pin 23 output through 4.7k resistor to base, collector to 3.3V, emitter to Display LED.
+* Optionally a DS18B20 1-wire temperature sensor with data pin through 4.7k resistor to 3.3V.
+* Each fan uses 2 resistors 1k and 1k to 4.7k, 1 capacitor 100n (for 10kHz PWM) and 2 transistors: BC550C (or similar NPN) and BD140 (PNP).
+
+Display uses pins: 9 DC, 10 CS, 8 RST (set in `Ada4_ST7735.cpp`) 11 DOUT, 13 CLK.
+Then used pin 23 PWM to 4.7k resistor to BC550 base, collector to 3.3V and emitter to LCD backlight LED pin.
 
 ### Configuring
 
-Information useful when starting to use K.C. with your keyboard matrix.
+Information useful when building / starting to use this controller.
 
-Setup is done in files:
+Pins setup is done in files:
 * `def.h`
   * Define code features to use like: demos, game. Also optional pins for LED and Temp'C.
-* `matrix.h` has defined Teensy pins for keyboard Matrix_cols and Matrix_rows.
+* `matrix.h` has defined pins for keyboard: Matrix_cols and Matrix_rows.
+* Fan pins are defined in `fan.cpp`.
+* Code related to fans is in files having `fan` in name.
 
-When defining a new keyboard, it is useful to force starting in main.cpp on GUI Pressed tab, it shows scan codes.
+When defining a new keyboard, it is useful to force starting in main.cpp on GUI Keys Matrix tab, it shows scan codes.
 
 ### Building
 

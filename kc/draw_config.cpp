@@ -15,7 +15,7 @@ void Gui::DrawConfig()
 		d->setClr(22,20,26);
 		d->print(strMain[ym]);  d->setFont(0);
 
-		DrawMenu(C_All,strConfig, C_Info,RGB(22,20,28),RGB(4,4,8), 10, -1);
+		DrawMenu(C_All,strConfig, C_Config,RGB(22,20,28),RGB(4,4,8), 10, -1);
 		return;
 	}
 	char a[64];

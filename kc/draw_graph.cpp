@@ -6,7 +6,7 @@
 //  Grid  | |
 inline void GridLineP(Ada4_ST7735* d, KC_Params& par, int m, uint16_t c, const char* s)
 {
-	int h = m * 60 / t1min(par);  // m min time
+	int h = m * 600000 / tRpm(par);  // m min time
 	int x = W-1 - h;
 	if (x > 0)  d->drawFastVLine(x, 0, H/2, c);
 	else  return;
@@ -48,8 +48,8 @@ float Gui::TempBtoF(uint8_t b)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 void Gui::DrawGraph()
 {
-	#define getPv(i)  ii = kc.grPpos + i - (W-1) + W;  v = kc.grPMin[ii % W];
-	#define getTv(i)  ii =    grTpos + i - (W-1) + W;  v =    grTemp[ii % W];
+	#define getPv(i)  ii = kc.grRpos + i;  v = kc.grRpm[ym2Fan][ii % W];
+	#define getTv(i)  ii =    grTpos + i;  v =    grTemp[ii % W];
 
 	char a[64];
 	d->setFont(0);
@@ -58,7 +58,7 @@ void Gui::DrawGraph()
 	int i,ii, x,y0, v,y,h;  uint16_t c;
 
 
-	// press/1min  ------------------------
+	//  rpm  ------------------------
 
 	//  grid
 	if (par.timeRpm)
@@ -71,32 +71,36 @@ void Gui::DrawGraph()
 		GridLineP(d,par,480, RGB(16, 16, 16),"8h");
 	}
 
-	//  graph  Press/1min
+	//  graph  rpm
 	for (i=0; i <= W-1; ++i)
 	{
+		const int yMax = H-1;///2;
 		getPv(i);
 		if (v > 0)
 		{
-			ClrTemp(v);  c = d->getClr();
+			ClrTemp(2*v);  c = d->getClr();
 
-			h = 2 * v / 4;  // max
-			if (h > H/2)  h = H/2;
+			//h = 2 * v / 4;  // max half
+			h = v;  // max
+			if (h > yMax)  h = yMax;
 
-			y = H/2 - h;
+			y = yMax - h;
 			if (y < 0)  y = 0;
 
 			if (y+h < H)
-				d->drawFastVLine(i, y, h, c);
+				//d->drawFastVLine(i, y, h, c);
+				d->drawPixel(i, y, c);
 
-			if (i == xc)
-				d->drawPixel(i, y, RGB(31,31,31));  //.
+			//if (i == xc)
+			//	d->drawPixel(i, y, RGB(31,31,31));  //.
 	}	}
+	return;  ///---
 
 	//  legend
 	x = 0;  y0 = 9;
 	d->setClr(20, 20, 25);
 	d->setCursor(x, y0);
-	d->println("Press/min");
+	d->println("Rpm");
 	d->moveCursor(0,2);
 
 	if (cursor)
@@ -105,8 +109,8 @@ void Gui::DrawGraph()
 		ClrTemp(v);
 		sprintf(a,"%d", v);  d->println(a);
 
-		d->moveCursor(0,1);
-		PrintInterval(t1min(par)*1000*(W-1-xc));  d->println("");
+		//d->moveCursor(0,1);
+		//PrintInterval(tRpm(par)*(W-1-xc));  d->println("");
 	}
 	//  max
 	v = H/2 * 4 / 2;
@@ -119,7 +123,7 @@ void Gui::DrawGraph()
 
 
 #ifdef TEMP1
-	// Temp'C  ------------------------------------
+	//  Temp'C  ------------------------------------
 
 	//  auto range  get min,max
 	if (grTempUpd)

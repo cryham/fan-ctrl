@@ -14,7 +14,8 @@ void Gui::ClrTemp(int tm)
 	if (tm > 96)  d->setClr( 6, 27, 6);  else
 	if (tm > 64)  d->setClr( 6, 26,26);  else
 	if (tm > 32)  d->setClr(10, 20,30);  else
-				  d->setClr( 6, 16,29);
+	if (tm > 16)  d->setClr( 6, 16,29);  else
+	              d->setClr(16,  6,29);
 }
 
 //  Display
@@ -45,12 +46,12 @@ void Gui::DrawGraphs()
 
 
 	//  Graphs  ~~~~~~~~~~~~~~~~
-	int v, y0, ii, i;
+	/*int v, y0, ii, i;
 	//if (ext)
 	for (i=0; i <= W-1; ++i)
 	{
-		ii = kc.grPpos + i - (W-1) + W;
-		v = kc.grPMin[ii % W];
+		ii = kc.grRpos + i - (W-1) + W;
+		v = kc.grRpm[ym2Fan][ii % W];
 		if (v > 0)
 		{
 			ClrTemp(v);  uint16_t c = d->getClr();
@@ -58,6 +59,7 @@ void Gui::DrawGraphs()
 			if (y0 < 0)  y0 = 0;
 			d->drawPixel(i,y0, c);
 	}	}
+	*/
 
 	//if (pgGraph == Cl_Graphs)
 	{
@@ -130,7 +132,7 @@ void Gui::DrawGraphs()
 	x = 6;  y = yp;
 	d->setCursor(x, y);
 
-	int m1 = kc.min1_Keys;
-	ClrTemp(m1);
+	//int m1 = kc.min1_Keys;
+	//ClrTemp(m1);
 	//dtostrf(m1, 3,0, f);  d->print(f);
 }

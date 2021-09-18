@@ -19,7 +19,7 @@ void Gui::DrawKeys()
 		d->setClr(21,23,23);
 		d->print(strMain[ym]);  d->setFont(0);
 
-		DrawMenu(K_All,strKeys, C_Setup,RGB(18,24,22),RGB(4,6,6), 10);
+		DrawMenu(K_All,strKeys, C_Keys,RGB(18,24,22),RGB(4,6,6), 10);
 		return;
 	}
 	char a[64];
@@ -53,7 +53,7 @@ void Gui::DrawKeys()
 			}else
 				d->print("  ");
 
-			FadeClr(C_Setup2, 4, c, 1);
+			FadeClr(C_Scan, 4, c, 1);
 			switch(i)
 			{
 			case 0:

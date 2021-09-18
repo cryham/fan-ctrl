@@ -9,6 +9,8 @@
 		"string_view": "cpp",
 		"initializer_list": "cpp",
 		"iostream": "cpp",
-		"*.tcc": "cpp"
+		"*.tcc": "cpp",
+		"ostream": "cpp",
+		"tuple": "cpp"
 	}
 }

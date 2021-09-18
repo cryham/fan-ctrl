@@ -25,7 +25,7 @@ KC_Main::KC_Main()
 	}
 	ResetStats(true);
 
-	memset(grPMin, 0, sizeof(grPMin));
+	memset(grRpm, 0, sizeof(grRpm));
 }
 
 //  Reset stats, rtc, times
@@ -40,11 +40,8 @@ void KC_Main::ResetStats(bool rtc)
 	tm_key = tm_keyOld = t;
 	//  ms
 	uint32_t ms = millis();
-	msMin1 = ms;
+	msRpm = ms;
 
 	//  cnt
-	min1_Keys = 0;
-
 	cnt_press = 0;  // matrix.h
-	cnt_press1min = 0;
 }

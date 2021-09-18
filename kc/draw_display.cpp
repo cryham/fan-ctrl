@@ -65,16 +65,19 @@ void Gui::DrawDisplay()
 	}	break;
 
 	case Di_Stats:
-	for (int i=0; i <= pg; ++i)
+	for (int i=0; i <= pg + 1; ++i)  // extra
 	{
 		DrawDispCur(i, y);
 		int8_t h = 4;
 		switch(i)
 		{
 		case 0:
-			sprintf(a,"Time for 1min:  %dm%02ds", t1min(par)/60, t1min(par)%60);  break;
+			d->print("Time Rpm add:  ");  PrintInterval(tRpm(par));  h = 2;  break;
+		case 1:  // extra
+			d->print("Graph total :  ");  PrintInterval(W * tRpm(par));  h = 2;  break;
+			//sprintf(a,"Time for 1min:  %dm%02ds", t1min(par)/60, t1min(par)%60);  break;
 		}
-		d->print(a);  y += h+8;
+		y += h+8;
 	}	break;
 
 	case Di_Graph:
