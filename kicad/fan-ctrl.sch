@@ -1,0 +1,596 @@
+EESchema Schematic File Version 4
+LIBS:fan-ctrl-cache
+EELAYER 26 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L teensy:Teensy3.2 U?
+U 1 1 6145DEC6
+P 3600 3100
+F 0 "U?" H 3600 4737 60  0000 C CNN
+F 1 "Teensy3.2" H 3600 4631 60  0000 C CNN
+F 2 "" H 3600 2350 60  0000 C CNN
+F 3 "" H 3600 2350 60  0000 C CNN
+	1    3600 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+12V #PWR?
+U 1 1 6145DF62
+P 7800 3200
+F 0 "#PWR?" H 7800 3050 50  0001 C CNN
+F 1 "+12V" H 7815 3373 50  0000 C CNN
+F 2 "" H 7800 3200 50  0001 C CNN
+F 3 "" H 7800 3200 50  0001 C CNN
+	1    7800 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 6145E03D
+P 7800 4500
+F 0 "#PWR?" H 7800 4250 50  0001 C CNN
+F 1 "GNDD" H 7804 4345 50  0001 C CNN
+F 2 "" H 7800 4500 50  0001 C CNN
+F 3 "" H 7800 4500 50  0001 C CNN
+	1    7800 4500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_BJT:BD140 Q?
+U 1 1 6145E13E
+P 7700 3450
+F 0 "Q?" H 7892 3496 50  0000 L CNN
+F 1 "BD140" H 7892 3405 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-126-3_Vertical" H 7900 3375 50  0001 L CIN
+F 3 "http://www.st.com/internet/com/TECHNICAL_RESOURCES/TECHNICAL_LITERATURE/DATASHEET/CD00001225.pdf" H 7700 3450 50  0001 L CNN
+	1    7700 3450
+	1    0    0    1   
+$EndComp
+$Comp
+L Transistor_BJT:BC550 Q?
+U 1 1 6145E22E
+P 6950 3650
+F 0 "Q?" H 7141 3696 50  0000 L CNN
+F 1 "BC550C" H 7141 3605 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 7150 3575 50  0001 L CIN
+F 3 "http://www.fairchildsemi.com/ds/BC/BC547.pdf" H 6950 3650 50  0001 L CNN
+	1    6950 3650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Motor:Fan_Tacho M?
+U 1 1 6145E898
+P 7800 4100
+F 0 "M?" H 7957 4096 50  0000 L CNN
+F 1 "Fan_Tacho" H 7957 4005 50  0000 L CNN
+F 2 "" H 7800 4010 50  0001 C CNN
+F 3 "http://www.hardwarecanucks.com/forum/attachments/new-builds/16287d1330775095-help-chassis-power-fan-connectors-motherboard-asus_p8z68.jpg" H 7800 4010 50  0001 C CNN
+	1    7800 4100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7800 3200 7800 3250
+Wire Wire Line
+	7800 3650 7800 3900
+Wire Wire Line
+	7800 4400 7800 4500
+$Comp
+L Device:R R?
+U 1 1 6145EA26
+P 7350 3450
+F 0 "R?" V 7143 3450 50  0000 C CNN
+F 1 "1k" V 7234 3450 50  0000 C CNN
+F 2 "" V 7280 3450 50  0001 C CNN
+F 3 "~" H 7350 3450 50  0001 C CNN
+	1    7350 3450
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6145EAB9
+P 6600 3650
+F 0 "R?" V 6393 3650 50  0000 C CNN
+F 1 "1k - 4.7k" V 6484 3650 50  0000 C CNN
+F 2 "" V 6530 3650 50  0001 C CNN
+F 3 "~" H 6600 3650 50  0001 C CNN
+	1    6600 3650
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 6145EC1C
+P 7050 3850
+F 0 "#PWR?" H 7050 3600 50  0001 C CNN
+F 1 "GNDD" H 7054 3695 50  0001 C CNN
+F 2 "" H 7050 3850 50  0001 C CNN
+F 3 "" H 7050 3850 50  0001 C CNN
+	1    7050 3850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7200 3450 7050 3450
+$Comp
+L Device:C C?
+U 1 1 6145EE3C
+P 7300 4250
+F 0 "C?" H 7415 4296 50  0000 L CNN
+F 1 "100n" H 7415 4205 50  0000 L CNN
+F 2 "" H 7338 4100 50  0001 C CNN
+F 3 "~" H 7300 4250 50  0001 C CNN
+	1    7300 4250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 6145EEA9
+P 7300 4400
+F 0 "#PWR?" H 7300 4150 50  0001 C CNN
+F 1 "GNDD" H 7304 4245 50  0001 C CNN
+F 2 "" H 7300 4400 50  0001 C CNN
+F 3 "" H 7300 4400 50  0001 C CNN
+	1    7300 4400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7500 4100 7300 4100
+Connection ~ 7300 4100
+Wire Wire Line
+	7300 4100 6300 4100
+$Comp
+L Transistor_BJT:BC550 Q?
+U 1 1 6145F814
+P 5250 4350
+F 0 "Q?" H 5441 4396 50  0000 L CNN
+F 1 "BC550C" H 5441 4305 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 5450 4275 50  0001 L CIN
+F 3 "http://www.fairchildsemi.com/ds/BC/BC547.pdf" H 5250 4350 50  0001 L CNN
+	1    5250 4350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6145F81B
+P 4900 4350
+F 0 "R?" V 4693 4350 50  0000 C CNN
+F 1 "4.7k" V 4784 4350 50  0000 C CNN
+F 2 "" V 4830 4350 50  0001 C CNN
+F 3 "~" H 4900 4350 50  0001 C CNN
+	1    4900 4350
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5500 4150 5350 4150
+Wire Wire Line
+	4600 4350 4750 4350
+Text GLabel 6350 3650 0    50   Input ~ 0
+PWM_output
+Text GLabel 6300 4100 0    50   Input ~ 0
+RPM_input
+Entry Wire Line
+	4600 4450 4700 4550
+Entry Wire Line
+	2500 4550 2600 4450
+Entry Wire Line
+	2500 4450 2600 4350
+Entry Wire Line
+	2500 2550 2600 2450
+Entry Wire Line
+	2500 2350 2600 2250
+Entry Wire Line
+	2500 2450 2600 2350
+Entry Wire Line
+	2500 2250 2600 2150
+Wire Bus Line
+	4700 4550 4700 4700
+Wire Bus Line
+	4700 4700 2500 4700
+Text GLabel 2500 4700 0    50   Input ~ 0
+PWM_outputs
+Text GLabel 5350 4800 2    50   Input ~ 0
+LCD_LED
+$Comp
+L power:+3.3V #PWR?
+U 1 1 6146255E
+P 5500 4150
+F 0 "#PWR?" H 5500 4000 50  0001 C CNN
+F 1 "+3.3V" H 5515 4323 50  0000 C CNN
+F 2 "" H 5500 4150 50  0001 C CNN
+F 3 "" H 5500 4150 50  0001 C CNN
+	1    5500 4150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2350 1950 2600 1950
+Wire Wire Line
+	2350 2050 2600 2050
+Entry Bus Bus
+	4600 3150 4700 3050
+Entry Bus Bus
+	4600 3050 4700 2950
+Entry Bus Bus
+	2350 4250 2250 4150
+Wire Wire Line
+	2350 4250 2600 4250
+Entry Bus Bus
+	2350 1850 2250 1750
+Entry Bus Bus
+	2350 1950 2250 1850
+Entry Bus Bus
+	2350 2050 2250 1950
+Entry Bus Bus
+	2350 2550 2250 2450
+Wire Bus Line
+	2250 1350 4700 1350
+Text GLabel 2250 1350 0    50   Input ~ 0
+RPM_inputs
+$Comp
+L Device:R R?
+U 1 1 5F4A8969
+P 1500 5300
+F 0 "R?" H 1430 5254 50  0000 R CNN
+F 1 "4.7k" H 1430 5345 50  0000 R CNN
+F 2 "" V 1430 5300 50  0001 C CNN
+F 3 "~" H 1500 5300 50  0001 C CNN
+	1    1500 5300
+	-1   0    0    1   
+$EndComp
+$Comp
+L Sensor_Temperature:DS18B20 U?
+U 1 1 5F4A8D2F
+P 1150 5450
+F 0 "U?" H 920 5496 50  0000 R CNN
+F 1 "DS18B20" H 920 5405 50  0000 R CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 150 5200 50  0001 C CNN
+F 3 "http://datasheets.maximintegrated.com/en/ds/DS18B20.pdf" H 1000 5700 50  0001 C CNN
+	1    1150 5450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 5F4A96F6
+P 1150 5750
+F 0 "#PWR?" H 1150 5500 50  0001 C CNN
+F 1 "GNDD" H 1154 5595 50  0001 C CNN
+F 2 "" H 1150 5750 50  0001 C CNN
+F 3 "" H 1150 5750 50  0001 C CNN
+	1    1150 5750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5F4A976F
+P 1150 5150
+F 0 "#PWR?" H 1150 5000 50  0001 C CNN
+F 1 "+3V3" H 1165 5323 50  0000 C CNN
+F 2 "" H 1150 5150 50  0001 C CNN
+F 3 "" H 1150 5150 50  0001 C CNN
+	1    1150 5150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Driver_Display:CR2013-MI2120 U?
+U 1 1 5F4AA0AB
+P 1300 3200
+F 0 "U?" H 1300 3978 50  0000 C CNN
+F 1 "LCD ST7735 160x128" H 1300 3887 50  0000 C CNN
+F 2 "Display:CR2013-MI2120" H 1300 2500 50  0001 C CNN
+F 3 "http://pan.baidu.com/s/11Y990" H 650 3700 50  0001 C CNN
+	1    1300 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5F4AA8D6
+P 1300 2400
+F 0 "#PWR?" H 1300 2250 50  0001 C CNN
+F 1 "+3V3" H 1315 2573 50  0000 C CNN
+F 2 "" H 1300 2400 50  0001 C CNN
+F 3 "" H 1300 2400 50  0001 C CNN
+	1    1300 2400
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR?
+U 1 1 5F4AA91A
+P 1300 3800
+F 0 "#PWR?" H 1300 3550 50  0001 C CNN
+F 1 "GNDD" H 1304 3645 50  0000 C CNN
+F 2 "" H 1300 3800 50  0001 C CNN
+F 3 "" H 1300 3800 50  0001 C CNN
+	1    1300 3800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW?
+U 1 1 5F4E1F1F
+P 3600 5150
+F 0 "SW?" V 3646 5102 50  0000 R CNN
+F 1 "Program" V 3555 5102 50  0000 R CNN
+F 2 "" H 3600 5350 50  0001 C CNN
+F 3 "" H 3600 5350 50  0001 C CNN
+	1    3600 5150
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	1300 2400 1300 2600
+$Comp
+L power:GNDD #PWR?
+U 1 1 5F4F3E9F
+P 3600 5350
+F 0 "#PWR?" H 3600 5100 50  0001 C CNN
+F 1 "GNDD" H 3604 5195 50  0001 C CNN
+F 2 "" H 3600 5350 50  0001 C CNN
+F 3 "" H 3600 5350 50  0001 C CNN
+	1    3600 5350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push_45deg Key?
+U 1 1 5F4F4126
+P 6700 1800
+F 0 "Key?" H 6700 2078 50  0000 C CNN
+F 1 "k1" H 6700 1987 50  0000 C CNN
+F 2 "" H 6700 1800 50  0001 C CNN
+F 3 "" H 6700 1800 50  0001 C CNN
+	1    6700 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push_45deg Key?
+U 1 1 5F4F8B33
+P 7000 1800
+F 0 "Key?" H 7000 2078 50  0000 C CNN
+F 1 "k1" H 7000 1987 50  0000 C CNN
+F 2 "" H 7000 1800 50  0001 C CNN
+F 3 "" H 7000 1800 50  0001 C CNN
+	1    7000 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push_45deg Key?
+U 1 1 5F4F9D1F
+P 6700 2250
+F 0 "Key?" H 6700 2528 50  0000 C CNN
+F 1 "k1" H 6700 2437 50  0000 C CNN
+F 2 "" H 6700 2250 50  0001 C CNN
+F 3 "" H 6700 2250 50  0001 C CNN
+	1    6700 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push_45deg Key?
+U 1 1 5F4FAEED
+P 7000 2250
+F 0 "Key?" H 7000 2528 50  0000 C CNN
+F 1 "k1" H 7000 2437 50  0000 C CNN
+F 2 "" H 7000 2250 50  0001 C CNN
+F 3 "" H 7000 2250 50  0001 C CNN
+	1    7000 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push_45deg Key?
+U 1 1 5F4FC0C3
+P 7300 1800
+F 0 "Key?" H 7300 2078 50  0000 C CNN
+F 1 "k1" H 7300 1987 50  0000 C CNN
+F 2 "" H 7300 1800 50  0001 C CNN
+F 3 "" H 7300 1800 50  0001 C CNN
+	1    7300 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push_45deg Key?
+U 1 1 5F4FD2A1
+P 6700 2600
+F 0 "Key?" H 6700 2878 50  0000 C CNN
+F 1 "k1" H 6700 2787 50  0000 C CNN
+F 2 "" H 6700 2600 50  0001 C CNN
+F 3 "" H 6700 2600 50  0001 C CNN
+	1    6700 2600
+	1    0    0    -1  
+$EndComp
+Connection ~ 6600 1700
+Wire Wire Line
+	6600 1700 6600 1400
+Connection ~ 6600 2150
+Wire Wire Line
+	6600 2150 6600 1700
+Connection ~ 6600 2500
+Wire Wire Line
+	6600 2500 6600 2150
+Connection ~ 6900 1700
+Wire Wire Line
+	6900 1700 6900 1400
+Connection ~ 6900 2150
+Wire Wire Line
+	6900 2150 6900 1700
+Connection ~ 7200 1700
+Wire Wire Line
+	7200 1700 7200 1400
+Wire Wire Line
+	6350 1900 6800 1900
+Connection ~ 6800 1900
+Wire Wire Line
+	6800 1900 7100 1900
+Connection ~ 7100 1900
+Wire Wire Line
+	7100 1900 7400 1900
+Connection ~ 7400 1900
+Wire Wire Line
+	7400 1900 7600 1900
+Wire Wire Line
+	6350 2350 6800 2350
+Connection ~ 6800 2350
+Wire Wire Line
+	6800 2350 7100 2350
+Connection ~ 7100 2350
+Wire Wire Line
+	7100 2350 7400 2350
+Wire Wire Line
+	6350 2700 6800 2700
+Wire Wire Line
+	6800 2700 7100 2700
+Entry Wire Line
+	6500 1300 6600 1400
+Entry Wire Line
+	6800 1300 6900 1400
+Entry Wire Line
+	7100 1300 7200 1400
+Entry Wire Line
+	6250 1800 6350 1900
+Entry Wire Line
+	6250 2250 6350 2350
+Entry Wire Line
+	6250 2600 6350 2700
+Connection ~ 6800 2700
+Wire Wire Line
+	1450 5450 1500 5450
+Connection ~ 1150 5150
+Wire Wire Line
+	1150 5150 1500 5150
+Text Label 6550 1200 0    79   ~ 0
+Columns
+Text Label 6050 1650 0    79   ~ 0
+Rows
+Text Label 6250 1000 0    98   ~ 0
+Keyboard-Matrix
+Wire Wire Line
+	7200 1700 7200 2150
+Wire Wire Line
+	6900 2150 6900 2500
+Wire Wire Line
+	6600 2500 6600 2900
+Wire Wire Line
+	2350 1850 2600 1850
+Wire Wire Line
+	1500 5450 1800 5450
+Connection ~ 1500 5450
+Wire Wire Line
+	2100 3300 2300 3300
+Wire Wire Line
+	2300 3300 2300 3650
+Wire Wire Line
+	2300 3650 2600 3650
+Entry Bus Bus
+	4800 2450 4900 2350
+Entry Bus Bus
+	4800 2750 4900 2650
+Entry Bus Bus
+	4800 2650 4900 2550
+Wire Wire Line
+	4600 2750 4800 2750
+Wire Wire Line
+	4600 2650 4800 2650
+Wire Wire Line
+	4600 2450 4800 2450
+Entry Bus Bus
+	4750 2350 4850 2250
+Entry Bus Bus
+	4750 2550 4850 2450
+Entry Bus Bus
+	4750 2250 4850 2150
+Wire Wire Line
+	4750 2250 4600 2250
+Wire Wire Line
+	4600 2350 4750 2350
+Wire Wire Line
+	4600 2550 4750 2550
+Wire Bus Line
+	4850 1800 6250 1800
+Wire Wire Line
+	2100 3400 2150 3400
+Wire Wire Line
+	2150 3400 2150 4800
+Wire Wire Line
+	2150 4800 5350 4800
+Wire Wire Line
+	5350 4550 5350 4800
+Wire Wire Line
+	6350 3650 6450 3650
+Wire Wire Line
+	2600 3450 3600 3450
+Wire Wire Line
+	3600 3450 3600 4950
+Text Label 5850 3250 0    98   ~ 0
+Fans-7x
+$Comp
+L Switch:SW_Push_45deg Key?
+U 1 1 614CDF63
+P 7300 2250
+F 0 "Key?" H 7300 2528 50  0000 C CNN
+F 1 "k1" H 7300 2437 50  0000 C CNN
+F 2 "" H 7300 2250 50  0001 C CNN
+F 3 "" H 7300 2250 50  0001 C CNN
+	1    7300 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push_45deg Key?
+U 1 1 614CF0BE
+P 7000 2600
+F 0 "Key?" H 7000 2878 50  0000 C CNN
+F 1 "k1" H 7000 2787 50  0000 C CNN
+F 2 "" H 7000 2600 50  0001 C CNN
+F 3 "" H 7000 2600 50  0001 C CNN
+	1    7000 2600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push_45deg Key?
+U 1 1 614D133F
+P 7300 2600
+F 0 "Key?" H 7300 2878 50  0000 C CNN
+F 1 "k1" H 7300 2787 50  0000 C CNN
+F 2 "" H 7300 2600 50  0001 C CNN
+F 3 "" H 7300 2600 50  0001 C CNN
+	1    7300 2600
+	1    0    0    -1  
+$EndComp
+Connection ~ 7100 2700
+Wire Wire Line
+	7100 2700 7400 2700
+Connection ~ 6900 2500
+Wire Wire Line
+	6900 2500 6900 2900
+Connection ~ 7200 2500
+Wire Wire Line
+	7200 2500 7200 2900
+Connection ~ 7200 2150
+Wire Wire Line
+	7200 2150 7200 2500
+Connection ~ 7400 2350
+Wire Wire Line
+	7400 2350 7600 2350
+Connection ~ 7400 2700
+Wire Wire Line
+	7400 2700 7600 2700
+Wire Bus Line
+	6250 1800 6250 2600
+Wire Bus Line
+	4700 1350 4700 3050
+Wire Wire Line
+	2350 2550 2600 2550
+Wire Bus Line
+	4900 1300 7100 1300
+Wire Bus Line
+	4900 1300 4900 2650
+Wire Bus Line
+	4850 1800 4850 2450
+Wire Bus Line
+	2250 1350 2250 4150
+Wire Bus Line
+	2500 2250 2500 4700
+$EndSCHEMATC
