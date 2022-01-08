@@ -196,7 +196,7 @@ Wire Bus Line
 	4700 4550 4700 4700
 Wire Bus Line
 	4700 4700 2500 4700
-Text GLabel 2500 4700 0    50   Input ~ 0
+Text GLabel 4700 4700 2    50   Input ~ 0
 PWM_outputs
 Text GLabel 5350 4800 2    50   Input ~ 0
 LCD_LED
@@ -463,7 +463,7 @@ Wire Wire Line
 	1150 5150 1500 5150
 Text Label 6550 1200 0    79   ~ 0
 Columns
-Text Label 6050 1650 0    79   ~ 0
+Text Label 5950 1700 0    79   ~ 0
 Rows
 Text Label 6250 1000 0    98   ~ 0
 Keyboard-Matrix
@@ -577,6 +577,28 @@ Wire Wire Line
 Connection ~ 7400 2700
 Wire Wire Line
 	7400 2700 7600 2700
+Wire Wire Line
+	2600 2850 2150 2850
+Wire Wire Line
+	2150 2850 2150 3000
+Wire Wire Line
+	2150 3000 2100 3000
+Wire Wire Line
+	2600 2650 2200 2650
+Wire Wire Line
+	2200 2650 2200 3500
+Wire Wire Line
+	2200 3500 2100 3500
+Wire Wire Line
+	2600 2750 2100 2750
+Wire Wire Line
+	2100 2750 2100 2900
+Wire Wire Line
+	2600 2950 2300 2950
+Wire Wire Line
+	2300 2950 2300 3100
+Wire Wire Line
+	2300 3100 2100 3100
 Wire Bus Line
 	6250 1800 6250 2600
 Wire Bus Line

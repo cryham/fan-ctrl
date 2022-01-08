@@ -47,6 +47,7 @@ void Gui::SetScreen(int8_t s)
 	case ST_Fans:   ym = M_Fans;  break;
 	case ST_Keys:   ym = M_Keys;  break;
 	case ST_Config: ym = M_Config;  break;
+	case ST_Graph:  ym = M_Graphs;  break;
 
 	case ST_Displ:  ym = M_Display;  break;
 #ifdef DEMOS
@@ -70,6 +71,7 @@ const char* Gui::StrScreen(int8_t s)
 	case ST_Fans:   return strMain[M_Fans];
 	case ST_Keys:   return strMain[M_Keys];
 	case ST_Config: return strMain[M_Config];
+	case ST_Graph:  return strMain[M_Graphs];
 
 	case ST_Displ:  return strMain[M_Display];
 #ifdef DEMOS

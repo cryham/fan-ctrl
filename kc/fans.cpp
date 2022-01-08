@@ -2,16 +2,19 @@
 #include "WProgram.h"
 
 
-//  pins setup
-const uint8_t FAN_PWM[NumFans] = { 20,22,6,4, 21, 5, 3 };  // PWM outut pin
-const uint8_t FAN_RPM[NumFans] = {  1, 2,7,0, 24,25,19 };  // RPM input pin
+//  Fan pins setup
+const uint8_t FAN_PWM[NumFans] =
+	{ 20,22,6,4, 21, 5, 3 };  // PWM outut pin
+const uint8_t FAN_RPM[NumFans] =
+	{  1, 2,7,0, 24,25,19 };  // RPM input pin  use NoRPM if not present
 
+ 
 //  const
-const char *fanNames[FN_All] = {
-	"",	"CPU", "GPU", "PSU", "RAM",	"MB",  "Case", "Cool", "Rad", "Ext", "New", };
+const char *fanNames[FNames_All] = {
+	"",	"CPU", "GPU", "PSU", "RAM",	"MB", "HDD", "Case", "Cool", "Rad", "Ext", "New", };
 
-const char *fanModes[FM_All] = {
-	"Hide", "Off", "On", /*"Auto",*/ };
+const char *fanModes[FModes_All] = {
+	"Hide", "Off", "On", "Ext." };
 
 
 //  Init  -----------

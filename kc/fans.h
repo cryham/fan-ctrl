@@ -8,14 +8,14 @@ const static int avgNum = 4;
 const static int msMax = 300;  // ?
 
 
-const static int FN_All = 11;
-extern const char *fanNames[FN_All];
+const static int FNames_All = 12;
+extern const char *fanNames[FNames_All];
 
 enum FanMode
 {
-	FM_Hide, FM_Off, FM_On, /*FM_Auto,*/ FM_All
+	FM_Hide, FM_Off, FM_On, FM_ExtOn, FModes_All
 };
-extern const char *fanModes[FM_All];
+extern const char *fanModes[FModes_All];
 
 
 //  data, saved in eeprom
@@ -26,6 +26,7 @@ struct FanData
 	//  for lcd, info
 	uint8_t name = 0;  // fanNames
 	uint8_t number = 0;
+	int8_t temp = -1;  // sensor id  -1 none  for auto adj
 };
 
 struct Fan

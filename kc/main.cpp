@@ -66,7 +66,8 @@ int main()
 	analogWriteResolution(12);
 	analogWrite(LCD_LED, 1000);  // 0-4095
 
-	//  fans
+
+	//  Fans
 	kc.fans.Init();
 
 	//analogWriteRes(12);
@@ -109,7 +110,7 @@ int main()
 		gui.DrawEnd();
 
 		//  temp get  --------
-		#ifdef TEMP1  // 18B20  Temp'C
+		#ifdef TEMP_PIN  // 18B20  Temp'C
 		gui.GetTemp();
 		#endif
 	}

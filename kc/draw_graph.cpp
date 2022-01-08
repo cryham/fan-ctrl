@@ -122,7 +122,7 @@ void Gui::DrawGraph()
 	}
 
 
-#ifdef TEMP1
+#ifdef TEMP_PIN
 	//  Temp'C  ------------------------------------
 
 	//  auto range  get min,max
@@ -220,7 +220,7 @@ void Gui::DrawGraph()
 		getTv(xc);
 		ClrTemp(v);
 
-		float f = xc == W-1 ? fTemp : // latest
+		float f = xc == W-1 ? fTemp[0] : // latest
 			TempBtoF(v);
 		dtostrf(f,4,2,a);  d->println(a);
 

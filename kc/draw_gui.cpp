@@ -83,7 +83,7 @@ void Gui::Draw()
 
 	//  Display, Help
 	case M_Display: DrawDisplay();  return;
-	case M_Graphs:  DrawGraph();  return;
+	case M_Graphs:  DrawGraphs();  return;
 	case M_Help:    DrawHelp();  return;
 	}
 }

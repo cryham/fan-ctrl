@@ -64,7 +64,7 @@ void Gui::DrawGraphs()
 	//if (pgGraph == Cl_Graphs)
 	{
 		DrawGraph();
-		return;
+		//return;
 	}
 
 	x = 60;  y = 42;
@@ -80,21 +80,30 @@ void Gui::DrawGraphs()
 
 
 	//  Temp'C  val  --------
-	#ifdef TEMP1
-	if (!adjust && fTemp > -90.f)
+	#ifdef TEMP_PIN
+	// if (tempInit > TI_DONE)  // 'C
 	{
-		dtostrf(fTemp, 4,2, f);
-		if (pgGraph == 0)
-		{	d->setClr(18,22,26);
-			d->setCursor(6, 71);
-		}else
-		{	if (pgGraph == 2)
-				d->setClr(16,20,24);
-			else
-				d->setClr(14,18,22);
-			d->setCursor(6, 32);
-		}
-		d->print(f);
+		d->setCursor(6 +10, 40 -10);
+		d->print("\x01""C  ");
+
+		d->print('0'+tempCount);
+		d->print("x  ");
+
+		const static char* strTempInit[] =
+		{  "fail", "search", "done", ""/*"read"*/  };
+		d->print(strTempInit[tempInit]);
+	}
+
+	for (int i=0; i < tempCount; ++i)
+	{
+		char f[32];
+		dtostrf(fTemp[i], 4,2, f);
+		
+		d->setClr(18,22,26);
+		d->setCursor(6, 46+ i*10);
+
+		if (fTemp[i] > 0.f)
+			d->print(f);
 	}
 	#endif
 
@@ -112,20 +121,6 @@ void Gui::DrawGraphs()
 		d->setCursor(W - 1 - 3 * 6, 4);
 		sprintf(a, "%d/%d", pgGraph + 1, G_All);  d->print(a);
 	}
-
-
-	//  labels, par values  ====--------
-	//int pg = ClockVars(pgGraph);
-    #ifdef TEMP1
-    bool temp = temp1 > 2;
-    #endif
-    y = yt;
-	//------------
-
-	#ifdef TEMP1
-	if (temp)  // 'C
-	{	d->setCursor(9*6, 32+4);  d->print("\x01""C");  }
-	#endif
 
 
 	//  press / 1min

@@ -19,9 +19,9 @@ void Gui::KeyPress()
 	kBack = kr(0,dt);
 	kEnt = Key(2);
 	
-	//kPgUp = Key(6);  // save/menu?
+	kSave = Key(6);  // save/menu?
 	kPgUp = kr(8,dt) - kr(2,dt);
-	kEnd = Key(8);
+	kEnd = Key(8);  //-
 	kMid = Key(4);
 	
 	//  rot enc  (*)  scroll

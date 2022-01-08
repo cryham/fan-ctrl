@@ -2,6 +2,7 @@
 #include "kc_data.h"
 #include "Ada4_ST7735.h"
 
+int aaa = 0;
 
 //  Fans
 //....................................................................................
@@ -30,7 +31,7 @@ void Gui::DrawFans()
 		}else
 		{
 			//  name
-			if (f.fd.name < FN_All)  
+			if (f.fd.name < FNames_All)  
 			{	if (f.fd.number > 0)
 					sprintf(a,"%s%d", fanNames[f.fd.name], f.fd.number);
 				else
@@ -83,7 +84,7 @@ void Gui::DrawFanDetails()
 	d->setFont(0);
 
 	//  param values  ---
-	int pg = NumFanDet + 2;  // extra
+	int ln = FanDetLines[pgDet];
 	int16_t y = 32;
 
 	//  rpm graph -
@@ -96,12 +97,13 @@ void Gui::DrawFanDetails()
 	sprintf(a,"Add: %s%%", b);
 	d->print(a);
 
-	for (int i=0; i <= pg; ++i)
-	{
-		Fan& f = kc.fans.fan[ym2Fan];
+	Fan& f = kc.fans.fan[ym2Fan];
+	int temp = f.fd.temp;
 
+	for (int i=0; i <= ln; ++i)
+	{
 		d->setCursor(2, y);
-		int c = abs(i - yFanDet);  // dist dim
+		int c = abs(i - yFanDet[pgDet]);  // dist dim
 		if (!c)
 		{	//d->fillRect(0, y-1, W/2-1, 10, RGB(2,4,6));
 			d->setClr(6,22,31);
@@ -112,25 +114,58 @@ void Gui::DrawFanDetails()
 		FadeClr(C_FanDet, 4, c, 1);
 
 		int8_t h = 4;
+		if (pgDet == 0)  // page 0
 		switch(i)
+		{
+		case 0:
+			dtostrf(100.f * f.fd.pwm / 4095.f, 3,1, b);
+			sprintf(a,"PWM%%: %s", b);  h = 4;  break;
+		case 1:
+			sprintf(a,"Mode: %s", fanModes[f.fd.mode]);  h = 6;  break;
+		
+		case 2:  // extra
+			dtostrf(f.rpm / 60.f, 4,1, b);
+			sprintf(a,"rps:  %s", b);  h = 4;  break;
+		case 3:
+			sprintf(a,"Rpm:  %4d", f.rpm);  h = 2;  break;
+		}
+		else switch(i)  // page 1
 		{
 		case 0:
 			sprintf(a,"Name: %s", fanNames[f.fd.name]);  h = 2;  break;
 		case 1:
 			sprintf(a,"Number: %d", f.fd.number);  break;
-
 		case 2:
-			sprintf(a,"Mode: %s", fanModes[f.fd.mode]);  h = 2;  break;
-		case 3:
-			dtostrf(100.f * f.fd.pwm / 4095.f, 4,1, b);
-			sprintf(a,"PWM%%: %s", b);  h = 6;  break;
-		
-		case 4:  // extra
-			dtostrf(f.rpm / 60.f, 4,1, b);
-			sprintf(a,"rps:  %s", b);  h = 4;  break;
-		case 5:
-			sprintf(a,"Rpm:  %4d", f.rpm);  h = 2;  break;
+			sprintf(a,"Temp: %d", temp);  break;
 		}
 		d->print(a);  y += h+8;
 	}
+
+
+
+	//  adc ```
+	#if 0
+	d->setClr(24,24,30);
+	d->setCursor(32, H-24);
+	int pin = temp >= 0 ? ADC_Temp[temp] : 0;
+	int aa = analogRead(pin);
+	aaa = aa;
+	
+	const static int nn = 6;
+	static int xx = 0;
+	static uint16_t ar[nn]={0};
+	
+	ar[xx++] = aa;
+	if (xx >= nn)
+		xx = 0;
+	
+	int avg = 0;
+	for (int i=0; i < nn; ++i)
+		avg += ar[i];
+	avg /= nn;
+
+	dtostrf(3.3f * avg / 4095.f, 5,3, b);
+	sprintf(a,"%s%% %4d", b, avg);
+	d->print(a);
+	#endif
 }

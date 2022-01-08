@@ -1,30 +1,40 @@
 #pragma once
 #include <stdint.h>
 
-//----  Setup  ----	  use:  ram B      flash
+//----  Setup  ----
 //  optional features, comment out to disable
-#define DEMOS			//  28        9%
-#define DEMOS_PLASMA	//  36        11%
-#define DEMOS_3D		//  44        15%
+#define DEMOS			//  9%  flash used
+#define DEMOS_PLASMA	//  11%
+#define DEMOS_3D		//  15%
 
 
-//-----------------
-//  features, pins
+//----------------------------------
+//----  Features, pins  ----
+//  Keyboard pins 3x3 in matrix.h
 #define LCD_LED  23  // pwm lcd brightness
 
 #define NumFans  7  // count
 //  fan pins
 extern const uint8_t FAN_PWM[NumFans];  // PWM outut pins  in fans.cpp
-extern const uint8_t FAN_RPM[NumFans];  // RPM input pins  use NoRPM if not present
-#define NoRPM  99
+extern const uint8_t FAN_RPM[NumFans];  // RPM input pins
+#define NoRPM  99   // use if fan has no rpm pin
 
-//  led light
+//  Temperature 'C sensor(s) DS18B20, one wire bus
+#define TEMP_PIN  18	//  9%  24k  flash
+#define MaxTemp   4		// max count of sensors
+
+//  led light-
 //#define LED  12
-//  temperature 'C sensor DS18B20
-//#define TEMP1  31	//  44   9%  24k
 
-//  Keyboard pins in matrix.h
-//-----------------
+//----  Used pins:  ----
+//  Fans 7*2 + Keys 3+3 + Lcd SPI 5+1 led + 1 T'C
+//  = 14 + 6 + 6 = 26
+
+//----  Free pins:
+//  12?, a12 dac, 27, 26  (all T3 pins = 35)
+
+//----------------------------------
+//----  End of Setup  ----
 
 
 #define W 160  //  display dim

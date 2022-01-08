@@ -30,7 +30,7 @@ struct Gui
 
 
 	//  fans  ***
-	const static int NumFanDet = 3;
+	const static int NumFanDet = 4;
 	void DrawFans(), DrawFanDetails();
 	void DrawGraphs(), DrawGraph();
 	void KeysFans();
@@ -77,13 +77,17 @@ struct Gui
 
 	//  gui keys pressed, some +-1
 	int8_t kRight=0, kUp=0,  kEnt=0, kBack=0;
-	int8_t kPgUp=0,  kMid=0, kEnd=0;
+	int8_t kPgUp=0,  kMid=0, kEnd=0, kSave=0;
 	int16_t kFanAdd = 20;
 
 
 	//  level 2  menu cursors  ---
-	int8_t ym2Fan = 0, yFanDet = 0, ym2Scan = 0;
-	int8_t ym2Disp = 0, pgDisp = 0;
+	const static int8_t FanDetPages = 2;  // fan details pages
+	int8_t ym2Fan = 0;
+	int8_t pgDet = 0, yFanDet[FanDetPages] = {0,0};
+	static int8_t FanDetLines[FanDetPages];
+
+	int8_t ym2Disp = 0, pgDisp = 0, ym2Scan = 0;
 	int8_t pgGraph = G_Stats;
 
 	const static uint8_t DispPages[Di_All];
@@ -96,12 +100,22 @@ struct Gui
 
 
 	//  Temp 'C  ---
-#ifdef TEMP1
-	float fTemp = -90.f;  // cur value
-	int8_t temp1 = 1;     // fist, init
+#ifdef TEMP_PIN
+	typedef uint8_t TempAddr[8];
+	TempAddr addr[MaxTemp] = {0,};  // sensor address one wire
+
+	enum TempInit
+	{  TI_FAIL, TI_SEARCH, TI_DONE, TI_READ, TI_ALL  };
+
+	TempInit tempInit = TI_SEARCH;  // first, init
+	int tempCount = 0;   // sensors count
+
+	float fTemp[MaxTemp] = {0.f,};  // cur temp value
+
 	//  last time read'C, add to graph
 	uint32_t msTemp = 0, msTempGr = 0;
 	void GetTemp();
+	void ResetTemp();  // search sensors again
 #endif
 
 	uint8_t grTemp[W];    // graph array
