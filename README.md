@@ -9,16 +9,14 @@ Based on my K.C. "Kacey" Keyboard Controller (More description of project on [My
 ## Features
 
 * PWM output to (PC) 3 pin 12V fans.
-  (10 kHz, 7 Fan channels **)
-* RPM (revolutions per minute or second) detection and display
+  (7 Fan channels, at 10 kHz by default **)
+* RPM (revolutions per minute and second) detection and display
 * Stop prevention (useful for lowest RPM)
 
 * GUI with menu on display, parameters
-* Rotary encoder Todo: add to matrix
-* Keyboard buttons (matrix 3x3 **)
+* Keyboard matrix (3x3, 9 keys **)
 
-* Optional DS18B20 temperature sensor
-* TODO: Thermocouple op-amp, mux, reading?
+* DS18B20 temperature sensors (optional **)
 
 ** Can be changed in code.
 
@@ -48,10 +46,10 @@ My sources are licensed GPLv3. For other sources used, see their repositories.
 For detailed info check subdir kicad with schematics, or included schematics.png image (todo).
 
 The keyboard is made of:
-* Teensy 3.2 (or 3.1). Can be overclocked, to 144 MHz (or 120 MHz, with longer wires).
+* Teensy 3.2 (or 3.1). Can be overclocked to 120-144 MHz.
 * TFT LCD display ST7735, 160 x 128, 16bit color RGB565. Red PCB with SD card slot. Terribly low horizontal viewing angle.
 * NPN transistor BC550. Connection from pin 23 output through 4.7k resistor to base, collector to 3.3V, emitter to Display LED.
-* Optionally a DS18B20 1-wire temperature sensor with data pin through 4.7k resistor to 3.3V.
+* Optionally a DS18B20 1-wire temperature sensor(s) with data pin(s) through 4.7k resistor to 3.3V. All sensors connect the same (use 1 common data pin).
 * Each fan uses 2 resistors 1k and 1k to 4.7k, 1 capacitor 100n (for 10kHz PWM) and 2 transistors: BC550C (or similar NPN) and BD140 (PNP).
 
 Display uses pins: 9 DC, 10 CS, 8 RST (set in `Ada4_ST7735.cpp`) 11 DOUT, 13 CLK.
@@ -63,7 +61,7 @@ Information useful when building / starting to use this controller.
 
 Pins setup is done in files:
 * `def.h`
-  * Define code features to use like: demos, game. Also optional pins for LED and Temp'C.
+  * Define all pins here (also optional) and optional code features (demos).
 * `matrix.h` has defined pins for keyboard: Matrix_cols and Matrix_rows.
 * Fan pins are defined in `fan.cpp`.
 * Code related to fans is in files having `fan` in name.
@@ -89,8 +87,8 @@ On successful build the last lines are e.g.
 ```
   CC kc/matrix.c
  Linking 
-   SRAM: 68%  44852 / 65536 B
-  Flash: 51%  133888 / 262144 B
+   SRAM: 70%  46476 / 65536 B
+  Flash: 64%  169412 / 262144 B
 ```
 showing used percentages of memories.
 
