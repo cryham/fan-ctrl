@@ -7,7 +7,6 @@
 #define DEMOS_PLASMA	//  11%
 #define DEMOS_3D		//  15%
 
-
 //----------------------------------
 //----  Features, pins  ----
 //  Keyboard pins 3x3 in matrix.h

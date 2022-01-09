@@ -3,8 +3,10 @@
 
 
 int8_t Gui::FanDetLines[Gui::FanDetPages] = {2,2};  // lines on each fan details page
-const uint16_t Gui::tFanAdd[NumFanAdd] = {
+
+const uint16_t Gui::tFanAdd[NumFanAdd] = {  // pwm add speeds
 	1, 2, 4, 8, 16, 24, 32, 40, 60, 80, 120, 160, 200, 240, 320, 400, 512,	};
+
 
 //  Keys Fans
 //....................................................................................
@@ -27,9 +29,9 @@ void Gui::KeysFans()
 			switch (yy)  // page 0
 			{
 			case 0:
-				p = RangeAdd(p, kRight * tFanAdd[par.iFanAdd], 0, 4095, 1);  break;  // add
+				p = RangeAdd(p, kRight * tFanAdd[par.iFanAdd], 0, 4095, 1);  break;  // pwm
 			case 1:
-				par.iFanAdd = RangeAdd(par.iFanAdd, kRight, 0, NumFanAdd-1, 1);  break;  // add speed
+				par.iFanAdd = RangeAdd(par.iFanAdd, kRight, 0, NumFanAdd-1, 1);  break;  // add
 			case 2:
 				f.fd.mode = RangeAdd(f.fd.mode, kRight, 0, FModes_All-1, 1);  break;
 			}	break;

@@ -73,7 +73,6 @@ void Gui::DrawFans()
 	d->setClr(10,16,22);
 	d->setCursor(0,0);
 	//sprintf(a,"Fan Name  PWM%%  rps  Rpm");
-	//sprintf(a,"Fan Name  PWM%%  Rpm");
 	sprintf(a," Fan    PWM%%  Rpm   Temp\x01""C");
 	d->print(a);
 }

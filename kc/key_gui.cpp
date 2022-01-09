@@ -24,17 +24,6 @@ void Gui::KeyPress()
 	kEnd = Key(8);  //-
 	kMid = Key(4);
 	
-	//  rot enc  (*)  scroll
-	/*auto& kk = mlevel == 0 ? kUp : kRight;
-
-	static int8_t old = KeyH(5);
-	int8_t scr = KeyH(5);
-	if (scr && !old)
-		kk = KeyH(4) > 0 ? -1 : 1;
-	else
-		kk = 0; //Key(0);
-	old = scr;*/
-
 	int d = kUp + kRight;
 
 
