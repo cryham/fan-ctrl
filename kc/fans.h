@@ -7,15 +7,15 @@ const static int avgNum = 4;
 //  ms time  for max PWM to turn on, at start and after (sudden) stop
 const static int msMax = 300;  // ?
 
-
-const static int FNames_All = 12;
-extern const char *fanNames[FNames_All];
+//  for naming fans
+const static int FNames_All = 13;
+extern const char* fanNames[FNames_All];
 
 enum FanMode
 {
 	FM_Hide, FM_Off, FM_On, FM_ExtOn, FModes_All
 };
-extern const char *fanModes[FModes_All];
+extern const char* fanModes[FModes_All];
 
 
 //  data, saved in eeprom
@@ -56,14 +56,17 @@ struct Fan
 	Fan();
 	void Init(uint8_t fanId);
 
+	void GetFanName(char* s) const;
+
 	void CalcRPM();
 };
 
 
 struct Fans
 {
-	uint32_t updateMS = 500;  // ms, 2Hz refresh
 	uint32_t prevMS = 0;
+	
+	bool ext_on = false;  // external on/off pin state
 
 	Fan fan[NumFans];
 

@@ -116,7 +116,7 @@ endif
 #phony:
 #	echo $(COMPILERPATH)
 
-kc: $(BINDIR)/$(PROJECT).hex
+fanc: $(BINDIR)/$(PROJECT).hex
 
 # C compilation
 $(OBJDIR)/%.o : $(SRCKC)/%.c

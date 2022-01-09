@@ -1,37 +1,11 @@
 #include "gui.h"
-#include "Ada4_ST7735.h"
 #include "kc_data.h"
 
+#include "Ada4_ST7735.h"
+#include "TomThumb3x5.h"
 
-//  Grid  | |
-inline void GridLineP(Ada4_ST7735* d, KC_Params& par, int m, uint16_t c, const char* s)
-{
-	int h = m * 600000 / tRpm(par);  // m min time
-	int x = W-1 - h;
-	if (x > 0)  d->drawFastVLine(x, 0, H/2, c);
-	else  return;
-	x -= 6;
-	if (x < 12 || x >= W-12)  return;
-	if (x < 0)  x = 0;
-	d->setCursor(x, 0);
-	d->setColor(c);
-	d->print(s);
-}
-inline void GridLineT(Ada4_ST7735* d, KC_Params& par, int m, uint16_t c, const char* s)
-{
-	int h = m * 60000 / tTgraph(par);  // m min time
-	int x = W-1 - h;
-	if (x > 0)  d->drawFastVLine(x, H/2, H/2-1, c);
-	else  return;
-	x -= 6;
-	if (x < 12 || x >= W-12)  return;
-	if (x < 0)  x = 0;
-	d->setCursor(x, H/2+1);
-	d->setColor(c);
-	d->print(s);
-}
 
-//  temp val
+//  Temp val
 int Gui::TempFtoB(float tm)
 {
 	int t = 255.f * (tm - par.minTemp) / (par.maxTemp - par.minTemp);
@@ -43,198 +17,176 @@ float Gui::TempBtoF(uint8_t b)
 	return b / 255.f * (par.maxTemp - par.minTemp) + par.minTemp;
 }
 
+//  auto range Temp  get min,max
+void Gui::AutoRange(int d)
+{
+	uint8_t tmin = 255, tmax = 0;
+	for (int i=0; i <= W-1; ++i)
+	{
+		uint8_t t = grTemp[d][i];
+		if (t > 0)  // measured
+		{
+			if (t > tmax)  tmax = t;
+			if (t < tmin)  tmin = t;
+		}
+	}
+	if (tmin > tmax)  // none yet
+	{
+		grFmin[d] = 20;  grBmin[d] = TempFtoB(grFmin[d]);
+		grFmax[d] = 23;  grBmax[d] = TempFtoB(grFmax[d]);
+	}else
+	{	grFmin[d] = floor(TempBtoF(tmin));
+		grFmax[d] =  ceil(TempBtoF(tmax));  // in 'C
+		if (grFmin[d] + 3 >= grFmax[d])  // min range 3'C
+		{	--grFmin[d];  ++grFmax[d];  }
+		
+		grBmin[d] = TempFtoB(grFmin[d]);
+		grBmax[d] = TempFtoB(grFmax[d]);
+		if (grBmin[d] == grBmax[d])
+			++grBmax[d];
+	}
+}
 
 //  Graphs ~ ~
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-void Gui::DrawGraph()
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
+	bool temp, bool legend, int id)
 {
-	#define getPv(i)  ii = kc.grRpos + i;  v = kc.grRpm[ym2Fan][ii % W];
-	#define getTv(i)  ii =    grTpos + i;  v =    grTemp[ii % W];
+	const int16_t xLen = xMax - xMin, yLen = yMax - yMin,
+		yF = 13, left = 22, top = legend ? 10 : 6;  // marg
 
-	char a[64];
-	d->setFont(0);
 	int xc = par.xCur;
-	bool cursor = xc < W;
-	int i,ii, x,y0, v,y,h;  uint16_t c;
+	bool cursor = legend && xc < W;
+	auto cur = [&](auto i) {  return cursor && i == xc;  };
+
+	int i,x,y, v;  // var
+	char a[64];
+
+	//  x time and val
+	auto getVal = [&](auto i){
+		int ii = (temp ? grTpos : kc.grRpos-1) + i + W;
+		return temp ? grTemp[id][ii % W] : kc.grRpm[id][ii % W];  };
+	auto x4tm = [&](auto tm){
+		return xMax - (tm * 60000 / (temp ? tTgraph(par) : tRpm(par)));  };
 
 
-	//  rpm  ------------------------
-
-	//  grid
-	if (par.timeRpm)
+	//  draw grid line with text value
+	auto GridLineV = [&](int x, int n/*clr*/, const char* s)
 	{
-		GridLineP(d,par, 10, RGB(12, 12, 12),"10");  // m
-		GridLineP(d,par, 30, RGB(12, 12, 12),"30");
-		GridLineP(d,par, 60, RGB(16, 16, 16),"1h");  // h
-		GridLineP(d,par,120, RGB(16, 16, 16),"2h");
-		GridLineP(d,par,240, RGB(16, 16, 16),"4h");
-		GridLineP(d,par,480, RGB(16, 16, 16),"8h");
-	}
+		if (x < xMin || x > xMax)  return;
+		if (!legend)  n -= 7;
 
-	//  graph  rpm
-	for (i=0; i <= W-1; ++i)
+		uint16_t clr = RGB(n,n,n);
+		d->drawFastVLine(x, yMin + top, yLen - top, clr);  // |
+		
+		x -= 6;
+		if (/*legend ||*/ x < xMin + left || x >= xMax-10)  return;
+		n += 3;  clr = RGB(n,n,n);
+
+		d->setCursor(x, yMin + 2);  d->setColor(clr);
+		d->print(s);  // txt
+	};
+
+	auto GridLineH = [&](int y, int n/*clr*/, int val) //, bool show=false)
 	{
-		const int yMax = H-1;///2;
-		getPv(i);
-		if (v > 0)
+		if (y < yMin || y > yMax)  return;
+		if (!legend)  n -= 5;
+		
+		uint16_t clr = RGB(n,n,n);
+		d->drawFastHLine(xMin, y, xLen, clr);  // --
+		
+		n += 4;  clr = RGB(n,n,n);
+		//if (show || legend)
 		{
-			ClrTemp(2*v);  c = d->getClr();
-
-			//h = 2 * v / 4;  // max half
-			h = v;  // max
-			if (h > yMax)  h = yMax;
-
-			y = yMax - h;
-			if (y < 0)  y = 0;
-
-			if (y+h < H)
-				//d->drawFastVLine(i, y, h, c);
-				d->drawPixel(i, y, c);
-
-			//if (i == xc)
-			//	d->drawPixel(i, y, RGB(31,31,31));  //.
-	}	}
-	return;  ///---
-
-	//  legend
-	x = 0;  y0 = 9;
-	d->setClr(20, 20, 25);
-	d->setCursor(x, y0);
-	d->println("Rpm");
-	d->moveCursor(0,2);
-
-	if (cursor)
-	{
-		getPv(xc);
-		ClrTemp(v);
-		sprintf(a,"%d", v);  d->println(a);
-
-		//d->moveCursor(0,1);
-		//PrintInterval(tRpm(par)*(W-1-xc));  d->println("");
-	}
-	//  max
-	v = H/2 * 4 / 2;
-	d->setClr(16, 16, 20);
-	d->moveCursor(0,2);
-	if (!cursor)
-	{	d->print("max ");
-		sprintf(a,"%d", v);  d->println(a);
-	}
-
-
-#ifdef TEMP_PIN
-	//  Temp'C  ------------------------------------
-
-	//  auto range  get min,max
-	if (grTempUpd)
-	{	grTempUpd = 0;
-
-		uint8_t tmin = 255, tmax = 0;
-		for (i=0; i <= W-1; ++i)
-		{
-			uint8_t t = grTemp[i];
-			if (t > 0)  // measured
-			{
-				if (t > tmax)  tmax = t;
-				if (t < tmin)  tmin = t;
-			}
+			if (y + 10 >= yMax)  y = yMax - 10;
+			d->setCursor(xMin, y + 2);  d->setColor(clr);
+			sprintf(a,"%d", val);  d->print(a);  // txt val
 		}
-		if (tmin > tmax)  // none yet
-		{
-			grFmin = par.minTemp;  grBmin = TempFtoB(grFmin);
-			grFmax = par.maxTemp;  grBmax = TempFtoB(grFmax);
-		}else
-		{	grFmin = floor(TempBtoF(tmin)); // - 1;
-			grFmax =  ceil(TempBtoF(tmax)); // + 1;  // in 'C
-			//if (grFmin >= grFmax)
-			if (grFmin+3 >= grFmax)  // min range 3'C
-			{	--grFmin;  ++grFmax;  }
-			grBmin = TempFtoB(grFmin);
-			grBmax = TempFtoB(grFmax);
-			if (grBmin == grBmax)
-				++grBmax;
-			//if (grTmin >= grTmax)
-			//	grTmax = grTmin + TempFtoB(1.f + par.minTemp);
-		}
+	};
+
+	d->setFont();
+	// d->setFont(&TomThumb);  // mini
+
+
+	//------------------------------------------------------------------------
+	if (temp)
+	if (grTempUpd[id])
+	{	grTempUpd[id] = 0;
+		AutoRange(id);
 	}
 
-	//  grid
+	//  grid  vertical  |||
 	{
-		GridLineT(d,par,  5, RGB( 9,  9,  9),"5");
-		GridLineT(d,par, 10, RGB(14, 14, 14),"10");  // m
-		GridLineT(d,par, 30, RGB(12, 12, 12),"30");
-		GridLineT(d,par, 60, RGB(16, 16, 16),"1h");  // h
-		GridLineT(d,par,120, RGB(16, 16, 16),"2h");
-		GridLineT(d,par,240, RGB(16, 16, 16),"4h");
-		GridLineT(d,par,480, RGB(16, 16, 16),"8h");
-
-		//  vertical  ==
-		if (grFmax > grFmin)
-		for (i = grFmin; i <= grFmax; ++i)  // 'C
-		{
-			//v = TempFtoB(i);
-			v = H/2 * (float(i) - grFmin) / (grFmax - grFmin);
-			if (v >= 0 && v <= H/2)
-			{
-				h = i%10==0 ? 12 : i%5==0 ? 10 : i%2==0 ? 8 : 6;
-				c = RGB(h,h,h);
-
-				y = H-1 - v;
-				if (y > H-1)  y = H-1;
-				if (y < H/2)  y = H/2;
-				d->drawFastHLine(0,y, W,c);
-		}	}
+		GridLineV(x4tm(  1),  8, "1" );
+		//GridLineV(x4tm(  2),  9, "2" );
+		GridLineV(x4tm(  5), 10, "5" );
+		GridLineV(x4tm( 10), 15, "10");  // m
+		GridLineV(x4tm( 30), 13, "30");
+		GridLineV(x4tm( 60), 18, "1h");  // h
+		GridLineV(x4tm(120), 16, "2h");
+		//GridLineV(x4tm(240), 16, "4h");
+		//GridLineV(x4tm(480), 16, "8h");
 	}
 
-	//  graph  Temp
+	//  grid  horizontal  ===
+	if (temp && grFmax[id] > grFmin[id])
+	for (i = grFmin[id]; i <= grFmax[id]; ++i)  // 'C
+	{
+		y = yMax - yLen * (float(i) - grFmin[id]) / (grFmax[id] - grFmin[id]);
+		GridLineH(y, i%5==0 ? 13 : i%2==0 ? 11 : 9, i);
+	}
+
+	if (!temp)
+	for (i = 0; i <= 6; ++i)  // rpm
+	{
+		y = yMax - yLen * float(i*200) / 10.f;
+		GridLineH(y, i%3==0 ? 13 : i%2==0 ? 11 : 9, i*200);
+	}
+
+
+	//  graph  Temp  ~~~
 	if (grBmax > grBmin)
-	for (i=0; i <= W-1; ++i)
+	for (i = xMin; i <= xMax; ++i)
 	{
-		getTv(i);
+		v = getVal(i - xMax);
 		if (v > 0)
-		{
-			ClrTemp(v);  c = d->getClr();
-			if (i == xc)  c = RGB(31,31,31);  //.
+		{	ClrTemp(temp ? v : v*2);
 
-			h = H/2 * (float(v) - grBmin) / (grBmax - grBmin);
-
-			y = H-1 - h;
-			if (y > H-1)  y = H-1;
-			if (y < H/2)  y = H/2;
-			d->drawPixel(i,y, c);
+			if (temp)
+				y = yMax - yLen * (float(v) - grBmin[id]) / (grBmax[id] - grBmin[id]);
+			else
+				y = yMax - yLen * (float(v) - 0) / (128 - 0);
+			
+			if (y >= yMin && y <= yMax)
+				d->drawPixel(i,y, cur(i) ? RGB(31,31,31) : d->getClr());
 	}	}
 
+	d->setFont();
+
 	//  legend
-	x = 0;  y0 += H/2;
-	d->setClr(18, 22, 25);
-	d->setCursor(x, y0);
-	d->println("Temp \x01""C");
-	d->moveCursor(0,2);
-
-	if (cursor)
+	if (legend)
 	{
-		d->drawPixel(xc,  0, RGB(29,29,29));  //.
-		d->drawPixel(xc,H/2, RGB(29,29,29));  //.
-		d->drawPixel(xc,H-1, RGB(29,29,29));  //.
+		x = xMin + xLen/2; // + left;
+		y = yMin + top;
+		d->setCursor(x,y);
+		d->setClr(18, 22, 25);
+		d->print(temp ? "Temp \x01""C" : "Rpm");  y += yF+3;
 
-		getTv(xc);
-		ClrTemp(v);
+		if (cursor)
+		{
+			d->drawPixel(xc, yMin+1, RGB(29,29,29));  // :
+			d->drawPixel(xc, yMax, RGB(29,29,29));
 
-		float f = xc == W-1 ? fTemp[0] : // latest
-			TempBtoF(v);
-		dtostrf(f,4,2,a);  d->println(a);
+			v = getVal(xc);
+			//ClrTemp(v);
+			float f = xc == W-1 ? fTemp[id] : 0.f;  // latest
+			if (temp)
+				TempBtoF(v);
 
-		d->moveCursor(0,1);
-		PrintInterval(tTgraph(par)*(W-1-xc));  d->println("");
+			d->setCursor(x,y);  dtostrf(f,4,2,a);  d->print(a);  y += yF;
+
+			d->setCursor(x,y);  PrintInterval(
+				(temp ? tTgraph(par) : tRpm(par)) * (W-1-xc));  y += yF;
+		}
 	}
-
-	//  max min
-	d->setClr(17, 19, 22);
-	d->moveCursor(0,2);
-	if (!cursor)  d->print("max ");
-	sprintf(a,"%d", grFmax);  d->println(a);
-
-	if (!cursor)  d->print("min ");
-	sprintf(a,"%d", grFmin);  d->println(a);
-#endif
 }

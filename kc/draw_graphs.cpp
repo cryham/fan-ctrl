@@ -30,19 +30,15 @@ void Gui::DrawGraphs()
 	int h = t / 3600 % 24, m = t / 60 % 60, s = t % 60;
 	//to = t - kc.tm_on;
 
-	// bool date = yr >= 2019; // rtc set
-	// bool leap = isLeap(yr);
-
 	//  x,y pos~
 	int16_t x, y;
 	const int16_t //x0 = W / 2,
-		yt = 32, yu = H - 20, // time, uptime, date
-		yp = yt + 22;
+		yt = 32, yu = H - 20;  // time, uptime, date
 
 
 	//  title
 	d->setClr(12, 14, 17);
-	d->print(strMain[ym]);
+	//d->print(strMain[ym]);
 
 
 	//  Graphs  ~~~~~~~~~~~~~~~~
@@ -61,29 +57,24 @@ void Gui::DrawGraphs()
 	}	}
 	*/
 
-	//if (pgGraph == Cl_Graphs)
+	//if (pgGraph == Cl_Graphs)  //par // todo: rpm/temp, id..
 	{
-		DrawGraph();
+		DrawGraph(0, W-1,  0,   H/2,  1, false, 0);  // top wide
+		DrawGraph(0, W-1,  H/2, H-1,  1, false, 1);  // bottom
 		//return;
 	}
 
 	x = 60;  y = 42;
+	return;  //!
 
 
-	//  Uptime, since on  --------
-	{
-		y = yu;
-		d->setCursor(x, y);
-		d->setClr(18, 22, 28);
-		sprintf(a, "%d:%02d:%02d", h, m, s);  d->print(a);
-	}
-
-
-	//  Temp'C  val  --------
-	#ifdef TEMP_PIN
+	//  Temp'C  init, val  --------
+	// #ifdef TEMP_PIN
+	#if 0
 	// if (tempInit > TI_DONE)  // 'C
 	{
-		d->setCursor(6 +10, 40 -10);
+		//d->setCursor(6 +10, 40 -10);
+		d->setCursor(W/2 -16, 4);
 		d->print("\x01""C  ");
 
 		d->print('0'+tempCount);
@@ -108,26 +99,17 @@ void Gui::DrawGraphs()
 	#endif
 
 
-	d->setFont(0);
-
-
-	//  small font  ----------------------
+	//  Uptime, since on  --------
+	{
+		y = yu;
+		d->setCursor(x, y);
+		d->setClr(18, 22, 28);
+		sprintf(a, "%d:%02d:%02d", h, m, s);  d->print(a);
+	}
 
 
 	//  page / all  ---
 	d->setClr(12, 16, 22);
-	//if (!stats)
-	{
-		d->setCursor(W - 1 - 3 * 6, 4);
-		sprintf(a, "%d/%d", pgGraph + 1, G_All);  d->print(a);
-	}
-
-
-	//  press / 1min
-	x = 6;  y = yp;
-	d->setCursor(x, y);
-
-	//int m1 = kc.min1_Keys;
-	//ClrTemp(m1);
-	//dtostrf(m1, 3,0, f);  d->print(f);
+	d->setCursor(W-1 - 3*6, 4);
+	sprintf(a, "%d/%d", pgGraph + 1, G_All);  d->print(a);
 }

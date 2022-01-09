@@ -13,3 +13,5 @@
 #-- Build
 bin/
 obj/
+
+kicad/fan-ctrl.bak

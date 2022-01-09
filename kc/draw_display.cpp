@@ -11,7 +11,7 @@ const char* sPgDisplay[Di_All] = {
 //....................................................................................
 void Gui::DrawDisplay()
 {		
-	char a[64];
+	char a[64],b[32];
 	d->setClr(29,28,6);
 	d->print(strMain[ym]);  d->setFont(0);
 
@@ -44,7 +44,8 @@ void Gui::DrawDisplay()
 		case 0:
 			sprintf(a,"Brightness: %d %%", par.brightness);  break;
 		case 1:
-			sprintf(a,"Start with: %s", StrScreen(par.startScreen));  break;
+			StrScreen(par.startScreen, b);
+			sprintf(a,"Start with: %s", b);  break;
 		}
 		d->print(a);  y += h+8;
 	}	break;

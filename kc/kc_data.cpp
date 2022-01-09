@@ -21,6 +21,7 @@ void KC_Main::Update(uint32_t ms)
 		analogWrite(LCD_LED, val);
 	}
 
+
 	//  add graph stats  ---
 	if (par.timeRpm)
 	if (ms - msRpm > tRpm(par) || ms < msRpm)
@@ -38,5 +39,4 @@ void KC_Main::Update(uint32_t ms)
 		++grRpos;
 		if (grRpos >= W)  grRpos = 0;
 	}
-
 }

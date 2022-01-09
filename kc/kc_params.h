@@ -28,17 +28,19 @@ struct KC_Params
 	int8_t tempOfs;       // adj Temp val  *0.03'C  +-3.8'C
 
 	//  time intervals
-	uint8_t timeRpm;     // *6s  graph add
+	uint8_t timeRpm;      // *6s  graph add
 	uint8_t timeTemp;     // Temp'C read
 	uint8_t timeTgraph;   // Temp'C add to graph, no average
+	#define tRpm(par)     (100 * gIntervals[par.timeRpm    & gIntvMask])  // ms
+	#define tTemp(par)    (100 * gIntervals[par.timeTemp   & gIntvMask])  // ms
+	#define tTgraph(par)  (100 * gIntervals[par.timeTgraph & gIntvMask])
+
 	//  Temp graph scale
 	uint8_t minTemp, maxTemp;
 	uint8_t xCur;         // cursor
 
-	//#define t1min(par)    (6 * par.timeRpm)  // s
-	#define tRpm(par)     (100 * gIntervals[par.timeRpm    & gIntvMask])  // ms
-	#define tTemp(par)    (100 * gIntervals[par.timeTemp   & gIntvMask])  // ms
-	#define tTgraph(par)  (100 * gIntervals[par.timeTgraph & gIntvMask])
+	uint8_t ym2Fan;       // last fan detail
+	int8_t iFanAdd;
 };
 //  --- ADD new to END ----
 //  set defaults in ParInit()
@@ -46,17 +48,18 @@ struct KC_Params
 
 enum EStartScr  //  start screen
 {	ST_Main0 = 0,
-	ST_Fans,
-	ST_Keys, ST_Keys2, ST_Keys2Max = ST_Keys2 + K_All,
+	ST_Fans, ST_Fans2, ST_Fans2Max = ST_Fans2 + NumFans-1,
+	ST_Graph, ST_GraphMax = ST_Graph + G_All-1,
+
 	ST_Displ,
-	ST_Graph, ST_GraphMax = ST_Graph + G_All,
-	ST_Help = ST_GraphMax,
-	ST_Setup,
-	ST_Config, ST_Config2, ST_Config2Max = ST_Config2 + C_All,
-	ST_Demos = ST_Config2Max,
-	ST_Demos2,  ST_ALL = ST_Demos2 // = ST_Demos2Max
+	ST_Help,
+	ST_Config, ST_Config2Ver,
+	ST_Keys, ST_Keys2, ST_Keys2Max = ST_Keys2 + K_All-1,
+
+	ST_Demos,
+	ST_Demos2,  ST_ALL = ST_Demos2
 	#ifdef DEMOS
-		+D_All,
+		+D_All-1,
 	#endif
 };
 

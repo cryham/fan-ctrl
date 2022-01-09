@@ -69,15 +69,19 @@ void Gui::GetTemp()
 			//  graph inc pos
 			++grTpos;
 			if (grTpos >= W)  grTpos = 0;
-			//  add to graph
-			int t = TempFtoB(fTemp[0]);  //par
-		#if 0  // test
-			static uint8_t ii = 0;  ++ii;
-			static uint8_t ti = 128;  if (ii%3==0)  ++ti;  t = ti;
-		#endif
-			t = t > 255 ? 255 : (t < 0 ? 0 : t);  // 0 not measured
-			grTemp[grTpos] = t;
-			grTempUpd = 1;
+
+			//  add to graph  all temp sensors
+			for (int i=0; i < tempCount; ++i)
+			{
+				int t = TempFtoB(fTemp[i]);  //par
+			#if 0  // test
+				static uint8_t ii = 0;  ++ii;
+				static uint8_t ti = 128;  if (ii%3==0)  ++ti;  t = ti;
+			#endif
+				t = t > 255 ? 255 : (t < 0 ? 0 : t);  // 0 not measured
+				grTemp[i][grTpos] = t;
+				grTempUpd[i] = 1;
+			}
 		}
 	}
 }

@@ -31,8 +31,12 @@ void ParInit()
 	par.timeRpm = 10;  //*6s 1m
 	par.timeTemp = 10;   // 8s
 	par.timeTgraph = 15; // 1m  gIntervals
-	par.minTemp = 17;  par.maxTemp = 35;
+	
+	par.minTemp = 15;  par.maxTemp = 90;
+	//par.minTemp = 20;  par.maxTemp = 50;
 	par.xCur = W-1;
+	
+	par.ym2Fan = 0;
 }
 
 //  errors
@@ -70,8 +74,8 @@ void KC_Main::Load()
 	eeprom_read_block((void*)&par, (void*)a, s);  a+=s;
 	if (a >= ESize) {  err=E_size;  return;  }
 
-	if (par.startScreen >= ST_ALL)
-		par.startScreen = ST_ALL-1;
+	if (par.startScreen > ST_ALL)
+		par.startScreen = ST_ALL;
 	setBright = 1;  // upd
 
 

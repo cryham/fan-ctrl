@@ -11,10 +11,11 @@ const uint8_t FAN_RPM[NumFans] =
  
 //  const
 const char *fanNames[FNames_All] = {
-	"",	"CPU", "GPU", "PSU", "RAM",	"MB", "HDD", "Case", "Cool", "Rad", "Ext", "New", };
+	"",	"CPU", "GPU", "PSU", "RAM",	"MB", "HDD",
+	"Case", "Cool", "Rad", "Ext", "Wtr", "New", };
 
 const char *fanModes[FModes_All] = {
-	"Hide", "Off", "On", "Ext." };
+	"Hide", "Off", "On", "Ext:" };
 
 
 //  Init  -----------
@@ -25,6 +26,19 @@ Fan::Fan()
 Fans::Fans()
 {
 	prevMS = millis();
+}
+
+void Fan::GetFanName(char* s) const
+{
+	if (fd.name >= FNames_All)
+	{	s[0] = 0;
+		return;
+	}
+
+	if (fd.number > 0)
+		sprintf(s,"%s%d", fanNames[fd.name], fd.number);
+	else
+		sprintf(s,"%s", fanNames[fd.name]);
 }
 
 
@@ -97,12 +111,16 @@ void Fan::CalcRPM()
 void Fans::Update()
 {
 	uint32_t dt = millis() - prevMS;
-	if (dt > updateMS)
+	if (dt > RpmUpdateMS)
 	{
+		#ifdef EXT_ON
+		ext_on = digitalRead(EXT_ON);
+		#endif
+
 		for (int i=0; i < NumFans; ++i)
 			Update(i, dt);
 
-		prevMS = millis();  
+		prevMS = millis();
 	}
 }
 
@@ -111,14 +129,23 @@ void Fans::Update()
 void Fans::Update(uint8_t i, uint32_t dt)
 {
 	Fan& f = fan[i];
+
+	//  rpm
 	bool rpm = !f.noRpm;
-	
 	if (rpm)
 		f.CalcRPM();
 	
+	//  on
 	bool on = f.fd.mode >= FM_On;
+	
+	//  external on/off pin
+	#ifdef EXT_ON
+	if (f.fd.mode == FM_ExtOn)
+		on = ext_on;
+	#endif
+
 	uint16_t pwm = on ? f.fd.pwm : 0;
-	// todo: auto pwm from Temp'C..
+	// todo: auto pwm from fTemp'C..
 
 	//  turned on
 	if (on && !f.oldOn)

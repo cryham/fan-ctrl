@@ -27,12 +27,14 @@ struct Gui
 	void ClrTemp(int temp);
 	void PrintInterval(uint32_t t);
 	int TempFtoB(float t);  float TempBtoF(uint8_t b);
+	void DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
+		bool temp, bool legend=true, int id=0);
 
 
 	//  fans  ***
 	const static int NumFanDet = 4;
 	void DrawFans(), DrawFanDetails();
-	void DrawGraphs(), DrawGraph();
+	void DrawGraphs();
 	void KeysFans();
 
 
@@ -42,7 +44,7 @@ struct Gui
 
 	//  start
 	void SetScreen(int8_t start);
-	const char* StrScreen(int8_t s);
+	void StrScreen(int8_t st, char* str);
 
 
 	//  fade color menu  ---
@@ -78,7 +80,10 @@ struct Gui
 	//  gui keys pressed, some +-1
 	int8_t kRight=0, kUp=0,  kEnt=0, kBack=0;
 	int8_t kPgUp=0,  kMid=0, kEnd=0, kSave=0;
-	int16_t kFanAdd = 20;
+	
+	//  fan pwm add speed
+	const static int8_t NumFanAdd = 17;
+	const static uint16_t tFanAdd[NumFanAdd];
 
 
 	//  level 2  menu cursors  ---
@@ -116,14 +121,15 @@ struct Gui
 	uint32_t msTemp = 0, msTempGr = 0;
 	void GetTemp();
 	void ResetTemp();  // search sensors again
-#endif
 
-	uint8_t grTemp[W];    // graph array
-	uint8_t grTpos = 0;   // write pos
+	uint8_t grTemp[MaxTemp][W];   // graph array,  for each temp sensor
+	uint16_t grTpos = 0;  // write pos
 	// auto range
-	uint8_t grTempUpd = 1;  // update
-	uint8_t grFmin = 17, grFmax = 35;  // temp 'C
-	uint8_t grBmin = 0, grBmax = 255;  // val Byte
+	uint8_t grTempUpd[MaxTemp] = {1,1};  // update
+	uint8_t grFmin[MaxTemp] = {17,17}, grFmax[MaxTemp] = {35,35};  // temp 'C
+	uint8_t grBmin[MaxTemp] = {0,0}, grBmax[MaxTemp] = {255,255};  // val Byte
+	void AutoRange(int d);
+#endif
 
 };
 

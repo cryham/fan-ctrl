@@ -2,7 +2,9 @@
 #include "kc_data.h"
 
 
-int8_t Gui::FanDetLines[Gui::FanDetPages] = {3,2};  // lines on each fan details page
+int8_t Gui::FanDetLines[Gui::FanDetPages] = {2,2};  // lines on each fan details page
+const uint16_t Gui::tFanAdd[NumFanAdd] = {
+	1, 2, 4, 8, 16, 24, 32, 40, 60, 80, 120, 160, 200, 240, 320, 400, 512,	};
 
 //  Keys Fans
 //....................................................................................
@@ -16,31 +18,33 @@ void Gui::KeysFans()
 		if (kUp)
 			yFanDet[pgDet] = RangeAdd(yFanDet[pgDet], kUp, 0, FanDetLines[pgDet], 1);
 		if (kPgUp)
-			kFanAdd = RangeAdd(kFanAdd, kPgUp * 5, 0, 40*40, 1);  // add adjust []?
-		if (kSave)
-			pgDet = RangeAdd(pgDet, kSave, 0, 1, 1);
+			pgDet = RangeAdd(pgDet, kPgUp, 0, FanDetPages-1, 1);
 
 		auto yy = yFanDet[pgDet];
-		if (pgDet==0)
-		switch (yy)  // page 0
+		switch (pgDet)
 		{
 		case 0:
-			p = RangeAdd(p, kRight * kFanAdd, 0, 4095, 1);  break;  // add
+			switch (yy)  // page 0
+			{
+			case 0:
+				p = RangeAdd(p, kRight * tFanAdd[par.iFanAdd], 0, 4095, 1);  break;  // add
+			case 1:
+				par.iFanAdd = RangeAdd(par.iFanAdd, kRight, 0, NumFanAdd-1, 1);  break;  // add speed
+			case 2:
+				f.fd.mode = RangeAdd(f.fd.mode, kRight, 0, FModes_All-1, 1);  break;
+			}	break;
 		case 1:
-			f.fd.mode = RangeAdd(f.fd.mode, kRight, 0, FModes_All-1, 1);  break;
-		}else
-		switch (yy)  // page 1
-		{
-		case 0:
-			f.fd.name = RangeAdd(f.fd.name, kRight, 0, FNames_All-1, 1);  break;
-		case 1:
-			f.fd.number = RangeAdd(f.fd.number, kRight, 0, 9, 1);  break;
-		#ifdef TEMP_PIN
-		case 2:
-			f.fd.temp = RangeAdd(f.fd.temp, kRight, 0, tempCount-1, 1);  break;/**/
-		#endif
-		// case 2:
-		// 	p = RangeAdd(p, kRight * kFanAdd, 0, 4095, 1);  break;  // add
+			switch (yy)  // page 1
+			{
+			case 0:
+				f.fd.name = RangeAdd(f.fd.name, kRight, 0, FNames_All-1, 1);  break;
+			case 1:
+				f.fd.number = RangeAdd(f.fd.number, kRight, 0, 9, 1);  break;
+			#ifdef TEMP_PIN
+			case 2:
+				f.fd.temp = RangeAdd(f.fd.temp, kRight, 0, tempCount-1, 1);  break;
+			#endif
+			}	break;
 		}
 		return;
 	}

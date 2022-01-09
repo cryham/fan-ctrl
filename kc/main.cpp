@@ -66,6 +66,10 @@ int main()
 	analogWriteResolution(12);
 	analogWrite(LCD_LED, 1000);  // 0-4095
 
+	#ifdef EXT_ON
+	pinMode(EXT_ON, INPUT_PULLUP);
+	#endif
+
 
 	//  Fans
 	kc.fans.Init();
@@ -84,8 +88,9 @@ int main()
 
 	//  load set from ee
 	kc.Load();
+	gui.SetScreen(par.startScreen);
 	//gui.SetScreen(ST_Demos2 + D_Plasma);
-	gui.SetScreen(ST_Fans);
+	//gui.SetScreen(ST_Fans);
 
 
 	//  keys
@@ -95,10 +100,6 @@ int main()
 	Periodic_init( par.scanFreq * 1000 );
 	Periodic_function( &main_periodic );
 
-	#ifdef LED
-	pinMode(LED, OUTPUT);
-	digitalWrite(LED, gui.led ? LOW : HIGH);
-	#endif
 
 
 	while(1)

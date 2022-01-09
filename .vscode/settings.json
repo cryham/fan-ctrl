@@ -13,6 +13,11 @@
 		"ostream": "cpp",
 		"tuple": "cpp",
 		"functional": "cpp",
-		"algorithm": "cpp"
+		"algorithm": "cpp",
+		"complex": "cpp",
+		"fstream": "cpp",
+		"limits": "cpp",
+		"sstream": "cpp",
+		"utility": "cpp"
 	}
 }

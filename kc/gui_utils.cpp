@@ -161,12 +161,17 @@ int16_t Gui::RangeAdd(int16_t val, int16_t add, int16_t vmin, int16_t vmax, int8
 //  save
 void Gui::Save()
 {
+	par.ym2Fan = ym2Fan;
+	
 	kc.Save();  infType = 2;  tInfo = -1;
 }
 //  load
 void Gui::Load(int8_t reset)
 {
 	kc.Load();  infType = 1;  tInfo = -1;
+	
+	ym2Fan = max(0, min(NumFans-1, par.ym2Fan ));
+	par.iFanAdd = max(0, min(NumFanAdd-1, par.iFanAdd ));
 }
 
 

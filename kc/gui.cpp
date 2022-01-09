@@ -42,47 +42,53 @@ void Gui::SetScreen(int8_t s)
 	{	mlevel = 0;  ym = 0;  return;  }
 	else  mlevel = 1;
 
+	// level2
+	if (s >= ST_Fans2 && s < ST_Fans2Max){  mlevel = 2;  ym = M_Fans;    ym2Fan = s - ST_Fans2;  }  else
+	if (s >= ST_Graph && s < ST_GraphMax){  mlevel = 2;  ym = M_Graphs;  ym1[ym] = s - ST_Graph;  }  else
+	if (s >= ST_Keys2 && s < ST_Keys2Max){  mlevel = 2;  ym = M_Keys;    ym1[ym] = s - ST_Keys2;  }  else
 	switch (s)
 	{
 	case ST_Fans:   ym = M_Fans;  break;
-	case ST_Keys:   ym = M_Keys;  break;
-	case ST_Config: ym = M_Config;  break;
-	case ST_Graph:  ym = M_Graphs;  break;
 
 	case ST_Displ:  ym = M_Display;  break;
+	case ST_Help:   ym = M_Help;  break;
+	case ST_Keys:   ym = M_Keys;  break;
+
+	case ST_Config:      ym = M_Config;  break;
+	case ST_Config2Ver:  ym = M_Config;  ym1[ym] = C_Version;  break;
 #ifdef DEMOS
 	case ST_Demos:  ym = M_Demos;  break;
 	}
 	if (s >= ST_Demos2){  mlevel = 2;  ym = M_Demos;  ym1[ym] = s - ST_Demos2;  }  //else
 #else
 	}
-#endif  // level2
-	if (s >= ST_Keys2 && s < ST_Keys2Max){  mlevel = 2;  ym = M_Keys;    ym1[ym] = s - ST_Keys2;  }  else
-	if (s >= ST_Graph && s < ST_GraphMax){  mlevel = 2;  ym = M_Graphs;  ym1[ym] = s - ST_Graph;  }  else
-	if (s >= ST_Config2 && s < ST_Config2Max){  mlevel = 2;  ym = M_Config;  ym1[ym] = s - ST_Config2;  }
+#endif
 }
 
-const char* Gui::StrScreen(int8_t s)
+void Gui::StrScreen(int8_t st, char* s)
 {
-	switch (s)
+	s[0] = 0;
+	// level2
+	if (st >= ST_Fans2 && st <= ST_Fans2Max)  sprintf(s,"Fan %d", st - ST_Fans2 +1);  else
+	if (st >= ST_Graph && st <= ST_GraphMax)  sprintf(s,"Graph %d", st - ST_Graph +1);  else
+	if (st >= ST_Keys2 && st <= ST_Keys2Max)  strcpy(s, strKeys[st - ST_Keys2]);  else
+	switch (st)
 	{
-	case ST_Main0:  return "Main ""\x13";
+	case ST_Main0:  sprintf(s, "Main ""\x13");  return;
 
-	case ST_Fans:   return strMain[M_Fans];
-	case ST_Keys:   return strMain[M_Keys];
-	case ST_Config: return strMain[M_Config];
-	case ST_Graph:  return strMain[M_Graphs];
+	case ST_Fans:   strcpy(s, strMain[M_Fans]);  return;
 
-	case ST_Displ:  return strMain[M_Display];
+	case ST_Displ:  strcpy(s, strMain[M_Display]);  return;
+	case ST_Help:   strcpy(s, strMain[M_Help]);  return;
+	case ST_Keys:   strcpy(s, strMain[M_Keys]);  return;
+ 
+	case ST_Config:     strcpy(s, strMain[M_Config]);  return;
+	case ST_Config2Ver: strcpy(s, strConfig[C_Version]);  return;
 #ifdef DEMOS
-	case ST_Demos:  return strMain[M_Demos];
+	case ST_Demos:  strcpy(s, strMain[M_Demos]);  return;
 	}
-	if (s >= ST_Demos2)  return strDemo[s - ST_Demos2];
+	if (st >= ST_Demos2)  strcpy(s, strDemo[st - ST_Demos2]);  return;
 #else
 	}
-#endif  // level2
-	if (s >= ST_Keys2 && s < ST_Keys2Max)	return strKeys[s - ST_Keys2];  else
-	if (s >= ST_Graph && s < ST_GraphMax)	return strMain[M_Graphs]/*strGraph[s - ST_Graph]*/;  else
-	if (s >= ST_Config2 && s < ST_Config2Max)	return strConfig[s - ST_Config2];
-	return "";
+#endif
 }

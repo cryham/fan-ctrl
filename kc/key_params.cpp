@@ -50,7 +50,7 @@ void Gui::KeysDisplay()
 {
 	if (kBack)  --mlevel;
 	if (kUp)  // y
-		ym2Disp = RangeAdd(ym2Disp, kUp ? 1 : 0, 0, DispPages[pgDisp], 1);
+		ym2Disp = RangeAdd(ym2Disp, kUp, 0, DispPages[pgDisp], 1);
 	else if (kPgUp)  // pg
 	{	pgDisp = RangeAdd(pgDisp, kPgUp, 0, Di_All-1, 1);
 		ym2Disp = RangeAdd(ym2Disp, 0, 0, DispPages[pgDisp], 1);
@@ -65,7 +65,7 @@ void Gui::KeysDisplay()
 			par.brightness = RangeAdd(par.brightness, kRight * 2, 0, 100, 1);
 			kc.setBright = 1;  break;
 		case 1:
-			par.startScreen = RangeAdd(par.startScreen, kRight, 0, ST_ALL-1);  break;
+			par.startScreen = RangeAdd(par.startScreen, kRight, 0, ST_ALL);  break;
 		}	break;
 
 	case Di_Key:
@@ -92,9 +92,9 @@ void Gui::KeysDisplay()
 		case 1:
 			par.timeTgraph = RangeAdd(par.timeTgraph, kRight, 0, gIntvMask, 1);  break;
 		case 2:
-			par.minTemp = RangeAdd(par.minTemp, kRight, 0, 40, 1);  break;
+			par.minTemp = RangeAdd(par.minTemp, kRight, 0, 100, 1);  break;
 		case 3:
-			par.maxTemp = RangeAdd(par.maxTemp, kRight, 0, 40, 1);  break;
+			par.maxTemp = RangeAdd(par.maxTemp, kRight, 0, 100, 1);  break;
 		}	break;
 
 	case Di_Debug:
