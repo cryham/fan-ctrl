@@ -4,6 +4,7 @@
 #include "Ada4_ST7735.h"
 #include "TomThumb3x5.h"
 
+#ifdef TEMP_PIN
 
 //  Temp val
 int Gui::TempFtoB(float tm)
@@ -139,7 +140,7 @@ void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 	if (!temp)
 	for (i = 0; i <= 6; ++i)  // rpm
 	{
-		y = yMax - yLen * float(i*200) / 10.f;
+		y = yMax - yLen * float(i*20) / 128.f;
 		GridLineH(y, i%3==0 ? 13 : i%2==0 ? 11 : 9, i*200);
 	}
 
@@ -155,7 +156,7 @@ void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 			if (temp)
 				y = yMax - yLen * (float(v) - grBmin[id]) / (grBmax[id] - grBmin[id]);
 			else
-				y = yMax - yLen * (float(v) - 0) / (128 - 0);
+				y = yMax - yLen * float(v) / 128.f;
 			
 			if (y >= yMin && y <= yMax)
 				d->drawPixel(i,y, cur(i) ? RGB(31,31,31) : d->getClr());
@@ -163,7 +164,7 @@ void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 
 	d->setFont();
 
-	//  legend
+	//  legend values, cursor
 	if (legend)
 	{
 		x = xMin + xLen/2; // + left;
@@ -190,3 +191,4 @@ void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 		}
 	}
 }
+#endif

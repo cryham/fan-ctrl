@@ -42,7 +42,7 @@ void Gui::KeysFans()
 				f.fd.number = RangeAdd(f.fd.number, kRight, 0, 9, 1);  break;
 			#ifdef TEMP_PIN
 			case 2:
-				f.fd.temp = RangeAdd(f.fd.temp, kRight, 0, tempCount-1, 1);  break;
+				f.fd.temp = RangeAdd(f.fd.temp, kRight, -1, tempCount-1, 1);  break;
 			#endif
 			}	break;
 		}

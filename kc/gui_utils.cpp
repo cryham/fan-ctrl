@@ -185,7 +185,7 @@ void Gui::DrawOperInfo()
 
 	if (tInfo > 0)
 	{	--tInfo;
-		bool h = infType == 1 || infType == 2;
+		bool h = infType >= 1;
 		int x = W-1 - 6*9, x1 = x+6, xe = 6*3,
 			y = 12, yy = h ? 42 : 10;
 
@@ -196,7 +196,7 @@ void Gui::DrawOperInfo()
 		d->setClr(27,29,31);
 
 		const static char* strInf[6] = {
-			"Reset", "Loaded", "Saved:", "Copied", "Pasted", "Swapped" };
+			"Reset", "Loaded", "Saved" };
 		d->print(strInf[infType]);
 
 		if (h)

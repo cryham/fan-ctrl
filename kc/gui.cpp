@@ -8,7 +8,9 @@ Gui::Gui() : d(0)
 {
 	Init(0);
 
+#ifdef TEMP_PIN
 	memset(grTemp, 0, sizeof(grTemp));
+#endif
 }
 
 void Gui::Init(Ada4_ST7735* tft)

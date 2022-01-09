@@ -26,7 +26,6 @@ struct Gui
 	//  util
 	void ClrTemp(int temp);
 	void PrintInterval(uint32_t t);
-	int TempFtoB(float t);  float TempBtoF(uint8_t b);
 	void DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 		bool temp, bool legend=true, int id=0);
 
@@ -87,9 +86,9 @@ struct Gui
 
 
 	//  level 2  menu cursors  ---
-	const static int8_t FanDetPages = 2;  // fan details pages
+	const static int8_t FanDetPages = 3;  // fan details pages
 	int8_t ym2Fan = 0;
-	int8_t pgDet = 0, yFanDet[FanDetPages] = {0,0};
+	int8_t pgDet = 0, yFanDet[FanDetPages] = {0,};
 	static int8_t FanDetLines[FanDetPages];
 
 	int8_t ym2Disp = 0, pgDisp = 0, ym2Scan = 0;
@@ -116,6 +115,7 @@ struct Gui
 	int tempCount = 0;   // sensors count
 
 	float fTemp[MaxTemp] = {0.f,};  // cur temp value
+	int TempFtoB(float t);  float TempBtoF(uint8_t b);
 
 	//  last time read'C, add to graph
 	uint32_t msTemp = 0, msTempGr = 0;

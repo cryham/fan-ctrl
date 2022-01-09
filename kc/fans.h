@@ -1,7 +1,7 @@
 #pragma once
 #include "def.h"
 
-//  const
+//  const  ----
 //  params  rpm avgeraging length
 const static int avgNum = 4;
 //  ms time  for max PWM to turn on, at start and after (sudden) stop
@@ -18,16 +18,22 @@ enum FanMode
 extern const char* fanModes[FModes_All];
 
 
-//  data, saved in eeprom
+//  data, saved in eeprom  ----
 struct FanData
 {
 	uint8_t mode = 0;  // FanMode
 	int16_t pwm = 0;   // 0 off .. 4095 full speed 12V
+	
 	//  for lcd, info
 	uint8_t name = 0;  // fanNames
 	uint8_t number = 0;
+	
 	int8_t temp = -1;  // sensor id  -1 none  for auto adj
+
+	//uint16_t rpmMin, rpmMax;  // todo: auto rpm
+	//uint16_t tempMin, tempMax;
 };
+
 
 struct Fan
 {

@@ -41,20 +41,29 @@ void Gui::DrawFans()
 			{
 				d->setCursor(58, y);  d->print("off");
 			}else
-			{	//  pwm
+			{	//  pwm %
 				/*if (f.fd.pwm < 400)  // 10%
 					dtostrf(100.f * f.fd.pwm / 4095.f, 3,1, a);
 				else*/
 					sprintf(a,"%2d", 100 * f.fd.pwm / 4095);
 				
-				d->setCursor(58, y);  d->print(a);
+				d->setCursor(50, y);  d->print(a);
 
 				//  rps rpm
 				if (!f.noRpm)
 				{
-					sprintf(a,"%2d %4d", f.rpmAvg/60, f.rpmAvg);  //f.pulses, f.rpm);
-					d->setCursor(90, y);  d->print(a);
-			}	}
+					sprintf(a,"%4d", f.rpmAvg);
+					//sprintf(a,"%2d %4d", f.rpmAvg/60, f.rpmAvg);  //f.pulses, f.rpm);
+					d->setCursor(79, y);  d->print(a);
+				}
+
+				//  temp 'C
+				if (f.fd.temp >= 0)
+				{
+					dtostrf(fTemp[f.fd.temp], 4,1, a);
+					d->setCursor(123, y);  d->print(a);
+				}
+			}
 		}
 		y += ya-1;
 	}
@@ -63,7 +72,9 @@ void Gui::DrawFans()
 	d->setFont(0);
 	d->setClr(10,16,22);
 	d->setCursor(0,0);
-	sprintf(a,"Fan Name  PWM%%  rps  Rpm");
+	//sprintf(a,"Fan Name  PWM%%  rps  Rpm");
+	//sprintf(a,"Fan Name  PWM%%  Rpm");
+	sprintf(a," Fan    PWM%%  Rpm   Temp\x01""C");
 	d->print(a);
 }
 
@@ -76,12 +87,21 @@ void Gui::DrawFanDetails()
 	Fan& f = kc.fans.fan[ym2Fan];
 
 	//  graph  backgr big
-	if (pgDet == 0)		//  rpm graph ~
+	switch (pgDet)
+	{
+	case 0:  // pwm, rpm graph ~
 		DrawGraph(0, W-1,  0, H-1,  0, false, ym2Fan);
-	else
-	if (f.fd.temp >= 0)	//  temp graph ~
+		break;
+	case 1:  // temp graph ~
+		if (f.fd.temp >= 0)	//  temp graph ~
 		DrawGraph(0, W-1,  0, H-1,  1, false, f.fd.temp);
-
+		break;
+	case 2:  // rpm & temp
+		DrawGraph(0, W-1,  0,   H/2,  0, true, ym2Fan);
+		if (f.fd.temp >= 0)
+		DrawGraph(0, W-1,  H/2, H-1,  1, true, f.fd.temp);
+		break;
+	}
 
 	//  title
 	d->setClr(18,18,24);
@@ -155,9 +175,11 @@ void Gui::DrawFanDetails()
 				sprintf(a,"Number: %d", f.fd.number);  break;
 			case 2:
 				sprintf(a,"Temp id: %d", f.fd.temp);  break;
+			#ifdef TEMP_PIN
 			case 3:
 				dtostrf(fTemp[f.fd.temp], 4,1, b);
 				sprintf(a,"Temp \x01""C: %s", b);  break;
+			#endif
 			}	break;
 
 		// todo: lin  temp1min rpm1  temp2 rpm2max

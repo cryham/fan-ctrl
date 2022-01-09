@@ -32,8 +32,7 @@ void Gui::DrawGraphs()
 
 	//  x,y pos~
 	int16_t x, y;
-	const int16_t //x0 = W / 2,
-		yt = 32, yu = H - 20;  // time, uptime, date
+	const int16_t yu = H - 20;  // time, uptime, date
 
 
 	//  title
@@ -41,22 +40,7 @@ void Gui::DrawGraphs()
 	//d->print(strMain[ym]);
 
 
-	//  Graphs  ~~~~~~~~~~~~~~~~
-	/*int v, y0, ii, i;
-	//if (ext)
-	for (i=0; i <= W-1; ++i)
-	{
-		ii = kc.grRpos + i - (W-1) + W;
-		v = kc.grRpm[ym2Fan][ii % W];
-		if (v > 0)
-		{
-			ClrTemp(v);  uint16_t c = d->getClr();
-			y0 = yt - v / 3;  // 96 is max  //par scale-
-			if (y0 < 0)  y0 = 0;
-			d->drawPixel(i,y0, c);
-	}	}
-	*/
-
+	//  Graphs  ~~
 	//if (pgGraph == Cl_Graphs)  //par // todo: rpm/temp, id..
 	{
 		DrawGraph(0, W-1,  0,   H/2,  1, false, 0);  // top wide
