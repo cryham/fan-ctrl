@@ -47,7 +47,7 @@ void Fan::Init(uint8_t fanId)
 {
 	const uint8_t pwm = FAN_PWM[fanId], rpm = FAN_RPM[fanId];
 	pinMode(pwm, OUTPUT);
-	analogWriteFrequency(pwm, 10000);  // par 10k
+	analogWriteFrequency(pwm, 20000);  // par 10k
 	analogWrite(pwm, 0);  // off
 
 	noRpm = rpm >= NoRPM;

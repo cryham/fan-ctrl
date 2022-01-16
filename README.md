@@ -1,22 +1,32 @@
-Fan Controler
-=============
+Fan Controller
+==============
 
-WIP: Fan Controler code for Teensy 3.2 with TFT ST7735 color display.
+Fan Controller ("Fancy" or Fan C) code for Teensy 3.1 or 3.2 with ST7735 color display. (Project description on [My Website](https://cryham.tuxfamily.org/portfolio/2021-fan-controller/)).
 
-Based on my K.C. "Kacey" Keyboard Controller (More description of project on [My Website](http://cryham.tuxfamily.org/portfolio/2018-k-c-controller).
+Based on my K.C. "Kacey" Keyboard Controller (Description on [My Website](https://cryham.tuxfamily.org/portfolio/2018-k-c-controller)).
 
 
 ## Features
 
-* PWM output to (PC) 3 pin 12V fans.
-  (7 Fan channels, at 10 kHz by default **)
+* Analog outputs, voltage regulation (different hardware than PWM).
+* PWM outputs to (PC) 3 pin 12V fans.
+  (7 Fan channels, at 20 kHz by default **)
 * RPM (revolutions per minute and second) detection and display
-* Stop prevention (useful for lowest RPM)
+* Stop prevention (useful for lowest RPM), triggered when On and RPM is 0.
+
+* Temperature sensors (DS18B20, optional **)
+* Graphs with RPM or Temperature, auto range, adjustable length (interval)
 
 * GUI with menu on display, parameters
 * Keyboard matrix (3x3, 9 keys **)
 
-* DS18B20 temperature sensors (optional **)
+* External input pin to toggle fan(s) on/off
+* Few display demos (from K.C.)
+
+* TODO: display off after time
+* TODO: more params on fan page 3: for stop prevention, RPM frequency, global graphs
+* TODO: auto RPM from Temp., min, max, exponent?
+* TODO: factors, to regulate more fans at once
 
 ** Can be changed in code.
 
@@ -30,8 +40,8 @@ It uses code from repositories, quite reduced and/or modified:
 * [Adafruit-GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library) for drawing, combined with above.
 * [Kiibohd](https://github.com/kiibohd/controller) only keyboard matrix scan code.
 
-Since I am using a buffer (40kB for 160x128), all drawing code fills it. On each frame, buffer gets sent to display, thus no flickering.
-All unnecessary code for drawing from libraries was removed.
+Since I am using a buffer (40kB for 160x128), all drawing code fills it. On each frame, buffer gets sent to display, thus no flickering.  
+All unnecessary code for drawing from libraries was removed, already in K.C. repo.
 
 Displaying GUI and scanning keyboard (at 1kHz) gives about 70 drawn frames per second. Demos are slower 10-30.
 
