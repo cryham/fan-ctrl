@@ -17,7 +17,7 @@ Based on my K.C. "Kacey" Keyboard Controller (Description on [My Website](https:
 * Temperature sensors (DS18B20, optional **)
 * Graphs with RPM or Temperature, auto range, adjustable length (interval)
 
-* GUI with menu on display, parameters
+* GUI with menu on display, all parameters saved in EEPROM.
 * Keyboard matrix (3x3, 9 keys **)
 
 * External input pin to toggle fan(s) on/off
@@ -53,7 +53,7 @@ My sources are licensed GPLv3. For other sources used, see their repositories.
 
 ### Hardware
 
-For detailed info check subdir kicad with schematics, or included schematics.png image (todo).
+For detailed info check subdir kicad with schematics or included [schematics.png image](https://raw.githubusercontent.com/cryham/fan-ctrl/main/schematics.png).
 
 The keyboard is made of:
 * Teensy 3.2 (or 3.1). Can be overclocked to 120-144 MHz.
