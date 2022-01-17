@@ -68,12 +68,12 @@ void Gui::DrawFans()
 		y += ya-1;
 	}
 
-	//  legend
+	//  header, legend
 	d->setFont(0);
 	d->setClr(10,16,22);
 	d->setCursor(0,0);
-	//sprintf(a,"Fan Name  PWM%%  rps  Rpm");
-	sprintf(a," Fan    PWM%%  Rpm   Temp\x01""C");
+	//sprintf(a,"Fan Name  Pwr%%  rps  Rpm");
+	sprintf(a," Fan   %%      Rpm   Temp\x01""C");  // todo: rps/rpm?
 	d->print(a);
 }
 
@@ -147,7 +147,7 @@ void Gui::DrawFanDetails()
 			{
 			case 0:
 				dtostrf(100.f * f.fd.pwm / 4095.f, 3,1, b);
-				sprintf(a,"PWM%%: %s", b);  h = 2;  break;
+				sprintf(a,"Pwr%%: %s", b);  h = 2;  break;
 			case 1:
 				dtostrf(100.f * tFanAdd[par.iFanAdd] / 4095.f, 3,1, b);
 				sprintf(a,"add%%: %s", b);  h = 4;  break;

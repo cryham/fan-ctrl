@@ -73,8 +73,8 @@ Pins setup is done in files:
 * `def.h`
   * Define all pins here (also optional) and optional code features (demos).
 * `matrix.h` has defined pins for keyboard: Matrix_cols and Matrix_rows.
-* Fan pins are defined in `fan.cpp`.
-* Code related to fans is in files having `fan` in name.
+* Fan pins are defined in `fans.cpp`.
+* Code related to fans is in files having `fans` in name.
 
 When defining a new keyboard, it is useful to force starting in main.cpp on GUI Keys Matrix tab, it shows scan codes.
 

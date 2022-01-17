@@ -89,8 +89,9 @@ int main()
 	//  load set from ee
 	kc.Load();
 	gui.SetScreen(par.startScreen);
-	//gui.SetScreen(ST_Demos2 + D_Plasma);
 	//gui.SetScreen(ST_Fans);
+	//gui.SetScreen(ST_Keys2 + K_Matrix);  // test keys
+	//gui.SetScreen(ST_Demos2 + D_Plasma);
 
 
 	//  keys

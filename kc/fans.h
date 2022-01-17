@@ -23,6 +23,7 @@ struct FanData
 {
 	uint8_t mode = 0;  // FanMode
 	int16_t pwm = 0;   // 0 off .. 4095 full speed 12V
+		// either fan PWM or Analog voltage, after RC filter
 	
 	//  for lcd, info
 	uint8_t name = 0;  // fanNames

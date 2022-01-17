@@ -9,8 +9,10 @@
 
 //----------------------------------
 //----  Features, pins  ----
+
 //  Keyboard pins 3x3 in matrix.h
 #define LCD_LED  23  // LCD PWM brightness
+
 
 #define NumFans  7  // Fans Count
 #define RpmUpdateMS  500  // ms, 2Hz refresh
@@ -19,12 +21,14 @@ extern const uint8_t FAN_PWM[NumFans];  // PWM outut pins  in fans.cpp
 extern const uint8_t FAN_RPM[NumFans];  // RPM input pins
 #define NoRPM  99   // use if fan has no rpm pin
 
+
 //  Temperature 'C sensor(s)  DS18B20, one wire bus
 #define TEMP_PIN  18	//  9%  24k  flash used
 #define MaxTemp   4		// max sensors count
 
+
 #define EXT_ON  26		// external on/off pin for fans
-//#define LED  14  //  led light-
+//#define LED  14   // led light-
 
 //----  Used pins:  ----
 //  Fans 7*2 + Keys 3+3 + Lcd SPI 5+1 led + 1 T'C
