@@ -1,33 +1,49 @@
 Fan Controller
 ==============
 
-Fan Controller ("Fancy" or Fan C) code for Teensy 3.1 or 3.2 with ST7735 color display. (Project description on [My Website](https://cryham.tuxfamily.org/portfolio/2021-fan-controller/)).
+PC Fan Controller ("Fancy" or Fan C) code for Teensy 3.1 or 3.2 with ST7735 color display. (Project description on [My Website](https://cryham.tuxfamily.org/portfolio/2021-fan-controller/)).
 
 Based on my K.C. "Kacey" Keyboard Controller (Description on [My Website](https://cryham.tuxfamily.org/portfolio/2018-k-c-controller)).
 
 
 ## Features
 
-* Analog outputs, voltage regulation (different hardware than PWM).
-* PWM outputs to (PC) 3 pin 12V fans.
-  (7 Fan channels, at 20 kHz by default **)
-* RPM (revolutions per minute and second) detection and display
-* Stop prevention (useful for lowest RPM), triggered when On and RPM is 0.
+** Can be changed or disabled in code.
 
-* Temperature sensors (DS18B20, optional **)
-* Graphs with RPM or Temperature, auto range, adjustable length (interval)
+Regulation
+* 7 Fans / channels **
+* Power percentage % fine adjustable
+* Analog or PWM outputs, used for PC 3 pin 12V fans.
+  * Analog power regulation (different hardware (parts) than PWM).
+  * PWM outputs, at 20 kHz by default **
 
-* GUI with menu on display, all parameters saved in EEPROM.
+RPM
+* RPM detection and display **  
+revolutions per minute, and second
+* RPM Guard / Stop prevention  
+with options, also useful for lowest RPM
+
+Temperature (optional **)
+* Temperature sensor(s) DS18B20
+* Auto Power % depending on Temperature, with options
+* Graphs with RPM and Temperature
+  * auto ranged
+  * adjustable length (interval)
+
+GUI
+* LCD display with GUI, menu has 3 levels
 * Keyboard matrix (3x3, 9 keys **)
+* Many options, permanent  
+(all parameters loaded and saved in EEPROM).
 
+Extras
 * External input pin to toggle fan(s) on/off
-* Few display demos (from K.C.)
+* Few display demos (full screen, from K.C.)
 
-* TODO: display off after time
-* TODO: more params: RPM frequency, global graphs
-* TODO: factors, to regulate more fans at once
-
-** Can be changed in code.
+TODO:
+* display off after time
+* more params: RPM frequency, global graphs
+* factors, to regulate more fans at once
 
 ---
 
