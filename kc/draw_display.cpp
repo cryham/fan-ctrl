@@ -46,7 +46,12 @@ void Gui::DrawDisplay()
 		case 1:
 			StrScreen(par.startScreen, b);
 			sprintf(a,"Start with: %s", b);  break;
+		case 2:
+			sprintf(a,"Bright Off: %d %%", par.brightOff);  h = 2;  break;
+		case 3:
+			d->print("Time Off:  ");  PrintInterval(tTmOff(par));  break;
 		}
+		if (i!=3)
 		d->print(a);  y += h+8;
 	}	break;
 
@@ -91,10 +96,12 @@ void Gui::DrawDisplay()
 		case 0:
 			d->print("Temp read:  ");  PrintInterval(tTemp(par));  h = 2;  break;
 		case 1:
-			d->print("Graph add:  ");  PrintInterval(tTgraph(par));  break;
-		case 2:
-			sprintf(a,"T min:  %d ""\x01""C", par.minTemp);  d->print(a);  h = 2;  break;
+			d->print("Graph add:  ");  PrintInterval(tTgraph(par));  h = 2;  break;
+		case 2:  // extra
+			d->print("Graph total :  ");  PrintInterval(W * tTgraph(par));  break;
 		case 3:
+			sprintf(a,"T min:  %d ""\x01""C", par.minTemp);  d->print(a);  h = 2;  break;
+		case 4:
 			sprintf(a,"T max:  %d ""\x01""C", par.maxTemp);  d->print(a);  break;
 		}
 		y += h+8;

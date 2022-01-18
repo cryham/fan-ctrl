@@ -7,7 +7,7 @@
 //--------------------------------------
 struct KC_Params
 {
-	//* scan setup
+	//  scan setup
 	uint8_t debounce;  // ms
 	//  delay before and after each strobe
 	uint8_t strobe_delay;  // us
@@ -23,24 +23,28 @@ struct KC_Params
 	//  gui key auto repeat, ms
 	uint8_t krDelay, krRepeat;
 
-	//  ofs
+	//  offsets
 	int8_t rtcCompensate; // xtal capacitance, adjust ppm
 	int8_t tempOfs;       // adj Temp val  *0.03'C  +-3.8'C
 
 	//  time intervals
-	uint8_t timeRpm;      // *6s  graph add
+	uint8_t timeRpm;      // Rpm add to graph, avg val
 	uint8_t timeTemp;     // Temp'C read
 	uint8_t timeTgraph;   // Temp'C add to graph, no average
 	#define tRpm(par)     (100 * gIntervals[par.timeRpm    & gIntvMask])  // ms
 	#define tTemp(par)    (100 * gIntervals[par.timeTemp   & gIntvMask])  // ms
 	#define tTgraph(par)  (100 * gIntervals[par.timeTgraph & gIntvMask])
+	#define tTmOff(par)   (100 * gIntervals[par.timeOff    & gIntvMask])
 
 	//  Temp graph scale
 	uint8_t minTemp, maxTemp;
-	uint8_t xCur;         // cursor
+	uint8_t xCur;         // cursor, not used
 
 	uint8_t ym2Fan;       // last fan detail
-	int8_t iFanAdd;
+	int8_t iFanAdd;       // add %
+
+	uint8_t brightOff;
+	uint8_t timeOff;
 };
 //  --- ADD new to END ----
 //  set defaults in ParInit()

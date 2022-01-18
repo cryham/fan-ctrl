@@ -28,7 +28,7 @@ void ParInit()
 	par.rtcCompensate = 0;
 	par.tempOfs = int8_t(-0.6/*'C*/ / 0.03);  //-20
 
-	par.timeRpm = 10;  //*6s 1m
+	par.timeRpm = 10;  // 8s
 	par.timeTemp = 10;   // 8s
 	par.timeTgraph = 15; // 1m  gIntervals
 	
@@ -37,6 +37,10 @@ void ParInit()
 	par.xCur = W-1;
 	
 	par.ym2Fan = 0;
+	par.iFanAdd = 5;
+
+	par.brightOff = 0;
+	par.timeOff = 10;
 }
 
 //  errors
@@ -63,10 +67,10 @@ void KC_Main::Load()
 
 	int a = EOfs, n;  uint8_t s;
 	//  header
-	char h1 = 'f', h2 = 'c', ver = 3;  // cur
+	char h1 = 'f', h2 = 'c', ver = 4;  // cur
 	h1 = Erd(a);  if (h1 != 'f') {  err=E_H1;  return;  }
 	h2 = Erd(a);  if (h2 != 'c') {  err=E_H2;  return;  }
-	ver = Erd(a);  if (ver > 1) {  err=E_ver;  return;  }
+	ver = Erd(a);  if (ver > 6) {  err=E_ver;  return;  }
 
 
 	//  params  ----
@@ -81,7 +85,7 @@ void KC_Main::Load()
 
 	//  fans  ----
 	n = Erd(a);  // count
-	if (n >= NumFans)
+	if (n > NumFans)
 		n = NumFans;
 
 	s = Erd(a);  // fan data size

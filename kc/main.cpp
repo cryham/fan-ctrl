@@ -38,7 +38,7 @@ void main_periodic()
 	++scan_n;
 
 
-	kc.fans.Check();  // pins for rpm
+	kc.fans.CheckRPM();  // pins for rpm
 
 	//  keys scan  slower for demos
 	if (gui.ym != M_Demos || scan_n % 4==0)
@@ -72,7 +72,7 @@ int main()
 
 
 	//  Fans
-	kc.fans.Init();
+	kc.fans.Init(gui.fTemp);
 
 	//analogWriteRes(12);
 	//analogWriteDAC0(0);

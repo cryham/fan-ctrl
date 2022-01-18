@@ -50,22 +50,21 @@ void Fan::Init(uint8_t fanId)
 	analogWriteFrequency(pwm, 20000);  // par 10k
 	analogWrite(pwm, 0);  // off
 
-	noRpm = rpm >= NoRPM;
-	if (noRpm)
-		return;
-
-	pinMode(rpm, INPUT_PULLUP);
+	hasRpm = rpm < NoRPM;
+	if (hasRpm)
+		pinMode(rpm, INPUT_PULLUP);
 }
 
-void Fans::Init()
+void Fans::Init(float* pfTemp)
 {
+	fTemp = pfTemp;
 	for (int i=0; i < NumFans; ++i)
 		fan[i].Init(i);
 }
 
 
 //  check rpm pin  -----------
-void Fans::Check()
+void Fans::CheckRPM()
 {
 	for (int i=0; i < NumFans; ++i)
 	{
@@ -81,6 +80,7 @@ void Fans::Check()
 
 void Fan::CalcRPM()
 {
+	//  rpm compute
 	auto ms = millis();
 	if (pulses == 0)
 		rpm = 0;
@@ -93,18 +93,23 @@ void Fan::CalcRPM()
 	pulses = 0;
 
 
-	//  avg add
+	//  new average val add
+	if (!fd.avgNum)
+	{
+		rpmAvg = rpm;
+		return;
+	}
 	avgArr[avgCnt] = rpm;
 	++avgCnt;
-	if (avgCnt >= avgNum)
+	if (avgCnt >= fd.avgNum)
 		avgCnt = 0;
 
-	//  avg get
+	//  average rpm compute
 	int sum = 0;
-	for (int i = 0; i < avgNum; ++i)
+	for (int i = 0; i < fd.avgNum; ++i)
 		sum += avgArr[i];
 
-	rpmAvg = sum / avgNum;
+	rpmAvg = sum / fd.avgNum;
 }
 
 
@@ -125,43 +130,84 @@ void Fans::Update()
 }
 
 
-//  Update  -----------
+//  Update 1  ----------------------
 void Fans::Update(uint8_t i, uint32_t dt)
 {
 	Fan& f = fan[i];
 
-	//  rpm
-	bool rpm = !f.noRpm;
-	if (rpm)
+	if (f.hasRpm)
 		f.CalcRPM();
 	
+	f.on = f.GetOn(ext_on);
+	
+	uint16_t pwm = f.GetPWM(fTemp);
+
+	f.Guard(dt, pwm);
+
+	//  set fan pwm
+	analogWrite(FAN_PWM[i], pwm);
+	f.pwm = pwm;
+}
+
+bool Fan::GetOn(bool ext_on)
+{
 	//  on
-	bool on = f.fd.mode >= FM_On;
+	bool on = fd.mode >= FM_On;
 	
 	//  external on/off pin
 	#ifdef EXT_ON
-	if (f.fd.mode == FM_ExtOn)
+	if (fd.mode == FM_ExtOn)
 		on = ext_on;
 	#endif
 
-	uint16_t pwm = on ? f.fd.pwm : 0;
-	// todo: auto pwm from fTemp'C..
+	return on;
+}
 
-	//  turned on
-	if (on && !f.oldOn)
-		f.tmMax = msMax;
-	f.oldOn = on;
-
-	//  rpm stop prevention
-	if (on && rpm && f.rpmAvg == 0)
-		f.tmMax = msMax;
-
-	//  short max pwm to start
-	if (f.tmMax > 0)
+//  get pwm value
+uint16_t Fan::GetPWM(float* fTemp)
+{
+	uint16_t pwm = on ? fd.pwm : 0;
+	
+	//  auto pwm from temp'C
+	auto id = fd.tempId;
+	if (fd.a.on && id >= 0 && id < MaxTemp && fTemp)
 	{
-		f.tmMax -= dt;
-		pwm = 4095;  // par
+		float fT = fTemp[id];
+		float fTMin = fd.a.tempMin *0.1f;
+		if (fT < fTMin)
+			return 0;  // off
+
+		float fTMax = fd.a.tempMax *0.1f;
+		if (fT > fTMax)
+			return fd.a.pwmMax;
+		
+		//  linear _/^
+		float fTempMul = (fT - fTMin) / (fTMax - fTMin);
+		int pwmMul = fd.a.pwmMax - fd.a.pwmMin;
+		return fd.a.pwmMin + pwmMul * fTempMul;
+	}
+	return pwm;
+}
+
+//  rpm guard, stop prevention
+void Fan::Guard(uint32_t dt, uint16_t& pwm)
+{
+	if (!fd.g.on || fd.a.on)
+	{	tmMax = 0;
+		return;  // no guard or auto
 	}
 
-	analogWrite(FAN_PWM[i], pwm);
+	//  just turned on
+	if (on && !oldOn)
+		tmMax = fd.g.msOn;
+	oldOn = on;
+
+	if (on && hasRpm && rpmAvg == 0)
+		tmMax = fd.g.msOn;  // trigger
+
+	//  short max pwm to start
+	if (tmMax > 0)
+	{	tmMax -= dt;
+		pwm = fd.g.pwmOn;
+	}
 }

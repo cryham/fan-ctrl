@@ -86,10 +86,10 @@ struct Gui
 
 
 	//  level 2  menu cursors  ---
-	const static int8_t FanDetPages = 3;  // fan details pages
+	const static int8_t FanDetPages = 5;  // fan details pages
 	int8_t ym2Fan = 0;
 	int8_t pgDet = 0, yFanDet[FanDetPages] = {0,};
-	static int8_t FanDetLines[FanDetPages];
+	static int8_t FanDetLines[FanDetPages], FanDetLinExt[FanDetPages];
 
 	int8_t ym2Disp = 0, pgDisp = 0, ym2Scan = 0;
 	int8_t pgGraph = G_Stats;

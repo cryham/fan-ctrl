@@ -4,7 +4,7 @@
 #include "kc_data.h"
 #include "periodic.h"
 
-const uint8_t Gui::DispPages[Di_All] = {1,1,0,3,1};
+const uint8_t Gui::DispPages[Di_All] = {3,1,0,4,1};
 
 
 //  Config
@@ -66,6 +66,10 @@ void Gui::KeysDisplay()
 			kc.setBright = 1;  break;
 		case 1:
 			par.startScreen = RangeAdd(par.startScreen, kRight, 0, ST_ALL);  break;
+		case 2:
+			par.brightOff = RangeAdd(par.brightOff, kRight * 2, 0, 100, 1);  break;
+		case 3:
+			par.timeOff = RangeAdd(par.timeOff, kRight, 0, gIntvMask, 1);  break;
 		}	break;
 
 	case Di_Key:
@@ -91,9 +95,9 @@ void Gui::KeysDisplay()
 			par.timeTemp = RangeAdd(par.timeTemp, kRight, 0, gIntvMask, 1);  break;
 		case 1:
 			par.timeTgraph = RangeAdd(par.timeTgraph, kRight, 0, gIntvMask, 1);  break;
-		case 2:
-			par.minTemp = RangeAdd(par.minTemp, kRight, 0, 100, 1);  break;
 		case 3:
+			par.minTemp = RangeAdd(par.minTemp, kRight, 0, 100, 1);  break;
+		case 4:
 			par.maxTemp = RangeAdd(par.maxTemp, kRight, 0, 100, 1);  break;
 		}	break;
 

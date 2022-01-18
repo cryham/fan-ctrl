@@ -1,11 +1,10 @@
 #pragma once
 #include "def.h"
 
+
 //  const  ----
-//  params  rpm avgeraging length
-const static int avgNum = 4;
-//  ms time  for max PWM to turn on, at start and after (sudden) stop
-const static int msMax = 300;  // ?
+//  max rpm avgeraging length
+const static int avgMax = 16;
 
 //  for naming fans
 const static int FNames_All = 13;
@@ -29,10 +28,25 @@ struct FanData
 	uint8_t name = 0;  // fanNames
 	uint8_t number = 0;
 	
-	int8_t temp = -1;  // sensor id  -1 none  for auto adj
+	int8_t tempId = -1;  // sensor id  -1 none  for Auto
+	uint8_t avgNum = 4;    // rpm values count for avgeraging  1..avgMax
 
-	//uint16_t rpmMin, rpmMax;  // todo: auto rpm
-	//uint16_t tempMin, tempMax;
+	struct RpmGuard
+	{
+		uint8_t on = 1;
+		uint16_t rpmMin = 100;  // if below triggers
+		//  ms time  for max PWM to turn on, at start and after sudden stop
+		uint16_t msOn = 300;    // triggered time and rpm
+		uint16_t pwmOn = 2000;  // 4095 max
+	} g;
+
+	struct PwmAuto
+	{
+		uint8_t on = 0;
+		uint16_t pwmMin = 1000, pwmMax = 4000;
+		uint16_t tempMin = 350, tempMax = 650;  // /10.f 'C
+		uint8_t exp = 100;  // todo:? power exponent /100.f
+	} a;
 };
 
 
@@ -40,7 +54,7 @@ struct Fan
 {
 	FanData fd;
 
-	bool noRpm = false;  // if no rpm pin to measure
+	bool hasRpm = true;  // if fan has rpm pin to measure
 
 	//  var, measure
 	uint32_t lastRpmMS = 0;
@@ -52,12 +66,13 @@ struct Fan
 
 	//  average rpm
 	int8_t avgCnt = 0;
-	uint16_t avgArr[avgNum] = {0,};
+	uint16_t avgArr[avgMax] = {0,};
 
 
 	//  time max pwm to start
-	bool oldOn = 0;
+	bool on = 0, oldOn = 0;
 	int32_t tmMax = 0;
+	uint16_t pwm = 0;  // real pwm for vis
 
 
 	Fan();
@@ -66,6 +81,9 @@ struct Fan
 	void GetFanName(char* s) const;
 
 	void CalcRPM();
+	bool GetOn(bool ext_on);
+	uint16_t GetPWM(float* fTemp);
+	void Guard(uint32_t dt, uint16_t& pwm);
 };
 
 
@@ -76,12 +94,14 @@ struct Fans
 	bool ext_on = false;  // external on/off pin state
 
 	Fan fan[NumFans];
+	float* fTemp = nullptr;  // [MaxTemp]
 
 
 	Fans();
-	void Init();
+	void Init(float* pfTemp);
 
-	void Check();
-	void Update();
-	void Update(uint8_t i, uint32_t dt);
+	void CheckRPM();
+	void Update();  // all
+	
+	void Update(uint8_t i, uint32_t dt);  // 1 fan
 };

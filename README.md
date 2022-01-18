@@ -24,8 +24,7 @@ Based on my K.C. "Kacey" Keyboard Controller (Description on [My Website](https:
 * Few display demos (from K.C.)
 
 * TODO: display off after time
-* TODO: more params on fan page 3: for stop prevention, RPM frequency, global graphs
-* TODO: auto RPM from Temp., min, max, exponent?
+* TODO: more params: RPM frequency, global graphs
 * TODO: factors, to regulate more fans at once
 
 ** Can be changed in code.
