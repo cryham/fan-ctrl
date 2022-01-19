@@ -4,7 +4,7 @@
 
 
 const char* sPgDisplay[Di_All] = {
-	"Bright", "Gui keys", "Intervals", "Graph""\x01""C", "Debug" };
+	"Bright", "Gui keys", "Graph", "Temp""\x01""C" };
 
 
 //  Display
@@ -63,15 +63,17 @@ void Gui::DrawDisplay()
 		switch(i)
 		{
 		case 0:
-			sprintf(a,"Key delay:  %d ms", par.krDelay*5);  h = 2;  break;
+			sprintf(a,"Frames per sec: %d", demos.iFps);  break;
 		case 1:
+			sprintf(a,"Key delay:  %d ms", par.krDelay*5);  h = 2;  break;
+		case 2:
 			sprintf(a,"Key repeat: %d ms", par.krRepeat*5);  break;
 		}
 		d->print(a);  y += h+8;
 	}	break;
 
-	case Di_Stats:
-	for (int i=0; i <= pg + 1; ++i)  // extra
+	case Di_Graph:
+	for (int i=0; i <= pg; ++i)  // extra
 	{
 		DrawDispCur(i, y);
 		int8_t h = 4;
@@ -80,13 +82,19 @@ void Gui::DrawDisplay()
 		case 0:
 			d->print("Time Rpm add:  ");  PrintInterval(tRpm(par));  h = 2;  break;
 		case 1:  // extra
-			d->print("Graph total :  ");  PrintInterval(W * tRpm(par));  h = 2;  break;
+			d->print(" Graph total:  ");  PrintInterval(W * tRpm(par));  break;
 			//sprintf(a,"Time for 1min:  %dm%02ds", t1min(par)/60, t1min(par)%60);  break;
+		case 2:
+			d->print("   Temp read:  ");  PrintInterval(tTemp(par));  h = 2;  break;
+		case 3:
+			d->print("   Graph add:  ");  PrintInterval(tTgraph(par));  h = 2;  break;
+		case 4:  // extra
+			d->print(" Graph total:  ");  PrintInterval(W * tTgraph(par));  break;
 		}
 		y += h+8;
 	}	break;
 
-	case Di_Graph:
+	case Di_Temp:
 	for (int i=0; i <= pg; ++i)
 	{
 		DrawDispCur(i, y);
@@ -94,37 +102,15 @@ void Gui::DrawDisplay()
 		switch(i)
 		{
 		case 0:
-			d->print("Temp read:  ");  PrintInterval(tTemp(par));  h = 2;  break;
+			d->print("Temp offset: ");
+			dtostrf(0.03f * par.tempOfs, 4,2, a);
+			d->print(a);  d->print(" ""\x01""C");  break;
 		case 1:
-			d->print("Graph add:  ");  PrintInterval(tTgraph(par));  h = 2;  break;
-		case 2:  // extra
-			d->print("Graph total :  ");  PrintInterval(W * tTgraph(par));  break;
-		case 3:
 			sprintf(a,"T min:  %d ""\x01""C", par.minTemp);  d->print(a);  h = 2;  break;
-		case 4:
+		case 2:
 			sprintf(a,"T max:  %d ""\x01""C", par.maxTemp);  d->print(a);  break;
 		}
 		y += h+8;
-	}	break;
-
-	case Di_Debug:
-	for (int i=0; i <= pg; ++i)
-	{
-		DrawDispCur(i, y);
-		int8_t h = 4;
-		switch(i)
-		{
-		case 0:
-			sprintf(a,"Frames per sec: %d", demos.iFps);  break;
-		case 1:
-			sprintf(a,"Temp offset: ");  break;
-		}
-		d->print(a);  y += h+8;
-		if (i==1)
-		{
-			dtostrf(0.03f * par.tempOfs, 4,2, a);
-			d->print(a);  d->print(" ""\x01""C");
-		}
 	}	break;
 	}
 }

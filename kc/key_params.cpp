@@ -4,7 +4,7 @@
 #include "kc_data.h"
 #include "periodic.h"
 
-const uint8_t Gui::DispPages[Di_All] = {3,1,0,4,1};
+const uint8_t Gui::DispPages[Di_All] = {3,2,4,2};
 
 
 //  Config
@@ -75,39 +75,34 @@ void Gui::KeysDisplay()
 	case Di_Key:
 		switch (ym2Disp)
 		{
-		case 0:
-			par.krDelay = RangeAdd(par.krDelay, kRight, 0,255);  break;
+		case 0:  // fps
+			demos.iFps = RangeAdd(demos.iFps, kRight, 0, 2);  break;
 		case 1:
+			par.krDelay = RangeAdd(par.krDelay, kRight, 0,255);  break;
+		case 2:
 			par.krRepeat = RangeAdd(par.krRepeat, kRight, 0,255);  break;
-		}	break;
-
-	case Di_Stats:
-		switch (ym2Disp)
-		{
-		case 0:
-			par.timeRpm = RangeAdd(par.timeRpm, kRight, 0,255);  break;
 		}	break;
 
 	case Di_Graph:
 		switch (ym2Disp)
 		{
 		case 0:
+			par.timeRpm = RangeAdd(par.timeRpm, kRight, 0,255);  break;
+		case 2:
 			par.timeTemp = RangeAdd(par.timeTemp, kRight, 0, gIntvMask, 1);  break;
-		case 1:
-			par.timeTgraph = RangeAdd(par.timeTgraph, kRight, 0, gIntvMask, 1);  break;
 		case 3:
-			par.minTemp = RangeAdd(par.minTemp, kRight, 0, 100, 1);  break;
-		case 4:
-			par.maxTemp = RangeAdd(par.maxTemp, kRight, 0, 100, 1);  break;
+			par.timeTgraph = RangeAdd(par.timeTgraph, kRight, 0, gIntvMask, 1);  break;
 		}	break;
 
-	case Di_Debug:
+	case Di_Temp:
 		switch (ym2Disp)
-		{
-		case 0:  // fps
-			demos.iFps = RangeAdd(demos.iFps, kRight, 0, 2);  break;
-		case 1:
+		{	
+		case 0:
 			par.tempOfs = RangeAdd(par.tempOfs, kRight * 1, -128, 127, 1);  break;
+		case 1:
+			par.minTemp = RangeAdd(par.minTemp, kRight, 0, 100, 1);  break;
+		case 2:
+			par.maxTemp = RangeAdd(par.maxTemp, kRight, 0, 100, 1);  break;
 		}	break;
 	}
 }
