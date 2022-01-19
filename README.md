@@ -35,13 +35,13 @@ GUI
 * Keyboard matrix (3x3, 9 keys **)
 * Many options, permanent  
 (all parameters loaded and saved in EEPROM).
+* Display off (or dim) after time
 
 Extras
 * External input pin to toggle fan(s) on/off
 * Few display demos (full screen, from K.C.)
 
 TODO:
-* display off after time
 * more params: RPM frequency, global graphs
 * factors, to regulate more fans at once
 
