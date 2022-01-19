@@ -102,12 +102,14 @@ void Gui::DrawDisplay()
 		switch(i)
 		{
 		case 0:
+			d->print("Reset sensors");  break;
+		case 1:
 			d->print("Temp offset: ");
 			dtostrf(0.03f * par.tempOfs, 4,2, a);
 			d->print(a);  d->print(" ""\x01""C");  break;
-		case 1:
-			sprintf(a,"T min:  %d ""\x01""C", par.minTemp);  d->print(a);  h = 2;  break;
 		case 2:
+			sprintf(a,"T min:  %d ""\x01""C", par.minTemp);  d->print(a);  h = 2;  break;
+		case 3:
 			sprintf(a,"T max:  %d ""\x01""C", par.maxTemp);  d->print(a);  break;
 		}
 		y += h+8;

@@ -77,8 +77,7 @@ struct Gui
 
 
 	//  gui keys pressed, some +-1
-	int8_t kRight=0, kUp=0,  kEnt=0, kBack=0;
-	int8_t kPgUp=0,  kMid=0, kEnd=0, kSave=0;
+	int8_t kRight=0, kUp=0, kPgUp=0,  kEnt=0, kBack=0, kQuick=0;
 	
 	//  fan pwm% add speeds
 	const static int8_t NumFanAdd = 17;

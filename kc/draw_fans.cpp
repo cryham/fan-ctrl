@@ -84,35 +84,36 @@ void Gui::DrawFans()
 
 //  Fan Details
 //....................................................................................
-//const static char* strPage[Gui::FanDetPages] = {
-//	"Power", "Name", "Auto", "Guard", "Graphs" };
-
 void Gui::DrawFanDetails()
 {
 	char a[64],b[32];
 	const Fan& f = kc.fans.fan[ym2Fan];
 	const FanData& fd = f.fd;
 
-	//  graph  backgr big
+
+	//~~~  graph  backgr big  ~~~
 	switch (pgDet)
 	{
-	case 0:  // pwm, rpm graph ~
+	case 0:  // pwm, rpm
 		DrawGraph(0, W-1,  0, H-1,  0, false, ym2Fan);  break;
 
-	case 1:  // temp graph ~
-		if (fd.tempId >= 0)	//  temp graph ~
+	case 1:  // temp
+		if (fd.tempId >= 0)
 		DrawGraph(0, W-1,  0, H-1,  1, false, fd.tempId);  break;
 
-	case FanDetPages-1:  // rpm & temp
-		DrawGraph(0, W-1,  0,   H/2,  0, true, ym2Fan);
-		if (fd.tempId >= 0)
-		DrawGraph(0, W-1,  H/2, H-1,  1, true, fd.tempId);
+	case FanDetPages-1:
+		if (fd.tempId >= 0)  // rpm & temp
+		{	DrawGraph(0, W-1,  0,   H/2,  0, true, ym2Fan);
+			DrawGraph(0, W-1,  H/2, H-1,  1, true, fd.tempId);
+		}else  // rpm
+			DrawGraph(0, W-1,  0, H-1,  0, false, ym2Fan);  break;
 		break;
 	}
 
+
 	//  title
 	d->setClr(18,18,24);
-	d->setCursor(20,0);
+	d->setCursor(22,0);
 	d->setFont(&FreeSans9pt7b);
 
 	f.GetFanName(b);
@@ -122,19 +123,15 @@ void Gui::DrawFanDetails()
 	d->setFont(0);
 
 	
-	//  page, title
+	//  page / all
 	d->setClr(21,21,27);
 	d->setCursor(W-1 -3*6, 4);
 	sprintf(a,"%d/%d", pgDet+1, FanDetPages);
 	d->print(a);
 
-	//d->setClr(18,18,24);
-	//d->setCursor(W/3*2 -6, 4);
-	//d->print(strPage[pgDet]);
 
-
-	//  param values  ---
-	int ln = FanDetLines[pgDet] + FanDetLinExt[pgDet];  // extra
+	//---  param values  ---
+	int ln = FanDetLines[pgDet] + FanDetLinExt[pgDet];
 	int16_t y = 32;
 
 	for (int i=0; i <= ln; ++i)
@@ -160,14 +157,14 @@ void Gui::DrawFanDetails()
 			{	auto p = fd.a.on ? f.pwm : fd.pwm;
 				dtostrf(100.f * p / 4095.f, 3,1, b);
 				if (fd.a.on)
-					sprintf(a,"Auto%%: %s", b);
+					sprintf(a,"Auto %% %s", b);
 				else
-					sprintf(a,"Power%%: %s", b);
+					sprintf(a,"Power %% %s", b);
 				h = 2;
 			}	break;
 			case 1:
 				dtostrf(100.f * tFanAdd[par.iFanAdd] / 4095.f, 3,1, b);
-				sprintf(a,"add%%: %s", b);  h = 4;  break;
+				sprintf(a,"add %% %s", b);  h = 4;  break;
 			case 2:
 				if (fd.mode == FM_ExtOn)
 					sprintf(a,"Mode: %s %s", fanModes[fd.mode],

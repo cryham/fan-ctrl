@@ -16,16 +16,26 @@ void Gui::KeyPress()
 	//  update keys press vars
 	kRight = kr(5,dt) - kr(3,dt);
 	kUp = kr(7,dt) - kr(1,dt);
-	kBack = kr(0,dt);
-	kEnt = Key(2);
-	
-	kSave = Key(6);  // save/menu?
 	kPgUp = kr(8,dt) - kr(2,dt);
-	kEnd = Key(8);  //-
-	kMid = Key(4);
+	kBack = kr(0,dt);
+	kEnt = Key(4);
+	kQuick = Key(6);
 	
-	int d = kUp + kRight;
+	int d = kUp + kRight + kPgUp;  // all +-
 
+	if (kQuick)  // quick acces cycle
+	{	mlevel = 1;
+		switch (ym)
+		{
+		case M_Fans:    ym = M_Graphs;  break;
+		case M_Graphs:  ym = M_Display;  break;
+		case M_Display: ym = M_Config;  break;
+		case M_Keys:  case M_Help:  // rest
+	#ifdef DEMOS
+		case M_Demos:
+	#endif
+		case M_Config:  ym = M_Fans;  break;
+	}	}
 
 	//  ---
 	if (ym == M_Fans && mlevel >= 1)

@@ -4,8 +4,8 @@
 
 int8_t Gui::FanDetLines[Gui::FanDetPages] =
 	{2, 2, 5, 3,-1};  // param lines on each fan details page
-int8_t Gui::FanDetLinExt[Gui::FanDetPages] = // extra lines, info not param
-	{2, 1, 0, 0, 0};
+int8_t Gui::FanDetLinExt[Gui::FanDetPages] =
+	{2, 1, 0, 0, 0};  // extra lines, info not param
 
 const uint16_t Gui::tFanAdd[NumFanAdd] = {  // pwm add speeds
 	1, 2, 4, 9, 17, 25, 33, 41, 62, 82, 123, 164, 205, 246, 327, 409, 512,	};
@@ -36,7 +36,7 @@ void Gui::KeysFans()
 			case 0:
 				p = RangeAdd(p, kRight * add, 0, 4095, 1);  break;  // pwm
 			case 1:
-				par.iFanAdd = RangeAdd(par.iFanAdd, kRight, 0, NumFanAdd-1, 1);  break;  // add
+				par.iFanAdd = RangeAdd(par.iFanAdd, kRight, 0, NumFanAdd-1, 1);  break;
 			case 2:
 				fd.mode = RangeAdd(fd.mode, kRight, 0, FModes_All-1, 1);  break;
 			}	break;
@@ -88,7 +88,7 @@ void Gui::KeysFans()
 
 		case 4:
 			switch (yy)  // page 5  graphs
-			{
+			{	//?
 			}	break;
 		}
 		return;
@@ -101,6 +101,6 @@ void Gui::KeysFans()
 	{
 		p = RangeAdd(p, kRight * 40 * 4, 0, 4095, 1);  // add normal
 	}
-	else if (kMid)
-		f.fd.mode = RangeAdd(f.fd.mode, 1, 0, FModes_All, 1);
+	//else if (kPgUp)  //?
+	//	f.fd.mode = RangeAdd(f.fd.mode, kPgUp, 0, FModes_All, 1);
 }
