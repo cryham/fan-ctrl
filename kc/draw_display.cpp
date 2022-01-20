@@ -42,17 +42,17 @@ void Gui::DrawDisplay()
 		switch(i)
 		{
 		case 0:
-			sprintf(a,"Brightness: %d %%", par.brightness);  break;
+			sprintf(a,"Brightness:  %d %%", par.brightness);  break;
 		case 1:
-			StrScreen(par.startScreen, b);
-			sprintf(a,"Start with: %s", b);  break;
+			sprintf(a,"Bright Off:  %d %%", par.brightOff);  h = 2;  break;
 		case 2:
-			sprintf(a,"Bright Off: %d %%", par.brightOff);  h = 2;  break;
+			d->print("  Time Off:  ");  PrintInterval(tTmOff(par));  break;
 		case 3:
-			d->print("Time Off:  ");  PrintInterval(tTmOff(par));  break;
+			StrScreen(par.startScreen, b);
+			sprintf(a,"Start with:  %s", b);  break;
 		}
-		if (i!=3)
-		d->print(a);  y += h+8;
+		if (i!=2)
+			d->print(a);  y += h+8;
 	}	break;
 
 	case Di_Key:
@@ -82,14 +82,14 @@ void Gui::DrawDisplay()
 		case 0:
 			d->print("Time Rpm add:  ");  PrintInterval(tRpm(par));  h = 2;  break;
 		case 1:  // extra
-			d->print(" Graph total:  ");  PrintInterval(W * tRpm(par));  break;
+			d->print(" Graph total: ");  PrintInterval(W * tRpm(par));  break;
 			//sprintf(a,"Time for 1min:  %dm%02ds", t1min(par)/60, t1min(par)%60);  break;
 		case 2:
 			d->print("   Temp read:  ");  PrintInterval(tTemp(par));  h = 2;  break;
 		case 3:
 			d->print("   Graph add:  ");  PrintInterval(tTgraph(par));  h = 2;  break;
 		case 4:  // extra
-			d->print(" Graph total:  ");  PrintInterval(W * tTgraph(par));  break;
+			d->print(" Graph total: ");  PrintInterval(W * tTgraph(par));  break;
 		}
 		y += h+8;
 	}	break;

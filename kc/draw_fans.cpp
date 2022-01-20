@@ -92,28 +92,29 @@ void Gui::DrawFanDetails()
 
 
 	//~~~  graph  backgr big  ~~~
+	int id = ym2Fan;
 	switch (pgDet)
 	{
 	case 0:  // pwm, rpm
-		DrawGraph(0, W-1,  0, H-1,  0, false, ym2Fan);  break;
+		DrawGraph(0, W-1,  0, H-1,  0, false, id);  break;
 
 	case 1:  // temp
 		if (fd.tempId >= 0)
-		DrawGraph(0, W-1,  0, H-1,  1, false, fd.tempId);  break;
+		DrawGraph(0, W-1,  0, H-1,  1, false, id);  break;
 
 	case FanDetPages-1:
 		if (fd.tempId >= 0)  // rpm & temp
-		{	DrawGraph(0, W-1,  0,   H/2,  0, true, ym2Fan);
-			DrawGraph(0, W-1,  H/2, H-1,  1, true, fd.tempId);
+		{	DrawGraph(0, W-1,  0,   H/2,  0, true, id);
+			DrawGraph(0, W-1,  H/2, H-1,  1, true, id);
 		}else  // rpm
-			DrawGraph(0, W-1,  0, H-1,  0, false, ym2Fan);  break;
+			DrawGraph(0, W-1,  0, H-1,  0, false, id);  break;
 		break;
 	}
 
 
 	//  title
 	d->setClr(18,18,24);
-	d->setCursor(22,0);
+	d->setCursor(32,0);
 	d->setFont(&FreeSans9pt7b);
 
 	f.GetFanName(b);

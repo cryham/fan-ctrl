@@ -65,11 +65,11 @@ void Gui::KeysDisplay()
 			par.brightness = RangeAdd(par.brightness, kRight * 2, 0, 100, 1);
 			kc.setBright = 1;  break;
 		case 1:
-			par.startScreen = RangeAdd(par.startScreen, kRight, 0, ST_ALL);  break;
-		case 2:
 			par.brightOff = RangeAdd(par.brightOff, kRight * 2, 0, 100, 1);  break;
-		case 3:
+		case 2:
 			par.timeOff = RangeAdd(par.timeOff, kRight, 0, gIntvMask, 1);  break;
+		case 3:
+			par.startScreen = RangeAdd(par.startScreen, kRight, 0, ST_ALL);  break;
 		}	break;
 
 	case Di_Key:

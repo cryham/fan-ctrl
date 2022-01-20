@@ -56,12 +56,18 @@ void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 	const int16_t xLen = xMax - xMin, yLen = yMax - yMin,
 		yF = 13, left = 22, top = legend ? 10 : 6;  // marg
 
-	int xc = par.xCur;
-	bool cursor = legend && xc < W;
-	auto cur = [&](auto i) {  return cursor && i == xc;  };
+	const Fan& f = kc.fans.fan[id];
+	const FanData& fd = f.fd;
+	if (temp)  id = fd.tempId;
+	if (id < 0)  return;
 
 	int i,x,y, v;  // var
 	char a[64];
+
+
+	int xc = W-1; //par.xCur;
+	bool cursor = legend && xc < W;
+	auto cur = [&](auto i) {  return cursor && i == xc;  };
 
 	//  x time and val
 	auto getVal = [&](auto i){
@@ -125,8 +131,8 @@ void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 		GridLineV(x4tm( 30), 13, "30");
 		GridLineV(x4tm( 60), 18, "1h");  // h
 		GridLineV(x4tm(120), 16, "2h");
-		//GridLineV(x4tm(240), 16, "4h");
-		//GridLineV(x4tm(480), 16, "8h");
+		GridLineV(x4tm(240), 16, "4h");
+		GridLineV(x4tm(480), 16, "8h");
 	}
 
 	//  grid  horizontal  ===
@@ -167,27 +173,28 @@ void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 	//  legend values, cursor
 	if (legend)
 	{
-		x = xMin + xLen/2; // + left;
+		x = xMin + xLen/2 -12; // + left;
 		y = yMin + top;
 		d->setCursor(x,y);
-		d->setClr(18, 22, 25);
-		d->print(temp ? "Temp \x01""C" : "Rpm");  y += yF+3;
+		d->setClr(21, 24, 27);
+		y += yF;
 
 		if (cursor)
 		{
 			d->drawPixel(xc, yMin+1, RGB(29,29,29));  // :
 			d->drawPixel(xc, yMax, RGB(29,29,29));
 
-			v = getVal(xc);
-			//ClrTemp(v);
-			float f = xc == W-1 ? fTemp[id] : 0.f;  // latest
 			if (temp)
-				TempBtoF(v);
+				dtostrf(fTemp[id], 4,1,a);
+			else
+				sprintf(a,"%d", f.rpmAvg);
+			
+			d->setCursor(x,y);  d->print(a);  y += yF;
+			if (temp)
+				d->print(" \x01""C");
 
-			d->setCursor(x,y);  dtostrf(f,4,2,a);  d->print(a);  y += yF;
-
-			d->setCursor(x,y);  PrintInterval(
-				(temp ? tTgraph(par) : tRpm(par)) * (W-1-xc));  y += yF;
+			/*d->setCursor(x,y);  PrintInterval(
+				(temp ? tTgraph(par) : tRpm(par)) * (W-1-xc));  y += yF;*/
 		}
 	}
 }

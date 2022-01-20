@@ -42,10 +42,11 @@ void Gui::DrawGraphs()
 
 	//  Graphs  ~~
 	//if (pgGraph == Cl_Graphs)  //par // todo: rpm/temp, id..
+	// const int rows = 3, yy = H/rows;
+	// for (int i=0; i < rows; ++i)
 	{
-		DrawGraph(0, W-1,  0,   H/2,  1, false, 0);  // top wide
-		DrawGraph(0, W-1,  H/2, H-1,  1, false, 1);  // bottom
-		//return;
+		DrawGraph(0, W-1,  0,   H/2,  1, true, 0);
+		DrawGraph(0, W-1,  H/2, H-1,  1, true, 1);
 	}
 
 	x = 60;  y = 42;

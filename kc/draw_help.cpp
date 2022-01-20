@@ -52,9 +52,9 @@ void Gui::DrawHelp()
 
 	case 1:  //  demos  ------------------------
 		d->setClr(23,21,29);
-		d->println("\x1B,\x1A   Prev/Next Preset");
+		d->println("  \x1B,\x1A   Prev/Next Preset");
 		d->moveCursor(0,4);
-		d->println("\x18,\x19   Dec,Inc Speed");
+		d->println("  \x18,\x19   Dec,Inc Speed");
 		d->moveCursor(0,8);
 		d->println("PgUp,PgDn  Change Params");
 		break;
