@@ -34,41 +34,29 @@ void Gui::DrawHelp()
 	{
 	case 0:  //  main
 		d->setClr(20,26,31);
-		d->println("\x18,\x19        Move Cursor");  // ^,v \x10
-		d->moveCursor(0,2);
-		d->println("\x1A or Ent        Enter");
-		d->moveCursor(0,2);
-		d->println("\x1B or Bksp or +  Go Back");
+		d->println("<Back  \x18   PgUp  Quick*");
+		d->moveCursor(0,4);
+		d->println("  \x1B   Ent>   \x1A");
+		d->moveCursor(0,4);
+		d->println("       \x19   PgDn");
 
 		d->moveCursor(0,8);
 		d->setClr(16,22,28);
+		d->println("  \x18,\x19      Move Cursor");  // ^,v
+		d->println("  \x1B,\x1A      Dec,Inc Value");  // <,>
 		d->println("PgUp,PgDn  Prev,Next Page");
-		d->moveCursor(0,2);
-		d->println("\x1B,\x1A     Dec,Inc Value");  // <,>
-		d->setClr(12,18,24);
-		d->println("  LCtrl more  LShift less");
-
-		d->moveCursor(0,6);
-		d->setClr(16,22,28);
-		d->println("F4   Save");
-		d->println("F5   Load   Ctrl- Reset");
+		d->moveCursor(0,4);
+		d->println("Quick* cycle Fans,Graphs,");
+		d->println("       Diplay,Config");
 		break;
 
 	case 1:  //  demos  ------------------------
-		d->setClr(26,26,29);
+		d->setClr(23,21,29);
 		d->println("\x1B,\x1A   Prev/Next Preset");
-		d->println("\x18,\x19   Dec,Inc Speed");
 		d->moveCursor(0,4);
-		d->println("-     Fps show +mode");
-		d->println("*     Params Info");
-
+		d->println("\x18,\x19   Dec,Inc Speed");
 		d->moveCursor(0,8);
-		d->setClr(22,22,25);
-		d->println("PgUp,PgDn  Change");
-		d->println("Home,End   Params");
-		d->moveCursor(0,2);
-		d->println("  Ctrl   Others");
-		d->println("  Shift  Fine");
+		d->println("PgUp,PgDn  Change Params");
 		break;
 	}
 }
