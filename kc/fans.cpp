@@ -15,7 +15,7 @@ const char *fanNames[FNames_All] = {
 	"Case", "Cool", "Rad", "Ext", "Wtr", "New", };
 
 const char *fanModes[FModes_All] = {
-	"Hide", "Off", "On", "Ext:" };
+	"Hide", "Off", "On", "Ext1:", "Ext0:" };
 
 
 //  Init  -----------
@@ -158,6 +158,8 @@ bool Fan::GetOn(bool ext_on)
 	#ifdef EXT_ON
 	if (fd.mode == FM_ExtOn)
 		on = ext_on;
+	else if (fd.mode == FM_ExtOff)
+		on = !ext_on;
 	#endif
 
 	return on;

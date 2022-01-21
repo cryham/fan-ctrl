@@ -12,7 +12,7 @@ extern const char* fanNames[FNames_All];
 
 enum FanMode
 {
-	FM_Hide, FM_Off, FM_On, FM_ExtOn, FModes_All
+	FM_Hide, FM_Off, FM_On, FM_ExtOn, FM_ExtOff, FModes_All
 };
 extern const char* fanModes[FModes_All];
 

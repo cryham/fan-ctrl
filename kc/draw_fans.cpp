@@ -15,8 +15,9 @@ void Gui::DrawFans()
 	for (int i=0; i < NumFans; ++i)
 	{
 		const Fan& f = kc.fans.fan[i];
-		bool hid = f.fd.mode == FM_Hide || (
-				   f.fd.mode == FM_ExtOn && !kc.fans.ext_on);
+		bool hid =  f.fd.mode == FM_Hide
+				|| (f.fd.mode == FM_ExtOn && !kc.fans.ext_on)
+				|| (f.fd.mode == FM_ExtOff && kc.fans.ext_on);
 		int ya = hid ? 6 : 16;
 
 		//  cur
@@ -170,6 +171,9 @@ void Gui::DrawFanDetails()
 				if (fd.mode == FM_ExtOn)
 					sprintf(a,"Mode: %s %s", fanModes[fd.mode],
 						kc.fans.ext_on ? "on" : "off");
+				else if (fd.mode == FM_ExtOff)
+					sprintf(a,"Mode: %s %s", fanModes[fd.mode],
+						!kc.fans.ext_on ? "on" : "off");
 				else
 					sprintf(a,"Mode: %s", fanModes[fd.mode]);  h = 6;  break;
 			
