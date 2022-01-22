@@ -116,6 +116,8 @@ struct Gui
 
 	TempInit tempInit = TI_SEARCH;  // first, init
 	int tempCount = 0;   // sensors count
+	bool TIdOk(int id)
+	{	return id >= 0 && id < tempCount && id < MaxTemp;  }
 
 	float fTemp[MaxTemp];  // cur temp value
 	int TempFtoB(float t);  float TempBtoF(uint8_t b);

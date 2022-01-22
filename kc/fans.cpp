@@ -205,10 +205,10 @@ uint16_t Fan::GetPWMAuto(float fT) const
 	const float fTempMul = (fT - fTMin) / (fTMax - fTMin);
 	const int pwmMul = fd.a.pwmMax - fd.a.pwmMin;
 
-	if (fd.a.exp == 100)
-		return fd.a.pwmMin + pwmMul * fTempMul;
-	else  // pow _/
-		return fd.a.pwmMin + pwmMul * powf(fTempMul, fd.a.exp /100.f);
+	const float ftmp = fd.a.exp == 100 ?
+		fTempMul :
+		powf(fTempMul, fd.a.exp / 100.f);
+	return fd.a.pwmMin + pwmMul * ftmp;
 }
 
 

@@ -223,7 +223,7 @@ void Gui::DrawAutoGraph(const Fan* f)
 	{
 		int n = y % 10==0 ? 18 : y % 5 == 0 ? 14 : y % 2 == 0 ? 11 : 8;
 		int yt = (float(y) - pmin) / plen * (H-1);
-		d->drawFastHLine(0, yt, W-1, RGB(n,n,n));
+		d->drawFastHLine(0, H-1 -yt, W-1, RGB(n,n,n));
 	}
 
 	//  exp Auto pwm graph _/
@@ -237,7 +237,7 @@ void Gui::DrawAutoGraph(const Fan* f)
 		
 		float fP = float(H-1) * (pwm - Pmin) / float(Plen);
 		int y = max(0, H-1 - int(fP));
-		ClrByte(y*2);
-		d->drawPixel(x, y, d->getClr());
+		ClrByte(255 - y*2);
+		d->drawPixel(x, H-1 -y, d->getClr());
 	}
 }
