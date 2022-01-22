@@ -113,6 +113,7 @@ void Fan::CalcRPM()
 }
 
 
+//  update all
 void Fans::Update()
 {
 	uint32_t dt = millis() - prevMS;
@@ -122,8 +123,15 @@ void Fans::Update()
 		ext_on = digitalRead(EXT_ON);
 		#endif
 
+		int cnt = 0;
 		for (int i=0; i < NumFans; ++i)
+		{
 			Update(i, dt);
+
+			if (fan[i].on)
+				++cnt;
+		}
+		onFans = cnt;
 
 		prevMS = millis();
 	}
@@ -149,9 +157,10 @@ void Fans::Update(uint8_t i, uint32_t dt)
 	f.pwm = pwm;
 }
 
-bool Fan::GetOn(bool ext_on)
+
+//  on
+bool Fan::GetOn(bool ext_on) const
 {
-	//  on
 	bool on = fd.mode >= FM_On;
 	
 	//  external on/off pin
@@ -165,8 +174,9 @@ bool Fan::GetOn(bool ext_on)
 	return on;
 }
 
+
 //  get pwm value
-uint16_t Fan::GetPWM(float* fTemp)
+uint16_t Fan::GetPWM(float* fTemp) const
 {
 	uint16_t pwm = on ? fd.pwm : 0;
 	
@@ -175,23 +185,34 @@ uint16_t Fan::GetPWM(float* fTemp)
 	if (fd.a.on && id >= 0 && id < MaxTemp && fTemp)
 	{
 		float fT = fTemp[id];
-		float fTMin = fd.a.tempMin *0.1f;
-		if (fT < fTMin)
-			return 0;  // off
-
-		float fTMax = fd.a.tempMax *0.1f;
-		if (fT > fTMax)
-			return fd.a.pwmMax;
-		
-		//  linear _/^
-		float fTempMul = (fT - fTMin) / (fTMax - fTMin);
-		int pwmMul = fd.a.pwmMax - fd.a.pwmMin;
-		return fd.a.pwmMin + pwmMul * fTempMul;
+		pwm = GetPWMAuto(fT);
 	}
 	return pwm;
 }
 
-//  rpm guard, stop prevention
+//  Auto rpm  from temp
+uint16_t Fan::GetPWMAuto(float fT) const
+{
+	const float fTMin = fd.a.tempMin *0.1f;
+	if (fT < fTMin)
+		return 0;  // off
+
+	const float fTMax = fd.a.tempMax *0.1f;
+	if (fT > fTMax)
+		return fd.a.pwmMax;
+	
+	//  linear _/^
+	const float fTempMul = (fT - fTMin) / (fTMax - fTMin);
+	const int pwmMul = fd.a.pwmMax - fd.a.pwmMin;
+
+	if (fd.a.exp == 100)
+		return fd.a.pwmMin + pwmMul * fTempMul;
+	else  // pow _/
+		return fd.a.pwmMin + pwmMul * powf(fTempMul, fd.a.exp /100.f);
+}
+
+
+//  rpm Guard, stop prevention
 void Fan::Guard(uint32_t dt, uint16_t& pwm)
 {
 	if (!fd.g.on || fd.a.on)

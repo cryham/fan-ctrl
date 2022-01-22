@@ -45,7 +45,7 @@ struct FanData
 		uint8_t on = 0;
 		uint16_t pwmMin = 1000, pwmMax = 4000;
 		uint16_t tempMin = 350, tempMax = 650;  // /10.f 'C
-		uint8_t exp = 100;  // todo:? power exponent /100.f
+		uint8_t exp = 100;  // power exponent /100.f
 	} a;
 };
 
@@ -81,8 +81,9 @@ struct Fan
 	void GetFanName(char* s) const;
 
 	void CalcRPM();
-	bool GetOn(bool ext_on);
-	uint16_t GetPWM(float* fTemp);
+	bool GetOn(bool ext_on) const;
+	uint16_t GetPWM(float* fTemp) const;
+	uint16_t GetPWMAuto(float fTemp) const;
 	void Guard(uint32_t dt, uint16_t& pwm);
 };
 
@@ -90,6 +91,7 @@ struct Fan
 struct Fans
 {
 	uint32_t prevMS = 0;
+	int onFans = 0;  // active
 	
 	bool ext_on = false;  // external on/off pin state
 

@@ -151,13 +151,13 @@ void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 	}
 
 
-	//  graph  Temp  ~~~
+	//  graph pixels  ~~~
 	if (grBmax > grBmin)
 	for (i = xMin; i <= xMax; ++i)
 	{
 		v = getVal(i - xMax);
 		if (v > 0)
-		{	ClrTemp(temp ? v : v*2);
+		{	ClrByte(temp ? v : v*2);  // color max 1270 rpm
 
 			if (temp)
 				y = yMax - yLen * (float(v) - grBmin[id]) / (grBmax[id] - grBmin[id]);
@@ -199,3 +199,45 @@ void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 	}
 }
 #endif
+
+
+//**********************************************************************
+void Gui::DrawAutoGraph(const Fan* f)
+{
+	//  Temp'C lines ||
+	const float fTmax = f->fd.a.tempMax *0.1f;
+	const float fTmin = f->fd.a.tempMin *0.1f;
+	const float fTlen = fTmax - fTmin;
+	for (int x=fTmin; x < fTmax+1; ++x)
+	{
+		int n = x % 10==0 ? 18 : x % 5 == 0 ? 14 : 9;
+		int xt = (float(x) - fTmin) / fTlen * (W-1);
+		d->drawFastVLine(xt, 0, H-1, RGB(n,n,n));
+	}
+
+	//  Power % lines ==
+	const int Pmax = f->fd.a.pwmMax, pmax = 100.f * Pmax / 4095.f;
+	const int Pmin = f->fd.a.pwmMin, pmin = 100.f * Pmin / 4095.f;
+	const int Plen = Pmax - Pmin,    plen = pmax - pmin;
+	for (int y=pmin; y < pmax+1; ++y)
+	{
+		int n = y % 10==0 ? 18 : y % 5 == 0 ? 14 : y % 2 == 0 ? 11 : 8;
+		int yt = (float(y) - pmin) / plen * (H-1);
+		d->drawFastHLine(0, yt, W-1, RGB(n,n,n));
+	}
+
+	//  exp Auto pwm graph _/
+	//const uint16_t clr = RGB(20,20,26);
+	for (int x=0; x < W; ++x)
+	{
+		float fT = float(x)/(W-1) * fTlen + fTmin;
+		auto pwm = f->GetPWMAuto(fT);
+		// float p = 100.f * pwm / 4095.f;
+		// int y = float(H-1) * (p - pmin) / pmax;
+		
+		float fP = float(H-1) * (pwm - Pmin) / float(Plen);
+		int y = max(0, H-1 - int(fP));
+		ClrByte(y*2);
+		d->drawPixel(x, y, d->getClr());
+	}
+}
