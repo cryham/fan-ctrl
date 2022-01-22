@@ -119,22 +119,29 @@ void Fans::Update()
 	uint32_t dt = millis() - prevMS;
 	if (dt > RpmUpdateMS)
 	{
-		#ifdef EXT_ON
-		ext_on = digitalRead(EXT_ON);
-		#endif
-
-		int cnt = 0;
 		for (int i=0; i < NumFans; ++i)
 		{
-			Update(i, dt);
+			Fan& f = fan[i];
 
-			if (fan[i].on)
-				++cnt;
+			if (f.hasRpm)
+				f.CalcRPM();
 		}
-		onFans = cnt;
-
 		prevMS = millis();
 	}
+
+	#ifdef EXT_ON
+	ext_on = digitalRead(EXT_ON);
+	#endif
+
+	int cnt = 0;
+	for (int i=0; i < NumFans; ++i)
+	{
+		Update(i, dt);
+
+		if (fan[i].on)
+			++cnt;
+	}
+	onFans = cnt;
 }
 
 
@@ -143,9 +150,6 @@ void Fans::Update(uint8_t i, uint32_t dt)
 {
 	Fan& f = fan[i];
 
-	if (f.hasRpm)
-		f.CalcRPM();
-	
 	f.on = f.GetOn(ext_on);
 	
 	uint16_t pwm = f.GetPWM(fTemp);
@@ -216,21 +220,21 @@ uint16_t Fan::GetPWMAuto(float fT) const
 void Fan::Guard(uint32_t dt, uint16_t& pwm)
 {
 	if (!fd.g.on || fd.a.on)
-	{	tmMax = 0;
+	{	tmLeft = 0;
 		return;  // no guard or auto
 	}
 
 	//  just turned on
 	if (on && !oldOn)
-		tmMax = fd.g.msOn;
+		tmLeft = fd.g.msOn;
 	oldOn = on;
 
 	if (on && hasRpm && rpmAvg == 0)
-		tmMax = fd.g.msOn;  // trigger
+		tmLeft = fd.g.msOn;  // trigger
 
 	//  short max pwm to start
-	if (tmMax > 0)
-	{	tmMax -= dt;
+	if (tmLeft > 0)
+	{	tmLeft -= dt;
 		pwm = fd.g.pwmOn;
 	}
 }

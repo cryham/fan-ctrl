@@ -63,6 +63,8 @@ struct Fan
 	volatile uint16_t pulses = 0;
 	
 	uint16_t rpm = 0, rpmAvg = 0;  //  on Gui
+	static inline uint8_t Rpm2B(uint16_t r)
+	{	return r / 5;  }  // byte  max 1275 rpm
 
 	//  average rpm
 	int8_t avgCnt = 0;
@@ -71,7 +73,7 @@ struct Fan
 
 	//  time max pwm to start
 	bool on = 0, oldOn = 0;
-	int32_t tmMax = 0;
+	int32_t tmLeft = 0;  // guard on, time left
 	uint16_t pwm = 0;  // real pwm for vis
 
 
