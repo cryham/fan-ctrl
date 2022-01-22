@@ -71,7 +71,7 @@ enum EConfig
 };
 enum EGraphs
 {
-	G_Stats, G_Graphs, G_All
+	G_Temp, G_Rpm, G_Both, G_All
 };
 enum EDisplay  // pages
 {

@@ -4,20 +4,6 @@
 #include "kc_data.h"
 
 
-//  color from value
-void Gui::ClrTemp(int tm)
-{
-	if (tm >224)  d->setClr(31, 10,10);  else
-	if (tm >192)  d->setClr(31, 18, 4);  else
-	if (tm >160)  d->setClr(30, 30, 2);  else
-	if (tm >128)  d->setClr(16, 29, 2);  else
-	if (tm > 96)  d->setClr( 6, 27, 6);  else
-	if (tm > 64)  d->setClr( 6, 26,26);  else
-	if (tm > 32)  d->setClr(10, 20,30);  else
-	if (tm > 16)  d->setClr( 6, 16,29);  else
-	              d->setClr(16,  6,29);
-}
-
 //  Display
 //....................................................................................
 void Gui::DrawGraphs()
@@ -25,40 +11,61 @@ void Gui::DrawGraphs()
 	char a[64];
 
 
-	//  time  ---
-	unsigned long t = rtc_get();
-	int h = t / 3600 % 24, m = t / 60 % 60, s = t % 60;
-	//to = t - kc.tm_on;
-
-	//  x,y pos~
-	int16_t x, y;
-	const int16_t yu = H - 20;  // time, uptime, date
-
-
-	//  title
-	d->setClr(12, 14, 17);
-	//d->print(strMain[ym]);
-
-
 	//  Graphs  ~~
-	//if (pgGraph == Cl_Graphs)  //par // todo: rpm/temp, id..
-	// const int rows = 3, yy = H/rows;
-	// for (int i=0; i < rows; ++i)
+	int onFans = kc.fans.onFans;
+
+	//auto h = [](int v, int n) {  return min(H-1, v / n);  };
+	auto h = [](int v) {  return min(H-1, v);  };
+	int y = 0;
+	
+	switch (par.pgGraph)
 	{
-		DrawGraph(0, W-1,  0,   H/2,  1, true, 0);
-		DrawGraph(0, W-1,  H/2, H-1,  1, true, 1);
+	case G_Temp:
+	{	if (!tempCount)  break;
+		const int yT = H / tempCount;
+		
+		for (int i=0; i < tempCount; ++i)
+			DrawGraph(0, W-1,  h(i*yT), h( (i+1)*yT-1 ),  1, true, i);
+	}	break;
+	
+	case G_Rpm:
+	{	if (!onFans)  break;
+		const int yR = H / onFans;
+		
+		for (int i=0; i < NumFans; ++i)
+		if (kc.fans.fan[i].on)
+			DrawGraph(0, W-1,  h(y*yR), h( (y+1)*yR ),  0, true, i);
+	}	break;
+
+	case G_Both:
+	{	if (!tempCount || !onFans)  break;
+		const int yT = H / tempCount;
+		
+		for (int i=0; i < tempCount; ++i)
+			DrawGraph(0, W/2,  h(i*yT), h( (i+1)*yT-1 ),  1, true, i);
+
+		const int yR = H / onFans;
+		
+		for (int i=0; i < NumFans; ++i)
+		if (kc.fans.fan[i].on)
+			DrawGraph(W/2, W-1,  h(y*yR), h( (y+1)*yR ),  0, true, i);
+		break;
 	}
+	}
+	//return;  //!
 
-	x = 60;  y = 42;
-	return;  //!
+
+	//  page / all  ---
+	d->setClr(12, 16, 22);
+	d->setCursor(W-1 - 3*6, 4);
+	sprintf(a, "%d/%d", par.pgGraph + 1, G_All);  d->print(a);
 
 
-	//  Temp'C  init, val  --------
+	//  test Temp'C  init, vals  --------
 	// #ifdef TEMP_PIN
 	#if 0
 	// if (tempInit > TI_DONE)  // 'C
 	{
-		//d->setCursor(6 +10, 40 -10);
 		d->setCursor(W/2 -16, 4);
 		d->print("\x01""C  ");
 
@@ -82,19 +89,31 @@ void Gui::DrawGraphs()
 			d->print(f);
 	}
 	#endif
+}
 
 
-	//  Uptime, since on  --------
-	{
-		y = yu;
-		d->setCursor(x, y);
-		d->setClr(18, 22, 28);
-		sprintf(a, "%d:%02d:%02d", h, m, s);  d->print(a);
-	}
-
-
-	//  page / all  ---
-	d->setClr(12, 16, 22);
-	d->setCursor(W-1 - 3*6, 4);
-	sprintf(a, "%d/%d", pgGraph + 1, G_All);  d->print(a);
+//  color from byte value  . . . . . . . . . . . . . .
+void Gui::ClrByte(int val)
+{
+	const static uint8_t rgb[16][3] = {
+		{16,  6,29},  // viol
+		{ 6, 16,29},  // blue
+		{10, 20,30},  // skyblue
+		{ 8, 23,25},
+		{ 6, 26,26},  // cyan
+		{ 6, 27,16},
+		{ 4, 27, 4},  // green
+		{11, 28, 4},
+		{16, 29, 2},  // lime
+		{24, 30, 2},
+		{30, 30, 1},  // yellow
+		{30, 22, 2},
+		{31, 18, 4},  // orange
+		{31, 14, 7},
+		{31, 10,10},  // red
+		{31, 20,25},
+	};
+	int b = val / 16;
+	b = min(15, b);
+	d->setClr(rgb[b][0], rgb[b][1], rgb[b][2]);
 }

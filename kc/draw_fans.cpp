@@ -55,6 +55,7 @@ void Gui::DrawFans()
 				{
 					sprintf(a,"%4d", f.rpmAvg);
 					//sprintf(a,"%2d", f.rpmAvg/60);  // rps  f.rpm);
+					ClrByte(f.rpmAvg / 10);
 					d->setCursor(79, y);  d->print(a);
 				}
 				//  line --
@@ -64,9 +65,13 @@ void Gui::DrawFans()
 				//  temp 'C
 				if (f.fd.tempId >= 0)
 				{
-					dtostrf(fTemp[f.fd.tempId], 4,1, a);
-					d->setCursor(123, y);  d->print(a);
-				}
+					float fT = fTemp[f.fd.tempId];
+					if (fT > 0.1f)
+					{
+						ClrByte(TempFtoB(fT));
+						dtostrf(fT, 4,1, a);
+						d->setCursor(123, y);  d->print(a);
+				}	}
 			}
 		}
 		y += ya-1;
@@ -96,19 +101,24 @@ void Gui::DrawFanDetails()
 	int id = ym2Fan;
 	switch (pgDet)
 	{
-	case 0:  // pwm, rpm
+	case FD_PowerRpm:  // pwm, rpm
 		DrawGraph(0, W-1,  0, H-1,  0, false, id);  break;
 
-	case 1:  // temp
+	case FD_NameTemp:  // temp
 		if (fd.tempId >= 0)
 		DrawGraph(0, W-1,  0, H-1,  1, false, id);  break;
 
-	case FanDetPages-1:
+	case FD_Auto:
+		if (f.fd.a.on && f.fd.a.exp != 100)
+			DrawAutoGraph(&f);
+		break;
+
+	case FD_Graphs:
 		if (fd.tempId >= 0)  // rpm & temp
 		{	DrawGraph(0, W-1,  0,   H/2,  0, true, id);
 			DrawGraph(0, W-1,  H/2, H-1,  1, true, id);
 		}else  // rpm
-			DrawGraph(0, W-1,  0, H-1,  0, false, id);  break;
+			DrawGraph(0, W-1,  0, H-1,  0, false, id);
 		break;
 	}
 
@@ -152,21 +162,20 @@ void Gui::DrawFanDetails()
 		int8_t h = 4;
 		switch (pgDet)
 		{
-		case 0:  // page 1  %, rpm
+		case FD_PowerRpm:  // page 1  %, rpm
 			switch (i)
 			{
 			case 0:
 			{	auto p = fd.a.on ? f.pwm : fd.pwm;
-				dtostrf(100.f * p / 4095.f, 3,1, b);
+				dtostrf(100.f * p / 4095.f, 3,1, b);  h = 2;
 				if (fd.a.on)
-					sprintf(a,"Auto %% %s", b);
+					sprintf(a," Auto%% %s", b);
 				else
-					sprintf(a,"Power %% %s", b);
-				h = 2;
+					sprintf(a,"Power%% %s", b);
 			}	break;
 			case 1:
 				dtostrf(100.f * tFanAdd[par.iFanAdd] / 4095.f, 3,1, b);
-				sprintf(a,"add %% %s", b);  h = 4;  break;
+				sprintf(a,"  add%% %s", b);  h = 4;  break;
 			case 2:
 				if (fd.mode == FM_ExtOn)
 					sprintf(a,"Mode: %s %s", fanModes[fd.mode],
@@ -181,10 +190,11 @@ void Gui::DrawFanDetails()
 				dtostrf(f.rpm / 60.f, 4,1, b);
 				sprintf(a,"rps:  %s", b);  h = 4;  break;
 			case 4:
+				ClrByte(f.rpm / 10);
 				sprintf(a,"Rpm:  %4d", f.rpm);  h = 2;  break;
 			}	break;
 		
-		case 1:  // page 2  name, temp
+		case FD_NameTemp:  // page 2  name, temp
 			switch (i)
 			{
 			case 0:
@@ -201,6 +211,8 @@ void Gui::DrawFanDetails()
 			case 3:
 				if (fd.tempId >= 0 && fd.tempId < tempCount)
 				{
+					ClrByte(TempFtoB(fTemp[fd.tempId]));
+					
 					dtostrf(fTemp[fd.tempId], 4,1, b);
 					sprintf(a,"Temp \x01""C: %s", b);
 				}else
@@ -209,7 +221,7 @@ void Gui::DrawFanDetails()
 			#endif
 			}	break;
 
-		case 2:  // page 3  auto %
+		case FD_Auto:  // page 3  auto %
 			switch (i)
 			{
 			case 0:
@@ -225,14 +237,15 @@ void Gui::DrawFanDetails()
 				dtostrf(100.f * fd.a.pwmMax / 4095.f, 3,1, b);
 				sprintf(a,"max %%: %s", b);  break;
 			case 5:
-				sprintf(a,"exp: %d", fd.a.exp);  break;
+				dtostrf(fd.a.exp /100.f, 3,2, b);
+				sprintf(a,"exp ^: %s", b);  break;
 			}	break;
 
-		case 3:  // page 4  rpm guard
+		case FD_Guard:  // page 4  rpm guard
 			switch (i)
 			{
 			case 0:
-				sprintf(a,"Avg: %d", fd.avgNum);  break;
+				sprintf(a,"Averages: %d", fd.avgNum);  break;
 			case 1:
 				sprintf(a,"Guard: %s", fd.g.on ? "on" : "off");  break;
 			case 2:
@@ -244,7 +257,7 @@ void Gui::DrawFanDetails()
 				sprintf(a,"On %%: %s", b);  break;
 			}	break;
 
-		case 4:  // page 5  graphs
+		case FD_Graphs:  // page 5  graphs
 			a[0]=0;
 			switch (i)
 			{
