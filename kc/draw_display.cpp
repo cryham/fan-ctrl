@@ -16,7 +16,7 @@ void Gui::DrawDisplay()
 	d->print(strMain[ym]);  d->setFont(0);
 
 	//  subtitle
-	d->setCursor(W/2 -6, 4);
+	d->setCursor(W/2, 4);
 	d->setClr(30,22,12);
 	d->print(sPgDisplay[pgDisp]);
 
@@ -46,7 +46,10 @@ void Gui::DrawDisplay()
 		case 1:
 			sprintf(a,"Bright Off:  %d %%", par.brightOff);  h = 2;  break;
 		case 2:
-			d->print("  Time Off:  ");  PrintInterval(tTmOff(par));  break;
+			d->print("  Time Off:  ");
+			if (par.timeOff > 4)
+				PrintInterval(tTmOff(par));
+			else  d->print("always on");  break;
 		case 3:
 			StrScreen(par.startScreen, b);
 			sprintf(a,"Start with:  %s", b);  break;
@@ -63,7 +66,13 @@ void Gui::DrawDisplay()
 		switch(i)
 		{
 		case 0:
-			sprintf(a,"Frames per sec: %d", demos.iFps);  break;
+			d->print("Frames per sec: ");
+			switch(demos.iFps)
+			{
+			case 0:  strcpy(a,"off");  break;
+			case 1:  strcpy(a,"in demos");  break;
+			case 2:  strcpy(a,"always");  break;
+			}	break;
 		case 1:
 			sprintf(a,"Key delay:  %d ms", par.krDelay*5);  h = 2;  break;
 		case 2:
@@ -88,7 +97,7 @@ void Gui::DrawDisplay()
 			d->print("   Temp read:  ");  PrintInterval(tTemp(par));  h = 2;  break;
 		case 3:
 			d->print("   Graph add:  ");  PrintInterval(tTgraph(par));  h = 2;  break;
-		case 4:  // extra
+		case 4:  // extra, same as rpm?
 			d->print(" Graph total: ");  PrintInterval(W * tTgraph(par));  break;
 		}
 		y += h+8;

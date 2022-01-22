@@ -45,7 +45,7 @@ void Gui::DrawHelp()
 		d->println("  \x18,\x19      Move Cursor");  // ^,v
 		d->println("  \x1B,\x1A      Dec,Inc Value");  // <,>
 		d->println("PgUp,PgDn  Prev,Next Page");
-		d->moveCursor(0,4);
+		d->moveCursor(0,8);
 		d->println("Quick* cycle Fans,Graphs,");
 		d->println("       Diplay,Config");
 		break;

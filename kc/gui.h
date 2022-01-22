@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include "def.h"
 #include "demos.h"
+struct Fan;
 
 
 struct Gui
@@ -24,10 +25,11 @@ struct Gui
 	void Chk_y1(), DrawOperInfo();
 	void DrawDispCur(int i, int16_t y);
 	//  util
-	void ClrTemp(int temp);
+	void ClrByte(int val);
 	void PrintInterval(uint32_t t);
 	void DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 		bool temp, bool legend=true, int id=0);
+	void DrawAutoGraph(const Fan* f);
 
 
 	//  fans  ***
@@ -39,7 +41,7 @@ struct Gui
 
 	//  keys
 	void KeysScan(), KeysDisplay();
-	void KeysConfig(), KeysGraph();
+	void KeysConfig(), KeysGraph(int d);
 
 	//  start
 	void SetScreen(int8_t start);
@@ -85,13 +87,15 @@ struct Gui
 
 
 	//  level 2  menu cursors  ---
-	const static int8_t FanDetPages = 5;  // fan details pages
+	enum EFanDet  // fan details pages
+	{	FD_PowerRpm, FD_NameTemp, FD_Auto, FD_Guard, FD_Graphs, FanDetPages  };
+
 	int8_t ym2Fan = 0;
 	int8_t pgDet = 0, yFanDet[FanDetPages] = {0,};
 	static int8_t FanDetLines[FanDetPages], FanDetLinExt[FanDetPages];
 
 	int8_t ym2Disp = 0, pgDisp = 0, ym2Scan = 0;
-	int8_t pgGraph = G_Stats;
+	//int8_t pgGraph = G_Temp;
 
 	const static uint8_t DispPages[Di_All];
 
@@ -113,7 +117,7 @@ struct Gui
 	TempInit tempInit = TI_SEARCH;  // first, init
 	int tempCount = 0;   // sensors count
 
-	float fTemp[MaxTemp] = {0.f,};  // cur temp value
+	float fTemp[MaxTemp];  // cur temp value
 	int TempFtoB(float t);  float TempBtoF(uint8_t b);
 
 	//  last time read'C, add to graph
@@ -124,9 +128,9 @@ struct Gui
 	uint8_t grTemp[MaxTemp][W];   // graph array,  for each temp sensor
 	uint16_t grTpos = 0;  // write pos
 	// auto range
-	uint8_t grTempUpd[MaxTemp] = {1,1};  // update
-	uint8_t grFmin[MaxTemp] = {17,17}, grFmax[MaxTemp] = {35,35};  // temp 'C
-	uint8_t grBmin[MaxTemp] = {0,0}, grBmax[MaxTemp] = {255,255};  // val Byte
+	uint8_t grTempUpd[MaxTemp];  // update
+	uint8_t grFmin[MaxTemp], grFmax[MaxTemp];  // temp 'C
+	uint8_t grBmin[MaxTemp], grBmax[MaxTemp];  // val Byte
 	void AutoRange(int d);
 #endif
 

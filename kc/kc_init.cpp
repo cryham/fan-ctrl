@@ -10,7 +10,6 @@
 KC_Main::KC_Main()
 {
 	err = E_ok;  memSize = 0;
-	setBright = 1;
 
 	//  rtc set
 	unsigned long t = rtc_get();
@@ -37,11 +36,7 @@ void KC_Main::ResetStats(bool rtc)
 	if (rtc)
 		tm_on = t;
 
-	tm_key = tm_keyOld = t;
-	//  ms
-	uint32_t ms = millis();
-	msRpm = ms;
+	msRpm = millis();  // ms
 
-	//  cnt
 	cnt_press = 0;  // matrix.h
 }

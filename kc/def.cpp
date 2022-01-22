@@ -22,7 +22,7 @@ const char* strKeys[K_All] =
 //  Info use, ver
 const char* strConfig[C_All] =
 {
-	"Save", "Load", "Use", "Version",
+	"Save", "Load", "Counter", "Version",
 };
 
 

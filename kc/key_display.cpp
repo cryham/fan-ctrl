@@ -62,8 +62,7 @@ void Gui::KeysDisplay()
 		switch (ym2Disp)
 		{
 		case 0:
-			par.brightness = RangeAdd(par.brightness, kRight * 2, 0, 100, 1);
-			kc.setBright = 1;  break;
+			par.brightness = RangeAdd(par.brightness, kRight * 2, 0, 100, 1);  break;
 		case 1:
 			par.brightOff = RangeAdd(par.brightOff, kRight * 2, 0, 100, 1);  break;
 		case 2:

@@ -15,22 +15,6 @@ extern const char* KCerrStr[E_max];
 //--------------------------------------
 struct KC_Main
 {
-	//  current layer, set by keys
-	int8_t nLayer = 0,  // final, held layer key (or set)
-		   nLayerLock = -1;  // tap layer key to lock/unlock
-
-	int8_t setBright = 1;  // update lcd led
-
-	//  sequence running vars  0 norm, 1 from seq
-	int8_t inSeq[2] = {-1,-1},	// id run, -1 none
-		seqRel[2] = {0,0},		// pressed / released
-		seqWait = 0;			// one time, restore dtSeq
-	int16_t seqPos[2] = {0,0};	// cur index in seq data
-	uint16_t dtSeq = 20;		// var delay  param
-	uint32_t tiSeq = 0, tiFun = 0;  // ms time delay
-
-	uint16_t xm=0, ym=0;  // abs mouse pos
-
 
 	//  main  ----
 	KC_Main();

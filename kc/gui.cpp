@@ -9,7 +9,19 @@ Gui::Gui() : d(0)
 	Init(0);
 
 #ifdef TEMP_PIN
-	memset(grTemp, 0, sizeof(grTemp));
+	for (int i=0; i < MaxTemp; ++i)
+	{
+		//addr[i] =
+		fTemp[i] = 20.f;  // 'C
+		// int t = TempFtoB(fTemp[i]);
+		
+		for (int x=0; x < W; ++x)
+			grTemp[i][x] = 0; //t;
+		
+		grTempUpd[i] = 1;
+		grFmin[i] = 17; grFmax[i] = 35;
+		grBmin[i] = 0;  grBmax[i] = 255;
+	}
 #endif
 }
 

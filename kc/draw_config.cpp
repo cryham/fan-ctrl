@@ -9,44 +9,37 @@
 //....................................................................................
 void Gui::DrawConfig()
 {
+	char a[64];
+
 	//  menu
 	if (mlevel == 1)
 	{
+		//  title
 		d->setClr(22,20,26);
-		d->print(strMain[ym]);  d->setFont(0);
+		d->print(strMain[ym]);
 
+
+		//  uptime  ---
+		unsigned long t = rtc_get() - kc.tm_on;
+		int h = t / 3600 % 24, m = t / 60 % 60, s = t % 60;
+
+		d->setCursor(6, H - 20);
+		d->setClr(16, 16, 21);
+		sprintf(a, "Uptime  %d:%02d:%02d", h, m, s);  d->print(a);
+
+
+		//  menu
+		d->setFont(0);
 		DrawMenu(C_All,strConfig, C_Config,RGB(22,20,28),RGB(4,4,8), 10, -1);
-		return;
-	}
-	char a[64];
-	int16_t y = 32;
 
 
-	if (yy == C_Version)
-	{	demos.Version();  return;  }
-
-	//  title
-	d->setClr(17,17,22);
-	d->print(strConfig[yy]);
-	d->setFont(0);
-	d->setClr(21,21,26);
-
-
-	//int ii = InfoPages[yy];
-	switch (yy)
-	{
-	//-----------------------------------------------------
-	case C_Use:  // use
-	{
-		y -= 4;
+		//  counter
 		d->setClr(15,23,30);
-		d->setCursor(0, y);
-		d->print("\x10 ");  // >
+		d->setCursor(64, 32 + 2*10);
 
-		d->setClr(16,20,24);
-		sprintf(a,"Save counter: %d", par.verCounter);
-		d->print(a);  y += 14;
-
-	}	break;
+		sprintf(a,"%d", par.verCounter);
+		d->print(a);
 	}
+	else if (yy == C_Version)
+		demos.Version();
 }

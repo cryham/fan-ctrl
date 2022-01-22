@@ -45,6 +45,8 @@ struct KC_Params
 
 	uint8_t brightOff;
 	uint8_t timeOff;
+	
+	int8_t pgGraph;  // EGraphs
 };
 //  --- ADD new to END ----
 //  set defaults in ParInit()

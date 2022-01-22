@@ -26,7 +26,7 @@ void ParInit()
 	par.krDelay = 250/5;  par.krRepeat = 80/5;  // ms
 
 	par.rtcCompensate = 0;
-	par.tempOfs = int8_t(-0.6/*'C*/ / 0.03);  //-20
+	par.tempOfs = int8_t(-0.06/*'C*/ / 0.03);
 
 	par.timeRpm = 10;  // 8s
 	par.timeTemp = 10;   // 8s
@@ -40,7 +40,9 @@ void ParInit()
 	par.iFanAdd = 5;
 
 	par.brightOff = 0;
-	par.timeOff = 10;
+	par.timeOff = 3;  // off
+	
+	par.pgGraph = 0;
 }
 
 //  errors
@@ -80,7 +82,6 @@ void KC_Main::Load()
 
 	if (par.startScreen > ST_ALL)
 		par.startScreen = ST_ALL;
-	setBright = 1;  // upd
 
 
 	//  fans  ----
@@ -94,10 +95,12 @@ void KC_Main::Load()
 
 	for (int i=0; i < n; ++i)
 	{
+		FanData fd;  // ctor defaults, for pars over size
+		kc.fans.fan[i].fd = fd;
+
 		eeprom_read_block((void*)&kc.fans.fan[i].fd, (void*)a, s);  a += s;
 		if (a >= ESize) {  err=E_size;  return;  }
 	}
-	
 	memSize = a;
 }
 
@@ -127,7 +130,7 @@ void KC_Main::Save()
 	//  fans  ----
 	Ewr(a, NumFans);  // count
 
-	s = sizeof(FanData);
+	s = sizeof(FanData);  // fan data size
 	Ewr(a, s);
 
 	for (int i=0; i < NumFans; ++i)
@@ -135,6 +138,5 @@ void KC_Main::Save()
 		eeprom_write_block((void*)&kc.fans.fan[i].fd, (void*)a, s);  a += s;
 		if (a >= ESize) {  err=E_size;  return;  }
 	}
-
 	memSize = a;
 }

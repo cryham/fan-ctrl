@@ -3,7 +3,7 @@
 
 
 int8_t Gui::FanDetLines[Gui::FanDetPages] =
-	{2, 2, 5, 3,-1};  // param lines on each fan details page
+	{2, 2, 5, 4,-1};  // param lines on each fan details page
 int8_t Gui::FanDetLinExt[Gui::FanDetPages] =
 	{2, 1, 0, 0, 0};  // extra lines, info not param
 
@@ -30,7 +30,7 @@ void Gui::KeysFans()
 		auto yy = yFanDet[pgDet];
 		switch (pgDet)
 		{
-		case 0:
+		case FD_PowerRpm:
 			switch (yy)  // page 1  %, mode
 			{
 			case 0:
@@ -41,7 +41,7 @@ void Gui::KeysFans()
 				fd.mode = RangeAdd(fd.mode, kRight, 0, FModes_All-1, 1);  break;
 			}	break;
 
-		case 1:
+		case FD_NameTemp:
 			switch (yy)  // page 2  name, temp
 			{
 			case 0:
@@ -50,11 +50,14 @@ void Gui::KeysFans()
 				fd.number = RangeAdd(fd.number, kRight, 0, 9, 1);  break;
 			#ifdef TEMP_PIN
 			case 2:
-				fd.tempId = RangeAdd(fd.tempId, kRight, -1, tempCount-1, 1);  break;
+				if (kRight < 0 && fd.tempId == 0)
+					fd.tempId = -1;  // off
+				else
+					fd.tempId = RangeAdd(fd.tempId, kRight, -1, tempCount-1, 1);  break;
 			#endif
 			}	break;
 
-		case 2:
+		case FD_Auto:
 			switch (yy)  // page 3  auto %
 			{
 			case 0:
@@ -68,10 +71,10 @@ void Gui::KeysFans()
 			case 4:
 				fd.a.pwmMax = RangeAdd(fd.a.pwmMax, kRight * add, 0, 4095, 1);  break;
 			case 5:
-				fd.a.exp = RangeAdd(fd.a.exp, kRight, 10, 255, 1);  break;
+				fd.a.exp = RangeAdd(fd.a.exp, kRight*4, 10, 255, 1);  break;
 			}	break;
 
-		case 3:
+		case FD_Guard:
 			switch (yy)  // page 4  rpm guard
 			{
 			case 0:
@@ -86,7 +89,7 @@ void Gui::KeysFans()
 				fd.g.pwmOn = RangeAdd(fd.g.pwmOn, kRight * add, 0, 4095);  break;
 			}	break;
 
-		case 4:
+		case FD_Graphs:
 			switch (yy)  // page 5  graphs
 			{	//?
 			}	break;
@@ -98,9 +101,7 @@ void Gui::KeysFans()
 		ym2Fan = RangeAdd(ym2Fan, kUp, 0, NumFans-1, 1);
 	else
 	if (kRight)
-	{
-		p = RangeAdd(p, kRight * 40 * 4, 0, 4095, 1);  // add normal
-	}
-	//else if (kPgUp)  //?
-	//	f.fd.mode = RangeAdd(f.fd.mode, kPgUp, 0, FModes_All, 1);
+		p = RangeAdd(p, kRight * add, 0, 4095, 1);  // add normal
+	else if (kPgUp)
+		p = RangeAdd(p, kPgUp * 40 * 4, 0, 4095, 1);  // add page
 }

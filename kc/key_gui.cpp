@@ -56,7 +56,7 @@ void Gui::KeyPress()
 	}
 	else if (ym == M_Graphs && mlevel == 1)
 	{
-		KeysGraph();
+		KeysGraph(d);
 	}
 
 
@@ -93,13 +93,13 @@ void Gui::KeyPress()
 	{
 		auto No2nd = [&](){  return  // no 2nd level
 			ym == M_Display ||
-			(ym == M_Config && yy < 2);  };
+			(ym == M_Config && yy < C_Version);  };
 
 		if (kEnt > 0 && !No2nd())  // enter>
 			mlevel = 2;
 
-		if (d)
-		{	ym1[ym] += d;  Chk_y1();  }
+		if (kUp)
+		{	ym1[ym] += kUp;  Chk_y1();  }
 		return;
 	}
 

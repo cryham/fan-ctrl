@@ -6,22 +6,20 @@ extern KC_Main kc;
 
 //  Clock
 //....................................................................................
-void Gui::KeysGraph()
+void Gui::KeysGraph(int d)
 {
-	if (kUp)  // y
-		pgGraph = RangeAdd(pgGraph, kPgUp, 0, G_All-1, 1);
+	if (d)  // y
+		par.pgGraph = RangeAdd(par.pgGraph, d, 0, G_All-1, 1);
+	#if 0
 	else
-	//  graphs  cursor move  ---
+	//  cursor move  ---
 	if (pgGraph == G_Graphs)
 	{
 		if (kPgUp)
 			par.xCur = W-1;  // to end
-		/*if (kMul)
-		{	if (par.xCur == W)  par.xCur = W-1;  // show
-			else  par.xCur = W;  // hide
-		}*/
-		int a = kRight * 10;  //(kCtrl ? 30 : kSh ? 1 : 10);
+		int a = kRight * 10;
 		if (a)
 			par.xCur = RangeAdd(par.xCur, a, 0, W-1, 1);
 	}
+	#endif
 }
