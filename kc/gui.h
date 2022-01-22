@@ -34,7 +34,7 @@ struct Gui
 
 	//  fans  ***
 	const static int NumFanDet = 4;
-	void DrawFans(), DrawFanDetails();
+	void DrawFans(), DrawFanDetails(), RpmClr(const Fan* f);
 	void DrawGraphs();
 	void KeysFans();
 

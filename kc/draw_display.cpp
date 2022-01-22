@@ -4,7 +4,7 @@
 
 
 const char* sPgDisplay[Di_All] = {
-	"Bright", "Gui keys", "Graph", "Temp""\x01""C" };
+	"Bright", "Gui keys", "Graph", "Temp""\x01""C", "Rpm" };
 
 
 //  Display
@@ -120,6 +120,21 @@ void Gui::DrawDisplay()
 			sprintf(a,"T min:  %d ""\x01""C", par.minTemp);  d->print(a);  h = 2;  break;
 		case 3:
 			sprintf(a,"T max:  %d ""\x01""C", par.maxTemp);  d->print(a);  break;
+		}
+		y += h+8;
+	}	break;
+
+	case Di_Rpm:
+	for (int i=0; i <= pg; ++i)
+	{
+		DrawDispCur(i, y);
+		int8_t h = 4;
+		switch(i)
+		{
+		case 0:
+			sprintf(a,"Rpm max:  %d", par.maxRpm);  d->print(a);  h = 2;  break;
+		case 1:
+			sprintf(a,"Rpm min:  %d", par.minRpm);  d->print(a);  break;
 		}
 		y += h+8;
 	}	break;

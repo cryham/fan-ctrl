@@ -75,7 +75,7 @@ enum EGraphs
 };
 enum EDisplay  // pages
 {
-	Di_Bright, Di_Key, Di_Graph, Di_Temp, Di_All
+	Di_Bright, Di_Key, Di_Graph, Di_Temp, Di_Rpm, Di_All
 };
 enum EKeys
 {

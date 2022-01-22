@@ -47,6 +47,8 @@ struct KC_Params
 	uint8_t timeOff;
 	
 	int8_t pgGraph;  // EGraphs
+	//  Rpm graph scale
+	uint16_t minRpm, maxRpm;
 };
 //  --- ADD new to END ----
 //  set defaults in ParInit()

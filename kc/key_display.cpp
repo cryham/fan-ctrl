@@ -4,7 +4,7 @@
 #include "kc_data.h"
 #include "periodic.h"
 
-const uint8_t Gui::DispPages[Di_All] = {3,2,4,3};
+const uint8_t Gui::DispPages[Di_All] = {3,2,4,3,1};
 
 
 //  Config
@@ -86,7 +86,7 @@ void Gui::KeysDisplay()
 		switch (ym2Disp)
 		{
 		case 0:
-			par.timeRpm = RangeAdd(par.timeRpm, kRight, 0,255);  break;
+			par.timeRpm = RangeAdd(par.timeRpm, kRight, 0, gIntvMask, 1);  break;
 		case 2:
 			par.timeTemp = RangeAdd(par.timeTemp, kRight, 0, gIntvMask, 1);  break;
 		case 3:
@@ -104,6 +104,15 @@ void Gui::KeysDisplay()
 			par.minTemp = RangeAdd(par.minTemp, kRight, 0, 100, 1);  break;
 		case 3:
 			par.maxTemp = RangeAdd(par.maxTemp, kRight, 0, 100, 1);  break;
+		}	break;
+
+	case Di_Rpm:
+		switch (ym2Disp)
+		{
+		case 0:
+			par.maxRpm = RangeAdd(par.maxRpm, kRight*10, 0,4000, 1);  break;
+		case 1:
+			par.minRpm = RangeAdd(par.minRpm, kRight*10, 0,4000, 1);  break;
 		}	break;
 	}
 }

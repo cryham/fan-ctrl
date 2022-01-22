@@ -43,6 +43,7 @@ void ParInit()
 	par.timeOff = 3;  // off
 	
 	par.pgGraph = 0;
+	par.minRpm = 0;  par.maxRpm = 1200;
 }
 
 //  errors
