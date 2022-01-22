@@ -23,9 +23,9 @@ void Gui::DrawConfig()
 		unsigned long t = rtc_get() - kc.tm_on;
 		int h = t / 3600 % 24, m = t / 60 % 60, s = t % 60;
 
-		d->setCursor(6, H - 20);
+		d->setCursor(36, H - 20);
 		d->setClr(16, 16, 21);
-		sprintf(a, "Uptime  %d:%02d:%02d", h, m, s);  d->print(a);
+		sprintf(a, "%d:%02d:%02d", h, m, s);  d->print(a);
 
 
 		//  menu

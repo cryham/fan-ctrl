@@ -26,8 +26,25 @@ void Gui::DrawFanDetails()
 		DrawGraph(0, W-1,  0, H-1,  1, false, id);  break;
 
 	case FD_Auto:
-		if (f.fd.a.on && f.fd.a.exp != 100)
+		if (f.fd.a.on)
+		{
 			DrawAutoGraph(&f);
+		
+			d->setFont(0);
+			d->setClr(18,18,24);
+			d->setCursor(120, 60);  // %
+			
+			dtostrf(100.f * f.pwm / 4095.f, 3,1, b);
+			sprintf(a,"%% %s", b);  d->print(a);
+
+			if (TIdOk(fd.tempId))  // 'C
+			{
+				ClrByte(TempFtoB(fTemp[fd.tempId]));
+				d->setCursor(120, 72);
+
+				dtostrf(fTemp[fd.tempId], 4,1, b);
+				sprintf(a,"\x01""C %s", b);
+		}	}
 		break;
 
 	case FD_Graphs:
@@ -107,7 +124,7 @@ void Gui::DrawFanDetails()
 				dtostrf(f.rpm / 60.f, 4,1, b);
 				sprintf(a,"rps:  %s", b);  h = 4;  break;
 			case 4:
-				ClrByte(f.rpm / 10);
+				RpmClr(&f);
 				sprintf(a,"Rpm:  %4d", f.rpm);  h = 2;  break;
 			}	break;
 		
@@ -164,7 +181,8 @@ void Gui::DrawFanDetails()
 			case 0:
 				sprintf(a,"Averages: %d", fd.avgNum);  break;
 			case 1:
-				sprintf(a,"Guard: %s", fd.g.on ? "on" : "off");  break;
+				sprintf(a,"Guard: %s  %s", fd.g.on ? "on" : "off",
+					f.tmLeft > 0 ? "ON" : "");  break;
 			case 2:
 				sprintf(a,"Rpm min: %d", fd.g.rpmMin);  break;
 			case 3:

@@ -25,7 +25,7 @@ void Gui::DrawGraphs()
 		const int yT = H / tempCount;
 		
 		for (int i=0; i < tempCount; ++i)
-			DrawGraph(0, W-1,  h(i*yT), h( (i+1)*yT-1 ),  1, true, i);
+			DrawGraph(0, W-1,  h(i*yT), h( (i+1)*yT -1 ),  1, true, i);
 	}	break;
 	
 	case G_Rpm:
@@ -34,7 +34,7 @@ void Gui::DrawGraphs()
 		
 		for (int i=0; i < NumFans; ++i)
 		if (kc.fans.fan[i].on)
-			DrawGraph(0, W-1,  h(y*yR), h( (y+1)*yR ),  0, true, i);
+		{	DrawGraph(0, W-1,  h(y*yR), h( (y+1)*yR -1 ),  0, true, i);  ++y;  }
 	}	break;
 
 	case G_Both:
@@ -48,7 +48,7 @@ void Gui::DrawGraphs()
 		
 		for (int i=0; i < NumFans; ++i)
 		if (kc.fans.fan[i].on)
-			DrawGraph(W/2, W-1,  h(y*yR), h( (y+1)*yR ),  0, true, i);
+		{	DrawGraph(W/2, W-1,  h(y*yR), h( (y+1)*yR -1 ),  0, true, i);  ++y;  }
 		break;
 	}
 	}
@@ -96,8 +96,8 @@ void Gui::DrawGraphs()
 void Gui::ClrByte(int val)
 {
 	const static uint8_t rgb[16][3] = {
-		{16,  6,29},  // viol
-		{ 6, 16,29},  // blue
+		{18, 16,29},  // viol
+		{ 8, 16,29},  // blue
 		{10, 20,30},  // skyblue
 		{ 8, 23,25},
 		{ 6, 26,26},  // cyan

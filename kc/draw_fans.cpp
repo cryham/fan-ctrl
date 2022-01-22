@@ -28,7 +28,7 @@ void Gui::DrawFans()
 		}
 		FadeClr(C_Fans, 4, c, 1);
 
-		if (hid)  //  ---  fan line  ---
+		if (hid)  //  fan line  ---
 		{
 			d->drawFastHLine(2, y+1, 12, d->getClr());
 		}else
@@ -55,7 +55,7 @@ void Gui::DrawFans()
 				{
 					sprintf(a,"%4d", f.rpmAvg);
 					//sprintf(a,"%2d", f.rpmAvg/60);  // rps  f.rpm);
-					ClrByte(f.rpmAvg / 10);
+					RpmClr(&f);
 					d->setCursor(79, y);  d->print(a);
 				}
 				//  line --
@@ -84,4 +84,13 @@ void Gui::DrawFans()
 	//sprintf(a," Fan  Power %%  Rpm  Temp\x01""C");
 	sprintf(a," Fan      %%    Rpm    \x01""C");
 	d->print(a);
+}
+
+
+void Gui::RpmClr(const Fan* f)
+{
+	if (f->tmLeft > 0)  // guard triggered
+		d->setClr(25,27,30);
+	else
+		ClrByte(f->Rpm2B(f->rpmAvg));
 }

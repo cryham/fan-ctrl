@@ -201,6 +201,7 @@ void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 #endif
 
 
+//  Auto graph  exp _/  pwm from temp
 //**********************************************************************
 void Gui::DrawAutoGraph(const Fan* f)
 {
@@ -208,36 +209,40 @@ void Gui::DrawAutoGraph(const Fan* f)
 	const float fTmax = f->fd.a.tempMax *0.1f;
 	const float fTmin = f->fd.a.tempMin *0.1f;
 	const float fTlen = fTmax - fTmin;
+
 	for (int x=fTmin; x < fTmax+1; ++x)
 	{
-		int n = x % 10==0 ? 18 : x % 5 == 0 ? 14 : 9;
-		int xt = (float(x) - fTmin) / fTlen * (W-1);
+		const int n = x % 10==0 ? 18 : x % 5 == 0 ? 14 : 9;
+		const int xt = (float(x) - fTmin) / fTlen * (W-1);
 		d->drawFastVLine(xt, 0, H-1, RGB(n,n,n));
 	}
 
 	//  Power % lines ==
-	const int Pmax = f->fd.a.pwmMax, pmax = 100.f * Pmax / 4095.f;
-	const int Pmin = f->fd.a.pwmMin, pmin = 100.f * Pmin / 4095.f;
-	const int Plen = Pmax - Pmin,    plen = pmax - pmin;
-	for (int y=pmin; y < pmax+1; ++y)
+	const int Pmax = f->fd.a.pwmMax;
+	const int Pmin = f->fd.a.pwmMin;
+	const int Plen = Pmax - Pmin;
+	int oy = -1;
+	for (int p=Pmin; p < Pmax+1; ++p)
 	{
-		int n = y % 10==0 ? 18 : y % 5 == 0 ? 14 : y % 2 == 0 ? 11 : 8;
-		int yt = (float(y) - pmin) / plen * (H-1);
-		d->drawFastHLine(0, H-1 -yt, W-1, RGB(n,n,n));
-	}
+		const int y = 100.f * p / 4095.f;
+		if (oy != y)  // lines not bars
+		{	oy = y;
+			const int n = y % 10==0 ? 18 : y % 5 == 0 ? 14 : y % 2 == 0 ? 11 : 8;
+			int yp = (float(p) - Pmin) / Plen * (H-1);
+			if (yp > 0)
+				d->drawFastHLine(0, H-1 -yp, W-1, RGB(n,n,n));
+	}	}
 
-	//  exp Auto pwm graph _/
-	//const uint16_t clr = RGB(20,20,26);
+	//  graph _/
 	for (int x=0; x < W; ++x)
 	{
-		float fT = float(x)/(W-1) * fTlen + fTmin;
-		auto pwm = f->GetPWMAuto(fT);
-		// float p = 100.f * pwm / 4095.f;
-		// int y = float(H-1) * (p - pmin) / pmax;
+		const float fT = float(x)/(W-1) * fTlen + fTmin;
+		const auto pwm = f->GetPWMAuto(fT);
 		
-		float fP = float(H-1) * (pwm - Pmin) / float(Plen);
-		int y = max(0, H-1 - int(fP));
-		ClrByte(255 - y*2);
-		d->drawPixel(x, H-1 -y, d->getClr());
+		const float fP = float(H-1) * (pwm - Pmin) / float(Plen);
+		const int y = max(0, H-1 - int(fP));
+		
+		ClrByte(255 - y*2);  // rainbow
+		d->drawPixel(x, y, d->getClr());
 	}
 }
