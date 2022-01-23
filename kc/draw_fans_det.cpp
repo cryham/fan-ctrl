@@ -134,7 +134,7 @@ void Gui::DrawFanDetails()
 			case 0:
 				sprintf(a,"Name: %s", fanNames[fd.name]);  h = 2;  break;
 			case 1:
-				sprintf(a,"Number: %d", fd.number);  break;
+				sprintf(a,"Number: %d", fd.number);  h = 6;  break;
 			case 2:
 				if (TIdOk(fd.tempId))
 					sprintf(a,"Temp id: %d", fd.tempId);
@@ -177,20 +177,27 @@ void Gui::DrawFanDetails()
 			switch (i)
 			{
 			case 0:
-				sprintf(a,"Averages: %d", fd.avgNum);  break;
-			case 1:
 				sprintf(a,"Guard: %s  %s", fd.g.on ? "on" : "off",
 					f.tmLeft > 0 ? "ON" : "");  break;
-			case 2:
+			case 1:
 				sprintf(a,"Rpm min: %d", fd.g.rpmMin);  break;
-			case 3:
+			case 2:
 				sprintf(a,"On ms: %d", fd.g.msOn);  h = 2;  break;
-			case 4:
+			case 3:
 				dtostrf(100.f * fd.g.pwmOn / 4095.f, 3,1, b);
 				sprintf(a,"On %%: %s", b);  break;
 			}	break;
 
-		case FD_Graphs:  // page 5  graphs
+		case FD_Advanced:  // page 5  advanced
+			switch (i)
+			{
+			case 0:
+				sprintf(a,"Averages: %d", fd.avgNum);  break;
+			case 1:
+				sprintf(a,"PWM Freq.: %d kHz", fd.freq);  break;
+			}	break;
+
+		case FD_Graphs:  // page 6  graphs
 			a[0]=0;
 			break;
 

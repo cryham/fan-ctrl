@@ -89,7 +89,7 @@ struct Gui
 
 	//  level 2  menu cursors  ---
 	enum EFanDet  // fan details pages
-	{	FD_PowerRpm, FD_NameTemp, FD_Auto, FD_Guard, FD_Graphs, FanDetPages  };
+	{	FD_PowerRpm, FD_NameTemp, FD_Auto, FD_Guard, FD_Advanced, FD_Graphs, FanDetPages  };
 
 	int8_t ym2Fan = 0;
 	int8_t pgDet = 0, yFanDet[FanDetPages] = {0,};

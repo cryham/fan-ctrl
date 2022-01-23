@@ -1,5 +1,4 @@
 #include "kc_data.h"
-//#include "usb_keyboard.h"
 #include "matrix.h"
 #include "kc_params.h"
 #include "WProgram.h"  // rtc, Mouse

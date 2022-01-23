@@ -45,7 +45,7 @@ extern const uint8_t FAN_RPM[NumFans];  // RPM input pins
 #define H 128
 
 //  R F800  G 07E0  B 001F  R 32 G 64 B 32  565
-#define RGB(r,g,b)  ( ((r)<<11)+ ((g)<<6) +(b))   // 31 31 31
+#define RGB(r,g,b)  ( ((r)<<11)+ ((g)<<6) +(b))  // 31 31 31
 #define RGB2(r,g,b) ( ((r)<<11)+ ((g)<<5) +(b))  // 31 63 31
 
 #ifdef __cplusplus
@@ -67,7 +67,7 @@ enum EMainMenu
 //  menus  level 1  --
 enum EConfig
 {
-	C_Save, C_Load, C_Use, C_Version, C_All
+	C_Save, C_Load, C_Counter, C_Version, C_All
 };
 enum EGraphs
 {

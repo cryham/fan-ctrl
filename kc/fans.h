@@ -47,6 +47,9 @@ struct FanData
 		uint16_t tempMin = 350, tempMax = 650;  // /10.f 'C
 		uint8_t exp = 100;  // power exponent /100.f
 	} a;
+
+	uint8_t freq = 10;  // * 1kHz, pwm mod freq
+//  --- ADD new to END ----
 };
 
 
@@ -55,6 +58,7 @@ struct Fan
 	FanData fd;
 
 	bool hasRpm = true;  // if fan has rpm pin to measure
+	uint8_t pwmPin = 0;
 
 	//  var, measure
 	uint32_t lastRpmMS = 0;
@@ -77,6 +81,7 @@ struct Fan
 
 	Fan();
 	void Init(uint8_t fanId);
+	void UpdFreq();
 
 	void GetFanName(char* s) const;
 

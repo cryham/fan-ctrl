@@ -10,7 +10,6 @@ void Gui::DrawGraphs()
 {
 	char a[64];
 
-
 	//  Graphs  ~~
 	int onFans = kc.fans.onFans;
 
@@ -48,44 +47,14 @@ void Gui::DrawGraphs()
 		for (int i=0; i < NumFans; ++i)
 		if (kc.fans.fan[i].on)  // todo: fan params rpm,temp on graphs..
 		{	DrawGraphR(W/2, W-1,  h(y*yR), h( (y+1)*yR -1 ),  true, i);  ++y;  }
-		break;
+	}	break;
 	}
-	}
-
 
 	//  page / all  ---
 	d->setClr(12, 16, 22);
-	d->setCursor(W-1 - 3*6, 4);
+	//d->setCursor(W-1 - 3*6, 4);
+	d->setCursor(W/2 -8, 1);
 	sprintf(a, "%d/%d", par.pgGraph + 1, G_All);  d->print(a);
-
-
-	//  test Temp'C  init, vals  --------
-	#if 0
-	// if (tempInit > TI_DONE)  // 'C
-	{
-		d->setCursor(W/2 -16, 4);
-		d->print("\x01""C  ");
-
-		d->print('0'+tempCount);
-		d->print("x  ");
-
-		const static char* strTempInit[] =
-		{  "fail", "search", "done", ""/*"read"*/  };
-		d->print(strTempInit[tempInit]);
-	}
-
-	for (int i=0; i < tempCount; ++i)
-	{
-		char f[32];
-		dtostrf(fTemp[i], 4,2, f);
-		
-		d->setClr(18,22,26);
-		d->setCursor(6, 46+ i*10);
-
-		if (fTemp[i] > 0.f)
-			d->print(f);
-	}
-	#endif
 }
 
 
@@ -100,10 +69,10 @@ void Gui::ClrByte(int val)
 		{ 6, 26,26},  // cyan
 		{ 6, 27,16},
 		{ 4, 27, 4},  // green
-		{11, 28, 4},
-		{16, 29, 2},  // lime
-		{24, 30, 2},
-		{30, 30, 1},  // yellow
+		{11, 27, 4},
+		{16, 28, 2},  // lime
+		{24, 29, 2},
+		{29, 29, 1},  // yellow
 		{30, 22, 2},
 		{31, 18, 4},  // orange
 		{31, 14, 7},

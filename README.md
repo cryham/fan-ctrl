@@ -42,7 +42,7 @@ Extras
 * Few display demos (full screen, from K.C.)
 
 TODO:
-* more params: RPM frequency, global graphs
+* more params: RPM frequency, add to global graphs
 * factors, to regulate more fans at once
 
 ---

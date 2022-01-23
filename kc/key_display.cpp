@@ -16,7 +16,7 @@ void Gui::KeysConfig()
 	{
 	case C_Save:  if (kEnt)  Save();  break;
 	case C_Load:  if (kEnt)  Load(0);  break;
-	case C_Use:  if (kRight)
+	case C_Config:  if (kRight)
 		par.verCounter = RangeAdd(par.verCounter, kRight, 0, 255, 1);  break;
 	}
 }

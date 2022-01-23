@@ -46,13 +46,18 @@ void Fan::GetFanName(char* s) const
 void Fan::Init(uint8_t fanId)
 {
 	const uint8_t pwm = FAN_PWM[fanId], rpm = FAN_RPM[fanId];
+	pwmPin = pwm;
 	pinMode(pwm, OUTPUT);
-	analogWriteFrequency(pwm, 20000);  // par 10k
+	UpdFreq();
 	analogWrite(pwm, 0);  // off
 
 	hasRpm = rpm < NoRPM;
 	if (hasRpm)
 		pinMode(rpm, INPUT_PULLUP);
+}
+void Fan::UpdFreq()
+{
+	analogWriteFrequency(pwmPin, fd.freq * 1000);
 }
 
 void Fans::Init(float* pfTemp)

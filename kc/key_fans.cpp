@@ -3,9 +3,9 @@
 
 
 int8_t Gui::FanDetLines[Gui::FanDetPages] =
-	{2, 2, 5, 4,-1};  // param lines on each fan details page
+	{2, 2, 5, 3, 1, -1};  // param lines on each fan details page
 int8_t Gui::FanDetLinExt[Gui::FanDetPages] =
-	{2, 1, 0, 0, 0};  // extra lines, info not param
+	{2, 1, 0, 0, 0, 0};  // extra lines, info not param
 
 const uint16_t Gui::tFanAdd[NumFanAdd] = {  // pwm add speeds
 	1, 2, 4, 9, 17, 25, 33, 41, 62, 82, 123, 164, 205, 246, 327, 409, 512,	};
@@ -76,21 +76,26 @@ void Gui::KeysFans()
 			switch (yy)  // page 4  rpm guard
 			{
 			case 0:
-				fd.avgNum = RangeAdd(fd.avgNum, kRight, 0, avgMax-1);  break;
-			case 1:
 				fd.g.on = RangeAdd(fd.g.on, kRight, 0, 1);  break;
-			case 2:
+			case 1:
 				fd.g.rpmMin = RangeAdd(fd.g.rpmMin, kRight * 10, 0, 600);  break;
-			case 3:
+			case 2:
 				fd.g.msOn = RangeAdd(fd.g.msOn, kRight * 10, 0, 2000);  break;
-			case 4:
+			case 3:
 				fd.g.pwmOn = RangeAdd(fd.g.pwmOn, kRight * add, 0, 4095);  break;
 			}	break;
 
-		case FD_Graphs:
-			switch (yy)  // page 5  graphs
-			{	//?
+		case FD_Advanced:
+			switch (yy)  // page 5  advanced
+			{
+			case 0:
+				fd.avgNum = RangeAdd(fd.avgNum, kRight, 0, avgMax-1);  break;
+			case 1:
+				fd.freq = RangeAdd(fd.freq, kRight, 1, 90);  break;
 			}	break;
+
+ 		case FD_Graphs:  // page 6  graphs
+			break;
 		}
 		return;
 	}

@@ -32,8 +32,8 @@ void ParInit()
 	par.timeTemp = 10;   // 8s
 	par.timeTgraph = 15; // 1m  gIntervals
 	
-	par.minTemp = 15;  par.maxTemp = 90;
-	//par.minTemp = 20;  par.maxTemp = 50;
+	//par.minTemp = 15;  par.maxTemp = 90;
+	par.minTemp = 20;  par.maxTemp = 60;
 	par.xCur = W-1;
 	
 	par.ym2Fan = 0;
@@ -103,6 +103,10 @@ void KC_Main::Load()
 		if (a >= ESize) {  err=E_size;  return;  }
 	}
 	memSize = a;
+
+	//  upd pwm freq  ***
+	for (int i=0; i < n; ++i)
+		fans.fan[i].UpdFreq();
 }
 
 
