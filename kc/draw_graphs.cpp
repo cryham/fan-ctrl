@@ -24,7 +24,7 @@ void Gui::DrawGraphs()
 		const int yT = H / tempCount;
 		
 		for (int i=0; i < tempCount; ++i)
-			DrawGraph(0, W-1,  h(i*yT), h( (i+1)*yT -1 ),  1, true, i);
+			DrawGraphTi(0, W-1,  h(i*yT), h( (i+1)*yT -1 ),  true, i);
 	}	break;
 	
 	case G_Rpm:
@@ -33,7 +33,7 @@ void Gui::DrawGraphs()
 		
 		for (int i=0; i < NumFans; ++i)
 		if (kc.fans.fan[i].on)
-		{	DrawGraph(0, W-1,  h(y*yR), h( (y+1)*yR -1 ),  0, true, i);  ++y;  }
+		{	DrawGraphR(0, W-1,  h(y*yR), h( (y+1)*yR -1 ),  true, i);  ++y;  }
 	}	break;
 
 	case G_Both:
@@ -41,13 +41,13 @@ void Gui::DrawGraphs()
 		const int yT = H / tempCount;
 		
 		for (int i=0; i < tempCount; ++i)
-			DrawGraph(0, W/2,  h(i*yT), h( (i+1)*yT-1 ),  1, true, i);
+			DrawGraphTi(0, W/2,  h(i*yT), h( (i+1)*yT-1 ),  true, i);
 
 		const int yR = H / onFans;
 		
 		for (int i=0; i < NumFans; ++i)
 		if (kc.fans.fan[i].on)  // todo: fan params rpm,temp on graphs..
-		{	DrawGraph(W/2, W-1,  h(y*yR), h( (y+1)*yR -1 ),  0, true, i);  ++y;  }
+		{	DrawGraphR(W/2, W-1,  h(y*yR), h( (y+1)*yR -1 ),  true, i);  ++y;  }
 		break;
 	}
 	}

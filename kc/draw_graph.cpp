@@ -5,6 +5,20 @@
 #include "TomThumb3x5.h"
 
 
+void Gui::DrawGraphT(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax, bool legend, uint8_t id)
+{
+	const Fan& f = kc.fans.fan[id];
+	DrawGraph(xMin, xMax, yMin, yMax, true, legend, f.fd.tempId);
+}
+void Gui::DrawGraphTi(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax, bool legend, uint8_t id)
+{
+	DrawGraph(xMin, xMax, yMin, yMax, true, legend, id);
+}
+void Gui::DrawGraphR(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax, bool legend, uint8_t id)
+{
+	DrawGraph(xMin, xMax, yMin, yMax, false, legend, id);
+}
+
 //  Graph  ~ ~
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
@@ -13,11 +27,7 @@ void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 	if (id < 0)  return;
 	const int16_t xLen = xMax - xMin, yLen = yMax - yMin,
 		yF = 13, left = 22, top = 1;  // legend ? 10 : 6;  // margin
-	bool small = yLen < H/2;
-
-	const Fan& f = kc.fans.fan[id];
-	const FanData& fd = f.fd;
-	if (temp)  id = fd.tempId;
+	bool small = yLen < H/2 -8;  // par
 
 	int i,x,y, v;  // var
 	char a[64];
@@ -67,8 +77,10 @@ void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 		}
 	};
 
-	d->setFont();
-	// d->setFont(&TomThumb);  // mini
+	if (small)
+		d->setFont(&TomThumb);  // mini
+	else
+		d->setFont();
 
 
 	//------------------------------------------------------------------------
@@ -94,10 +106,12 @@ void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 	if (temp && grFmax[id] > grFmin[id])
 	{
 		// grid  horizontal  ===
+		bool all = small ? false : grFmax[id] - grFmin[id] < 6;  // par
 		for (i = grFmin[id]; i <= grFmax[id]; ++i)  // 'C
 		{
 			y = yMax - yLen * (float(i) - grFmin[id]) / (grFmax[id] - grFmin[id]);
-			GridLineH(y, i%5==0 ? 13 : i%2==0 ? 11 : 9, i);
+			if (all || i%2==0)
+				GridLineH(y, i%5==0 ? 13 : i%2==0 ? 11 : 8, i);
 		}
 		//  graph pixels  ~~~
 		for (i = xMin; i <= xMax; ++i)
@@ -117,10 +131,12 @@ void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 	if (!temp && grRFmax[id] > grRFmin[id])
 	{
 		// grid  horizontal  ===
+		bool all = small ? false : grRFmax[id] - grRFmin[id] < 600;  // par
 		for (i = grRFmin[id]; i <= grRFmax[id]; i+=100)  // rpm
 		{
 			y = yMax - yLen * (float(i) - grRFmin[id]) / (grRFmax[id] - grRFmin[id]);
-			GridLineH(y, i%300==0 ? 13 : i%200==0 ? 11 : 9, i);
+			if (all || i%200==0)
+				GridLineH(y, i%300==0 ? 13 : i%200==0 ? 11 : 8, i);
 		}
 		//  graph pixels  ~~~
 		for (i = xMin; i <= xMax; ++i)
@@ -145,18 +161,17 @@ void Gui::DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
 		x = xMin + xLen/2 -12; // + left;
 		y = yMin + top;
 		d->setCursor(x,y);
-		d->setClr(21, 24, 27);
+		d->setClr(22, 25, 28);
 		y += yF;
 
-		{
-			if (temp)
-				dtostrf(fTemp[id], 4,1,a);
-			else
-				sprintf(a,"%d", f.rpmAvg);
-			
-			d->setCursor(x,y);  d->print(a);  y += yF;
-			if (temp)
-				d->print(" \x01""C");
-		}
+		const Fan& f = kc.fans.fan[id];
+		if (temp)
+			dtostrf(fTemp[id], 4,1,a);
+		else
+			sprintf(a,"%d", f.rpmAvg);
+		
+		d->setCursor(x,y);  d->print(a);  y += yF;
+		if (temp)
+			d->print(" \x01""C");
 	}
 }

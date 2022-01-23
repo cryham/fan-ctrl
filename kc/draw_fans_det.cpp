@@ -19,11 +19,11 @@ void Gui::DrawFanDetails()
 	switch (pgDet)
 	{
 	case FD_PowerRpm:  // pwm, rpm
-		DrawGraph(0, W-1,  0, H-1,  0, false, id);  break;
+		DrawGraphR(0, W-1,  0, H-1,  false, id);  break;
 
 	case FD_NameTemp:  // temp
 		if (fd.tempId >= 0)
-		DrawGraph(0, W-1,  0, H-1,  1, false, id);  break;
+		DrawGraphT(0, W-1,  0, H-1,  false, id);  break;
 
 	case FD_Auto:
 		if (f.fd.a.on)
@@ -49,10 +49,10 @@ void Gui::DrawFanDetails()
 
 	case FD_Graphs:
 		if (fd.tempId >= 0)  // rpm & temp
-		{	DrawGraph(0, W-1,  0,   H/2,  0, true, id);
-			DrawGraph(0, W-1,  H/2, H-1,  1, true, id);
+		{	DrawGraphR(0, W-1,  0,   H/2,  true, id);
+			DrawGraphT(0, W-1,  H/2, H-1,  true, id);
 		}else  // rpm
-			DrawGraph(0, W-1,  0, H-1,  0, false, id);
+			DrawGraphR(0, W-1,  0,   H-1,  true, id);
 		break;
 	}
 

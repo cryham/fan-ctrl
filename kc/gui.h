@@ -27,6 +27,10 @@ struct Gui
 	//  util
 	void ClrByte(int val);
 	void PrintInterval(uint32_t t);
+
+	void DrawGraphTi(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax, bool legend, uint8_t tempId=0);
+	void DrawGraphT(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax, bool legend, uint8_t fanId=0);
+	void DrawGraphR(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax, bool legend, uint8_t fanId=0);
 	void DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,  // where
 		bool temp, bool legend=true, int id=0);  // what
 	void DrawAutoGraph(const Fan* f);
