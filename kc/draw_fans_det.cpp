@@ -30,9 +30,9 @@ void Gui::DrawFanDetails()
 		{
 			DrawAutoGraph(&f);
 		
-			d->setFont(0);
-			d->setClr(18,18,24);
-			d->setCursor(120, 60);  // %
+			d->setFont(0);  //  extra vars right
+			d->setClr(24,24,28);
+			d->setCursor(110, 60);  // %
 			
 			dtostrf(100.f * f.pwm / 4095.f, 3,1, b);
 			sprintf(a,"%% %s", b);  d->print(a);
@@ -40,10 +40,10 @@ void Gui::DrawFanDetails()
 			if (TIdOk(fd.tempId))  // 'C
 			{
 				ClrByte(TempFtoB(fTemp[fd.tempId]));
-				d->setCursor(120, 72);
+				d->setCursor(110, 72);
 
 				dtostrf(fTemp[fd.tempId], 4,1, b);
-				sprintf(a,"\x01""C %s", b);
+				sprintf(a,"\x01""C %s", b);  d->print(a);
 		}	}
 		break;
 
@@ -141,7 +141,6 @@ void Gui::DrawFanDetails()
 				else
 					sprintf(a,"Temp id: off");
 				break;
-			#ifdef TEMP_PIN
 			case 3:
 				if (TIdOk(fd.tempId))
 				{
@@ -152,7 +151,6 @@ void Gui::DrawFanDetails()
 				}else
 					sprintf(a,"Temp \x01""C: off");
 				break;
-			#endif
 			}	break;
 
 		case FD_Auto:  // page 3  auto %
@@ -194,9 +192,7 @@ void Gui::DrawFanDetails()
 
 		case FD_Graphs:  // page 5  graphs
 			a[0]=0;
-			switch (i)
-			{
-			}	break;
+			break;
 
 		}
 		d->print(a);  y += h+8;

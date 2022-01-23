@@ -48,6 +48,7 @@ void main_periodic()
 	}
 
 	kc.Update(ms);  // add to graphs
+	gui.AddGraphRpm(ms);
 
 	us_scan = micros() - us;
 }
@@ -97,7 +98,7 @@ int main()
 	//  keys
 	Matrix_setup();
 
-	//  48 MHz/50 000 = 960 Hz   display: 76 fps
+	//  48 MHz/50 000 = 960 Hz   display: 71 fps
 	Periodic_init( par.scanFreq * 1000 );
 	Periodic_function( &main_periodic );
 
@@ -108,12 +109,8 @@ int main()
 		kc.fans.Update();
 
 		gui.Draw();
-
 		gui.DrawEnd();
 
-		//  temp get  --------
-		#ifdef TEMP_PIN  // 18B20  Temp'C
 		gui.GetTemp();
-		#endif
 	}
 }

@@ -43,9 +43,9 @@ void Gui::DrawFans()
 				d->setCursor(58, y);  d->print("off");
 			}else
 			{	//  pwm %
-				/*if (f.fd.pwm < 400)  // 10%
-					dtostrf(100.f * f.fd.pwm / 4095.f, 3,1, a);
-				else*/
+				if (f.pwm < 409)  // <10%
+					dtostrf(100.f * f.pwm / 4095.f, 3,1, a);
+				else
 					sprintf(a,"%2d", 100 * f.pwm / 4095);
 				
 				d->setCursor(50, y);  d->print(a);
@@ -90,7 +90,7 @@ void Gui::DrawFans()
 void Gui::RpmClr(const Fan* f)
 {
 	if (f->tmLeft > 0)  // guard triggered
-		d->setClr(25,27,30);
+		d->setClr(26,28,31);
 	else
-		ClrByte(f->Rpm2B(f->rpmAvg));
+		ClrByte(RpmFtoB(f->rpmAvg));
 }

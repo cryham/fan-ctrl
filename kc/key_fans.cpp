@@ -48,13 +48,11 @@ void Gui::KeysFans()
 				fd.name = RangeAdd(fd.name, kRight, 0, FNames_All-1, 1);  break;
 			case 1:
 				fd.number = RangeAdd(fd.number, kRight, 0, 9, 1);  break;
-			#ifdef TEMP_PIN
 			case 2:
 				if (kRight < 0 && fd.tempId == 0)
 					fd.tempId = -1;  // off
 				else
 					fd.tempId = RangeAdd(fd.tempId, kRight, -1, tempCount-1, 1);  break;
-			#endif
 			}	break;
 
 		case FD_Auto:

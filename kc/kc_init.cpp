@@ -23,9 +23,8 @@ KC_Main::KC_Main()
 		rtc_set(t);
 	}
 	ResetStats(true);
-
-	memset(grRpm, 0, sizeof(grRpm));
 }
+
 
 //  Reset stats, rtc, times
 //------------------------------------------------
@@ -35,8 +34,6 @@ void KC_Main::ResetStats(bool rtc)
 	unsigned long t = rtc_get();
 	if (rtc)
 		tm_on = t;
-
-	msRpm = millis();  // ms
 
 	cnt_press = 0;  // matrix.h
 }

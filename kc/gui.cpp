@@ -8,21 +8,30 @@ Gui::Gui() : d(0)
 {
 	Init(0);
 
-#ifdef TEMP_PIN
+	msTemp = msTempGr = msRpm = millis();  // ms
+
 	for (int i=0; i < MaxTemp; ++i)
 	{
 		//addr[i] =
 		fTemp[i] = 20.f;  // 'C
-		// int t = TempFtoB(fTemp[i]);
 		
 		for (int x=0; x < W; ++x)
-			grTemp[i][x] = 0; //t;
+			grTemp[i][x] = 0;
 		
 		grTempUpd[i] = 1;
 		grFmin[i] = 17; grFmax[i] = 35;
 		grBmin[i] = 0;  grBmax[i] = 255;
 	}
-#endif
+
+	for (int i=0; i < NumFans; ++i)
+	{
+		for (int x=0; x < W; ++x)
+			grRpm[i][x] = 0;
+		
+		grRpmUpd[i] = 1;
+		grRFmin[i] = 600; grRFmax[i] = 900;
+		grRBmin[i] = 0;  grRBmax[i] = 255;
+	}
 }
 
 void Gui::Init(Ada4_ST7735* tft)

@@ -63,8 +63,6 @@ struct Fan
 	volatile uint16_t pulses = 0;
 	
 	uint16_t rpm = 0, rpmAvg = 0;  //  on Gui
-	static inline uint8_t Rpm2B(uint16_t r)
-	{	return r / 5;  }  // byte  max 1275 rpm
 
 	//  average rpm
 	int8_t avgCnt = 0;

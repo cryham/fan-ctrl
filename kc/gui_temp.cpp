@@ -1,14 +1,15 @@
 #include "gui.h"
 #include "Ada4_ST7735.h"
 #include "kc_params.h"
-
-#ifdef TEMP_PIN
+#include "kc_data.h"
+#include "fans.h"
 
 #include <OneWire.h>
 #include <DS18B20.h>
 
 OneWire onewire(TEMP_PIN);  // pin
 DS18B20 sensors(&onewire);
+extern KC_Main kc;
 
 
 // search sensors again
@@ -57,33 +58,54 @@ void Gui::GetTemp()
 				for (int i=0; i < tempCount; ++i)
 				{
 					fTemp[i] = sensors.readTemperature(addr[i]);
-					fTemp[i] += 0.03f * par.tempOfs;  // fix sensor error
+					fTemp[i] += 0.03f * par.tempOfs;  // adj offset-
 					sensors.request(addr[i]);  // next
 				}
 			}
 		}
 
+		//  add graph rpm  ~~~+
 		if (ms - msTempGr > tTgraph(par) || ms < msTempGr)
-		{
-			msTempGr = ms;
+		{	msTempGr = ms;
+
 			//  graph inc pos
 			++grTpos;
-			if (grTpos >= W)  grTpos = 0;
+			if (grTpos >= W)
+				grTpos = 0;
 
 			//  add to graph  all temp sensors
 			for (int i=0; i < tempCount; ++i)
 			{
-				int t = TempFtoB(fTemp[i]);  //par
-			#if 0  // test
-				static uint8_t ii = 0;  ++ii;
-				static uint8_t ti = 128;  if (ii%3==0)  ++ti;  t = ti;
-			#endif
+				int t = TempFtoB(fTemp[i]);
 				t = t > 255 ? 255 : (t < 0 ? 0 : t);  // 0 not measured
 				grTemp[i][grTpos] = t;
 				grTempUpd[i] = 1;
-			}
-		}
+		}	}
 	}
 }
 
-#endif
+void Gui::AddGraphRpm(uint32_t ms)
+{
+	//  add graph rpm  ~~~+
+	if (par.timeRpm)
+	if (ms - msRpm > tRpm(par) || ms < msRpm)
+	{	msRpm = ms;
+
+		//  graph inc pos
+		++grRpos;
+		if (grRpos >= W)
+			grRpos = 0;
+
+		//  add to graph,  rpm to byte
+		for (int i=0; i < NumFans; ++i)
+		{
+			const Fan& f = kc.fans.fan[i];
+
+			int t = RpmFtoB(f.rpmAvg);
+			t = t > 255 ? 255 :
+				f.rpmAvg < par.minRpm ? 0 : t;  // 0 not vis
+			
+			grRpm[i][grRpos] = t;
+			grRpmUpd[i] = 1;
+	}	}
+}

@@ -35,13 +35,8 @@ struct KC_Main
 	//  inactive time(s) for stats
 	uint32_t
 		tm_on = 0,  // uptime   tm_= rtc, ms_= milis
-		tm_key = 0, tm_keyOld = 0,  // last key press time, previous
-		msRpm = 0;    // rpm dt time
+		tm_key = 0, tm_keyOld = 0;  // last key press time, previous
 	void ResetStats(bool rtc=false);
-
-
-	uint8_t grRpm[NumFans][W];  // graph array  rpm/10  e.g. 1200rpm = 120px
-	uint8_t grRpos = 0;  // write pos
 };
 
 extern KC_Main kc;

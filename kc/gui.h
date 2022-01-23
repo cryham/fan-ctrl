@@ -27,8 +27,8 @@ struct Gui
 	//  util
 	void ClrByte(int val);
 	void PrintInterval(uint32_t t);
-	void DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,
-		bool temp, bool legend=true, int id=0);
+	void DrawGraph(int16_t xMin, int16_t xMax, int16_t yMin, int16_t yMax,  // where
+		bool temp, bool legend=true, int id=0);  // what
 	void DrawAutoGraph(const Fan* f);
 
 
@@ -73,9 +73,6 @@ struct Gui
 	//  help
 	int8_t hpage = 0;
 	const static int8_t HAll = 2;
-	#ifdef LED
-	int8_t led = 0;
-	#endif
 
 
 	//  gui keys pressed, some +-1
@@ -106,35 +103,51 @@ struct Gui
 	int16_t tInfo=0;  int8_t infType=0;  // info text vars
 
 
-	//  Temp 'C  ---
-#ifdef TEMP_PIN
+	//  Temp 'C  ------------
+	//  sensors
 	typedef uint8_t TempAddr[8];
 	TempAddr addr[MaxTemp] = {0,};  // sensor address one wire
 
 	enum TempInit
-	{  TI_FAIL, TI_SEARCH, TI_DONE, TI_READ, TI_ALL  };
-
-	TempInit tempInit = TI_SEARCH;  // first, init
-	int tempCount = 0;   // sensors count
+	{  TI_FAIL, TI_SEARCH, TI_DONE, TI_READ, TI_ALL  }
+	tempInit = TI_SEARCH;  // first, init
+	
+	int tempCount = 0;   // count
 	bool TIdOk(int id)
 	{	return id >= 0 && id < tempCount && id < MaxTemp;  }
 
-	float fTemp[MaxTemp];  // cur temp value
-	int TempFtoB(float t);  float TempBtoF(uint8_t b);
+	void GetTemp();
+	void ResetTemp();  // search sensors again
+	void AddGraphRpm(uint32_t ms);
+
+
+	//  Graph var  ------------
+	//  cur temp 'C values
+	float fTemp[MaxTemp];
 
 	//  last time read'C, add to graph
 	uint32_t msTemp = 0, msTempGr = 0;
-	void GetTemp();
-	void ResetTemp();  // search sensors again
+	uint16_t grTpos = 0;  // write pos  ----
+	uint8_t grTemp[MaxTemp][W];   // graph arrays,  all sensor, screen
 
-	uint8_t grTemp[MaxTemp][W];   // graph array,  for each temp sensor
-	uint16_t grTpos = 0;  // write pos
-	// auto range
+	//  temp  full to byte
+	int TempFtoB(float t);  float TempBtoF(uint8_t b);
+	//  auto range T
 	uint8_t grTempUpd[MaxTemp];  // update
 	uint8_t grFmin[MaxTemp], grFmax[MaxTemp];  // temp 'C
 	uint8_t grBmin[MaxTemp], grBmax[MaxTemp];  // val Byte
-	void AutoRange(int d);
-#endif
+	void AutoRangeTemp(int d);
 
+	//  Rpm  ------------
+	uint32_t msRpm = 0;  // rpm dt time
+	uint8_t grRpos = 0;  // write pos  ----
+	uint8_t grRpm[NumFans][W];  // graph array,  all fans
+
+	//  rpm  full to byte
+	uint8_t RpmFtoB(uint16_t r);  uint16_t RpmBtoF(uint8_t b);
+	//  auto range Rpm
+	uint8_t grRpmUpd[NumFans];  // update
+	uint16_t grRFmin[NumFans], grRFmax[NumFans];  // rpm full
+	uint8_t grRBmin[NumFans], grRBmax[NumFans];  // val Byte
+	void AutoRangeRpm(int d);
 };
-

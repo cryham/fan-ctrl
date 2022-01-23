@@ -14,7 +14,6 @@ void Gui::DrawGraphs()
 	//  Graphs  ~~
 	int onFans = kc.fans.onFans;
 
-	//auto h = [](int v, int n) {  return min(H-1, v / n);  };
 	auto h = [](int v) {  return min(H-1, v);  };
 	int y = 0;
 	
@@ -47,12 +46,11 @@ void Gui::DrawGraphs()
 		const int yR = H / onFans;
 		
 		for (int i=0; i < NumFans; ++i)
-		if (kc.fans.fan[i].on)
+		if (kc.fans.fan[i].on)  // todo: fan params rpm,temp on graphs..
 		{	DrawGraph(W/2, W-1,  h(y*yR), h( (y+1)*yR -1 ),  0, true, i);  ++y;  }
 		break;
 	}
 	}
-	//return;  //!
 
 
 	//  page / all  ---
@@ -62,7 +60,6 @@ void Gui::DrawGraphs()
 
 
 	//  test Temp'C  init, vals  --------
-	// #ifdef TEMP_PIN
 	#if 0
 	// if (tempInit > TI_DONE)  // 'C
 	{

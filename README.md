@@ -23,7 +23,7 @@ revolutions per minute, and second
 * RPM Guard / Stop prevention  
 with options, also useful for lowest RPM
 
-Temperature (optional **)
+Temperature
 * Temperature sensor(s) DS18B20
 * Auto Power % depending on Temperature, with options
 * Graphs with RPM and Temperature
