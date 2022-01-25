@@ -1,10 +1,16 @@
 Fan Controller
 ==============
 
-PC Fan Controller ("Fancy" or Fan C) code for Teensy 3.1 or 3.2 with ST7735 color display. (Project description on [My Website](https://cryham.tuxfamily.org/portfolio/2021-fan-controller/)).
+PC Fan Controller ("Fancy" or Fan C) code for Teensy 3.1 or 3.2 with ST7735 color display.  
+Project description on [My Website](https://cryham.tuxfamily.org/portfolio/2021-fan-controller/)).
 
-Based on my K.C. "Kacey" Keyboard Controller (Description on [My Website](https://cryham.tuxfamily.org/portfolio/2018-k-c-controller)).
+Based on my old K.C. "Kacey" Keyboard Controller (description on [My Website](https://cryham.tuxfamily.org/portfolio/2018-k-c-controller)).
 
+### Screenshots
+
+![](https://raw.githubusercontent.com/cryham/fan-ctrl/main/screens.jpg)
+
+---
 
 ## Features
 
