@@ -57,6 +57,8 @@ void Fan::Init(uint8_t fanId)
 }
 void Fan::UpdFreq()
 {
+	if (fd.freq < 1)
+		fd.freq = 10;
 	analogWriteFrequency(pwmPin, fd.freq * 1000);
 }
 

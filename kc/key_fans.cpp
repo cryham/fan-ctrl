@@ -91,7 +91,8 @@ void Gui::KeysFans()
 			case 0:
 				fd.avgNum = RangeAdd(fd.avgNum, kRight, 0, avgMax-1);  break;
 			case 1:
-				fd.freq = RangeAdd(fd.freq, kRight, 1, 90);  break;
+				fd.freq = RangeAdd(fd.freq, kRight, 1, 90);
+				f.UpdFreq();  break;
 			}	break;
 
  		case FD_Graphs:  // page 6  graphs
