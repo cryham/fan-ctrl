@@ -226,9 +226,10 @@ uint16_t Fan::GetPWMAuto(float fT) const
 //  rpm Guard, stop prevention
 void Fan::Guard(uint32_t dt, uint16_t& pwm)
 {
-	if (!fd.g.on || fd.a.on)
+	if (!fd.g.on ||
+		(fd.a.on && pwm == 0))  // auto off
 	{	tmLeft = 0;
-		return;  // no guard or auto
+		return;  // no guard
 	}
 
 	//  just turned on
